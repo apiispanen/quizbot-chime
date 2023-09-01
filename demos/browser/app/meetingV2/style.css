@@ -1,0 +1,891 @@
+.quiz-create-mode,
+.quiz-create-mode * {
+  box-sizing: border-box;
+}
+.quiz-create-mode {
+  background: #ffffff;
+  width: 1440px;
+  height: 1024px;
+  position: relative;
+  overflow: hidden;
+}
+.frame-427318921 {
+  background: #f7f7fc;
+  border-radius: 22px 0px 0px 22px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-width: 1px;
+  width: 394px;
+  height: 892px;
+  position: absolute;
+  left: 1046px;
+  top: 14px;
+}
+.frame-35859 {
+  padding: 80px 20px 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 394px;
+  height: 892px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.frame-35860 {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  align-items: flex-start;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.frame-358592 {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.frame-358593 {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-end;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.create-an-automated-quiz {
+  color: #3f4149;
+  text-align: left;
+  font: 700 24px/130% "Inter", sans-serif;
+  position: relative;
+  width: 345px;
+}
+.frame-35862 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.number-of-questions {
+  color: #3f4149;
+  text-align: left;
+  font: 600 18px/150% "Inter", sans-serif;
+  position: relative;
+}
+.frame-358622 {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.iconamoon-send-bold {
+  background: #ffffff;
+  border-radius: 4px;
+  border-style: solid;
+  border-color: #e6e6e6;
+  border-width: 1px;
+  padding: 8px 16px 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 40px;
+  position: relative;
+  overflow: hidden;
+}
+._1 {
+  color: #3f4149;
+  text-align: left;
+  font: 600 16px/100% "Inter", sans-serif;
+  position: relative;
+}
+._2 {
+  color: #3f4149;
+  text-align: left;
+  font: 600 16px/100% "Inter", sans-serif;
+  position: relative;
+}
+._3 {
+  color: #3f4149;
+  text-align: left;
+  font: 600 16px/100% "Inter", sans-serif;
+  position: relative;
+}
+.iconamoon-send-bold2 {
+  background: #8e509c;
+  border-radius: 4px;
+  border-style: solid;
+  border-color: #e6e6e6;
+  border-width: 1px;
+  padding: 8px 16px 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 40px;
+  position: relative;
+  overflow: hidden;
+}
+._5 {
+  color: #ffffff;
+  text-align: left;
+  font: 600 16px/100% "Inter", sans-serif;
+  position: relative;
+}
+.custom {
+  color: #3f4149;
+  text-align: left;
+  font: 600 16px/100% "Inter", sans-serif;
+  position: relative;
+}
+.frame-35864 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.type-of-quiz {
+  color: #3f4149;
+  text-align: left;
+  font: 600 18px/150% "Inter", sans-serif;
+  position: relative;
+}
+.frame-358623 {
+  border-radius: 1000px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.iconamoon-send-bold3 {
+  background: #ffffff;
+  border-radius: 1000px;
+  border-style: solid;
+  border-color: #e6e6e6;
+  border-width: 1px;
+  padding: 8px 16px 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.multiple-type-questions {
+  color: #3f4149;
+  text-align: left;
+  font: 400 18px/150% "Inter", sans-serif;
+  position: relative;
+}
+.frame-35863 {
+  border-radius: 1000px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.open-ended-questions {
+  color: #3f4149;
+  text-align: left;
+  font: 400 18px/150% "Inter", sans-serif;
+  position: relative;
+}
+.frame-358642 {
+  border-radius: 1000px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.fill-in-the-blanks {
+  color: #3f4149;
+  text-align: left;
+  font: 400 18px/150% "Inter", sans-serif;
+  position: relative;
+}
+.frame-35865 {
+  border-radius: 1000px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.rectangle-4149 {
+  background: #8e509c;
+  border-radius: 1000px;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  position: relative;
+}
+.mix-them-all {
+  color: #3f4149;
+  text-align: left;
+  font: 400 18px/150% "Inter", sans-serif;
+  position: relative;
+}
+.frame-358632 {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.ic-round-check-box {
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+.prioritize-my-highlights {
+  color: #3f4149;
+  text-align: left;
+  font: 400 18px/150% "Inter", sans-serif;
+  position: relative;
+}
+.ic-round-info {
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+.frame-358624 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.frame-358625 {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.continue-on-drafts {
+  color: #3f4149;
+  text-align: left;
+  font: 600 18px/150% "Inter", sans-serif;
+  position: relative;
+}
+.vector3 {
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+.chapter-1-photosynthesis {
+  color: #3f4149;
+  text-align: left;
+  font: 400 18px/150% "Inter", sans-serif;
+  text-decoration: underline;
+  position: relative;
+}
+.iconamoon-send-bold4 {
+  background: #8e509c;
+  border-radius: 8px;
+  padding: 8px 16px 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.generate-quiz {
+  color: #ffffff;
+  text-align: left;
+  font: 600 16px/100% "Inter", sans-serif;
+  position: relative;
+}
+.icon-park-solid-close-one {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 358px;
+  top: 12px;
+  overflow: hidden;
+}
+.mask-group {
+  position: absolute;
+  inset: 0;
+}
+.group {
+  width: 20px;
+  height: 20px;
+  position: static;
+}
+.group2 {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  overflow: visible;
+}
+.vector6 {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: visible;
+}
+.rectangle-18 {
+  border-radius: 24px;
+  width: 1022px;
+  height: 551px;
+  position: absolute;
+  left: 12px;
+  top: 185px;
+}
+.frame-427318908 {
+  border-radius: 24px;
+  padding: 12px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 1034px;
+  position: absolute;
+  left: calc(50% - 720px);
+  top: 0px;
+  overflow: hidden;
+}
+.frame-427318942 {
+  border-radius: 24px;
+  flex-shrink: 0;
+  width: 1022px;
+  height: 159px;
+  position: relative;
+  overflow: hidden;
+}
+.group-35930 {
+  position: absolute;
+  inset: 0;
+}
+.frame-427318909 {
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.rectangle-12 {
+  background: linear-gradient(to left, #f8f8f8, #f8f8f8);
+  border-radius: 3.69px;
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.frame-427318910 {
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 242.9px;
+  top: 0px;
+}
+.rectangle-13 {
+  background: linear-gradient(to left, #f8f8f8, #f8f8f8);
+  border-radius: 3.69px;
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.frame-427318911 {
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 485.81px;
+  top: 0px;
+}
+.rectangle-14 {
+  background: linear-gradient(to left, #f8f8f8, #f8f8f8);
+  border-radius: 3.69px;
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.frame-427318912 {
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 728.71px;
+  top: 0px;
+}
+.rectangle-15 {
+  background: linear-gradient(to left, #f8f8f8, #f8f8f8);
+  border-radius: 3.69px;
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.frame-427318913 {
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 971.61px;
+  top: 0px;
+}
+.rectangle-16 {
+  background: linear-gradient(to left, #f8f8f8, #f8f8f8);
+  border-radius: 3.69px;
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.frame-427318914 {
+  width: 224px;
+  height: 159px;
+  position: absolute;
+  left: 1214.51px;
+  top: 0px;
+}
+.rectangle-17 {
+  background: linear-gradient(to left, #f8f8f8, #f8f8f8);
+  border-radius: 3.69px;
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.frame-427318915 {
+  width: 224px;
+  height: 159px;
+  position: absolute;
+  left: 1450.51px;
+  top: 0px;
+}
+.rectangle-172 {
+  background: linear-gradient(to left, #f8f8f8, #f8f8f8);
+  border-radius: 3.69px;
+  width: 230.9px;
+  height: 158.86px;
+  position: absolute;
+  left: 9px;
+  top: 0px;
+}
+.frame-427318922 {
+  width: 1023px;
+  height: 643px;
+  position: absolute;
+  left: 11px;
+  top: 721px;
+}
+.group-35857 {
+  position: absolute;
+  inset: 0;
+}
+.group-35853 {
+  width: 1024px;
+  height: 637px;
+  position: static;
+}
+.rectangle-11 {
+  background: #ffffff;
+  border-radius: 22px 22px 0px 0px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-width: 1px;
+  width: 1024px;
+  height: 637px;
+  position: absolute;
+  left: 0px;
+  top: 3px;
+  box-shadow: 3.79px 3.79px 7.58px 0px rgba(0, 0, 0, 0.11);
+}
+.fluent-arrow-next-12-regular {
+  position: absolute;
+  left: calc(50% - 44.86px);
+  top: calc(50% - 252.56px);
+  transform: translate(0px, -48px);
+  overflow: visible;
+}
+.frame-427318920 {
+  background: #ffffff;
+  width: 762px;
+  height: 514px;
+  position: absolute;
+  left: 52px;
+  top: 89px;
+  overflow: hidden;
+}
+.rectangle-4144 {
+  background: rgba(250, 238, 133, 0.6);
+  border-radius: 4px;
+  width: 750.96px;
+  height: 55px;
+  position: absolute;
+  left: 0px;
+  top: 241px;
+}
+.rectangle-4145 {
+  background: rgba(250, 238, 133, 0.6);
+  border-radius: 4px;
+  width: 750.96px;
+  height: 55px;
+  position: absolute;
+  left: 0px;
+  top: 296px;
+}
+.rectangle-4146 {
+  background: rgba(250, 238, 133, 0.6);
+  border-radius: 4px;
+  width: 750.96px;
+  height: 55px;
+  position: absolute;
+  left: 0px;
+  top: 351px;
+}
+.rectangle-4147 {
+  background: rgba(250, 238, 133, 0.6);
+  border-radius: 4px;
+  width: 750.96px;
+  height: 55px;
+  position: absolute;
+  left: 0px;
+  top: 406px;
+}
+.rectangle-4148 {
+  background: rgba(250, 238, 133, 0.6);
+  border-radius: 4px;
+  width: 691.72px;
+  height: 55px;
+  position: absolute;
+  left: 0px;
+  top: 459px;
+}
+.hello-friends-welcome-to-a-new-happy-learning-video-have-you-ever-wondered-how-plants-feed-to-answer-this-question-we-need-to-understand-photosynthesis-photosynthesis-is-a-process-in-which-plants-make-their-own-food-to-be-able-to-grow-and-develop-in-order-to-perform-photosynthesis-they-need-various-elements-sunlight-carbon-dioxide-obtained-from-air-and-water-and-chlorophyll-which-is-a-green-substance-that-all-plants-have-and-is-fundamental-for-performing-photosynthesis-since-it-could-not-happen-without-it-music-by-the-way-chlorophyll-is-what-gives-all-plants-the-green-color-but-how-does-photosynthesis-take-place-look-at-this-plant-as-you-can-see-its-roots-are-anchored-to-the-ground-and-through-them-the-plant-absorbs-water-and-minerals-in-the-soil-water-with-minerals-are-transported-up-the-stem-reaching-the-leaves-the-leaves-are-full-of-tiny-pools-called-stomata-which-absorb-carbon-dioxide-that-the-air-in-the-surrounding-contains-all-this-containing-water-minerals-and-carbon-dioxide-is-called-raw-sap-now-it-s-chlorophyll-s-turn-the-chlorophyll-in-the-leaves-has-all-the-necessary-ingredients-for-photosynthesis-to-take-place-and-when-it-receives-sunlight-the-process-begins-by-transforming-the-raw-sap-into-elaborated-sap-which-also-circulates-around-the-plant-and-works-as-food-music-all-plants-feed-from-elaborated-sap-and-they-store-it-in-their-roots-like-a-carrot-or-in-their-fruit-like-an-apple-or-a-pear-now-we-know-how-photosynthesis-takes-place-but-why-is-it-so-important-without-plants-there-would-be-no-life-on-earth-we-wouldn-t-have-oxygen-to-breathe-or-food-to-feed-on-you-already-know-that-herbivores-eat-plants-and-carnivores-eat-herbivores-plants-are-fundamental-for-the-food-chain-and-they-are-also-fundamental-for-our-respiration-actually-when-humans-breathe-we-turn-oxygen-into-carbon-dioxide-quite-the-opposite-of-when-plants-perform-photosynthesis-a-curious-fact-you-need-to-know-is-that-at-night-because-plants-don-t-have-sunlight-to-photosynthesize-they-breathe-like-humans-do-they-take-in-oxygen-and-release-carbon-dioxide-remember-that-and-one-last-thing-so-you-understand-the-importance-of-photosynthesis-when-plants-absorb-dirty-and-contaminated-gases-they-transform-them-into-pure-air-into-oxygen-and-this-way-they-clean-the-atmosphere-and-all-nature-plants-are-the-best-solution-to-fight-against-contamination-don-t-you-think-goodbye-friends-and-don-t-forget-to-subscribe-to-happy-learning-tv-music-applause-music {
+  color: #3f4149;
+  text-align: left;
+  font: 400 36px/150% "Inter", sans-serif;
+  position: absolute;
+  left: 0px;
+  top: -120px;
+  width: 765.53px;
+}
+.frame-358602 {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 869px;
+  top: 344px;
+}
+.frame-358594 {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.majesticons-chat-line {
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+.sonia-15-23-pm {
+  color: #3f4149;
+  text-align: left;
+  font: 600 16px/100% "Inter", sans-serif;
+  position: relative;
+}
+.frame-358595 {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 830px;
+  top: 152px;
+}
+.lucide-highlighter {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.group3 {
+  position: absolute;
+  left: 3px;
+  top: 4px;
+  overflow: visible;
+}
+.press-x-to-highlight {
+  color: #3f4149;
+  text-align: left;
+  font: 400 16px/120% "Inter", sans-serif;
+  position: relative;
+}
+.frame-427318916 {
+  position: absolute;
+  left: 1004px;
+  top: 80px;
+  overflow: visible;
+}
+.frame-358603 {
+  background: #f8f8f8;
+  padding: 20px 180px 20px 180px;
+  display: flex;
+  flex-direction: row;
+  gap: 64px;
+  align-items: center;
+  justify-content: center;
+  width: 1440px;
+  position: absolute;
+  left: calc(50% - 720px);
+  bottom: 0px;
+  box-shadow: 0px -4px 8px 0px rgba(0, 0, 0, 0.11);
+}
+.component-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.ph-microphone {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.group-35861 {
+  position: absolute;
+  left: 12px;
+  top: 9px;
+  overflow: visible;
+}
+.mute {
+  color: #3f4149;
+  text-align: center;
+  font: 400 16px "Inter", sans-serif;
+  position: relative;
+  width: 60px;
+}
+.component-1 {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.bi-camera-video {
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+.stop-video {
+  color: #3f4149;
+  text-align: center;
+  font: 400 16px "Inter", sans-serif;
+  position: relative;
+  width: 86px;
+}
+.frame-427318918 {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.frame-427318917 {
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+.participants {
+  color: #3f4149;
+  text-align: center;
+  font: 400 16px "Inter", sans-serif;
+  position: relative;
+}
+.component-3 {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.jam-screen {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.group-35859 {
+  position: absolute;
+  left: 6px;
+  top: 11px;
+  overflow: visible;
+}
+.share-screen {
+  color: #3f4149;
+  text-align: center;
+  font: 400 16px "Inter", sans-serif;
+  position: relative;
+}
+.frame-35856 {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.gg-transcript {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.group4 {
+  position: absolute;
+  left: 6px;
+  top: 11.5px;
+  overflow: visible;
+}
+.open-transcript {
+  color: #3f4149;
+  text-align: center;
+  font: 400 16px "Inter", sans-serif;
+  position: relative;
+}
+.majesticons-chat-line2 {
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+.chat {
+  color: #3f4149;
+  text-align: center;
+  font: 400 16px "Inter", sans-serif;
+  position: relative;
+}
+.frame-427318919 {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.group-35854 {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  position: static;
+}
+.ic-outline-fact-check {
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  left: 17px;
+  top: 0px;
+  overflow: hidden;
+}
+.group-35855 {
+  position: absolute;
+  left: 6px;
+  top: 11.5px;
+  overflow: visible;
+}
+.create-quiz {
+  color: #3f4149;
+  text-align: center;
+  font: 400 16px "Inter", sans-serif;
+  position: relative;
+}
+.frame-35854 {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.frame-427318907 {
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+.end-session {
+  color: #3f4149;
+  text-align: center;
+  font: 400 16px "Inter", sans-serif;
+  position: relative;
+}
