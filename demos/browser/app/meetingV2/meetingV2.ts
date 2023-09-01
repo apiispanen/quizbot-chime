@@ -905,7 +905,7 @@ export class DemoMeetingApp
      const buttonQuizBot = document.getElementById('button-quizbot') as HTMLButtonElement;
  buttonQuizBot.addEventListener('click', _e => {
     console.log("button-quizbot");
-    alert("*****QUIZBOT FORM HERE*****");
+    // alert("*****QUIZBOT FORM HERE*****");
     this.toggleButton('button-quizbot');
     //  const showForm = this.isButtonOn('button-quizbot');
     //  Quizbot.toggleQuizForm(true);
