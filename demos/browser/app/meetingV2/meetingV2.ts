@@ -652,7 +652,7 @@ export class DemoMeetingApp
         x.style.display = 'block';
       } else {
         x.style.display = 'none';
-        joining_page.style.display = 'block';
+        joining_page.style.display = 'flex';
       }
     });
     const buttonJoin = document.getElementById('host-meeting') as HTMLButtonElement;
@@ -750,10 +750,67 @@ export class DemoMeetingApp
     });
 
     // make a function displayForm():
+    // Sample data for radio buttons
 
     const buttonQuizBot = document.getElementsByClassName('cancel-button');
     for (var i = 0; i < buttonQuizBot.length; i++) {
       buttonQuizBot[i].addEventListener('click', _e => {
+
+
+        const radioOptions = ['Option 1', 'Option 2', 'Option 3'];
+
+        // Function to create radio buttons
+
+        const container = document.getElementById('radio-container');
+        // const radioBlock = document.getElementById('radio-block');
+
+        radioOptions.forEach((option, index) => {
+          const label = document.createElement('label');
+          const input = document.createElement('input');
+          const radioBlock = document.createElement('div');
+          radioBlock.classList.add('radioBlock');
+
+          input.type = 'radio';
+          input.name = 'radioOption';
+          input.value = option; // Set the initial value to the option text
+
+          label.className = 'radio-label';
+          radioBlock.appendChild(input);
+
+          label.appendChild(document.createTextNode(option));
+
+          // Double-click handler to make label editable
+          label.addEventListener('dblclick', () => {
+            label.contentEditable = 'true';
+            label.classList.add('editing');
+
+            // Save the original label text
+            const originalText = label.textContent;
+
+            // On blur, save the edited label text and exit editing mode
+            label.addEventListener('blur', () => {
+              const newText = label.textContent;
+
+              // Remove leading/trailing spaces
+
+              label.contentEditable = 'false';
+
+              label.classList.remove('editing');
+
+              // Update the radio option value if the label text changed
+              if (newText !== originalText) {
+                input.value = newText;
+              }
+
+              // If the label text is empty, reset it to the original option text
+              if (newText === '') {
+                label.textContent = option;
+              }
+            });
+          });
+          radioBlock.appendChild(label);
+          container.appendChild(radioBlock);
+        });
         console.log('button-quizbot');
         console.log(this.primaryExternalMeetingId);
         let quiz_question = document.getElementById('quiz_question');
@@ -918,8 +975,6 @@ export class DemoMeetingApp
             let questionNumber = question.question_number;
             let questionBlock = document.createElement('div');
             questionBlock.className = 'numbers-block';
-            // const element = document.getElementById('numbers-block');
-            // element.classList.add('active-numbers-block');
             questionBlock.innerText = `${questionNumber}`;
             quizNumbers.appendChild(questionBlock);
 
@@ -927,15 +982,12 @@ export class DemoMeetingApp
             questionBlock.addEventListener('click', function () {
               // Display the selected question and its options
 
-              console.log('questionBlock', questionBlock);
               console.log('questionNumber', questionNumber);
-              index++;
-              if (index === questionNumber) {
-                console.log('Index', index);
-                questionBlock.classList.add('active-numbers-block');
-              } else {
-                questionBlock.classList.remove('active-numbers-block');
+              const currentActive = document.querySelector('.numbers-block.active-numbers-block');
+              if (currentActive) {
+                currentActive.classList.remove('active-numbers-block');
               }
+              questionBlock.classList.add('active-numbers-block');
 
               quizQuestionElement.innerText = question.question;
               quizOptions.innerHTML = ''; // Clear previous options
@@ -4785,7 +4837,8 @@ document.addEventListener('DOMContentLoaded', function () {
       if (events[eventDate]) {
         const eventElement = document.createElement('div');
         eventElement.classList.add('calendar-event');
-        eventElement.textContent = events[eventDate];
+
+        // eventElement.textContent = events[eventDate];
         dateElement.appendChild(eventElement);
       }
 
