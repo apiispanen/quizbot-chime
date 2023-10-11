@@ -4,19 +4,9 @@
 const AWS = require('aws-sdk');
 const compression = require('compression');
 const fs = require('fs');
-const https = require('https');
+const http = require('http');
 const url = require('url');
 const { v4: uuidv4 } = require('uuid');
-
-// const privateKey = fs.readFileSync('/etc/letsencrypt/live/larq.ai/privkey.pem', 'utf8');
-// const certificate = fs.readFileSync('/etc/letsencrypt/live/larq.ai/fullchain.pem', 'utf8');
-const privateKey = fs.readFileSync('key.pem', 'utf-8')
-const certificate = fs.readFileSync('cert.pem', 'utf-8')
-
-const credentials = {
-  key: privateKey,
-  cert: certificate,
-};
 
 // Store created meetings in a map so attendees can join by meeting title.
 const meetingTable = {};
@@ -76,9 +66,9 @@ function getClientForMeeting(meeting) {
       : chime;
 }
 
-function serve(host = '0.0.0.0:8080') {
+function serve(host = '127.0.0.1:8080') {
   // Start an HTTP server to serve the index page and handle meeting actions
-  https.createServer(credentials, async (request, response) => {
+  http.createServer({}, async (request, response) => {
     log(`${request.method} ${request.url} BEGIN`);
     try {
       // Enable HTTP compression
@@ -178,9 +168,7 @@ function serve(host = '0.0.0.0:8080') {
           meetingTable[requestUrl.query.title] = meeting;
         }
 
-
-        // Create new attendee for the meeting
-        const attendee = await client.createAttendee({
+        const createAttendeeRequest = {
           // The meeting ID of the created meeting to add the attendee to
           MeetingId: meeting.Meeting.MeetingId,
 
@@ -189,8 +177,23 @@ function serve(host = '0.0.0.0:8080') {
           // combined with the name the user provided, which can later
           // be used to help build the roster.
           ExternalUserId: `${uuidv4().substring(0, 8)}#${requestUrl.query.name}`.substring(0, 64),
-        }).promise();
-        
+        };
+
+        if (
+          useChimeSDKMeetings === 'true' &&
+          requestUrl.query.attendeeAudioCapability &&
+          !requestUrl.query.primaryExternalMeetingId
+        ) {
+          createAttendeeRequest.Capabilities = {
+            Audio: requestUrl.query.attendeeAudioCapability,
+            Video: requestUrl.query.attendeeVideoCapability,
+            Content: requestUrl.query.attendeeContentCapability,
+          };
+        }
+
+       // Create new attendee for the meeting
+       const attendee = await client.createAttendee(createAttendeeRequest).promise();
+
         // Return the meeting and attendee responses. The client will use these
         // to join the meeting.
         let joinResponse = {
@@ -479,14 +482,10 @@ function respond(response, statusCode, contentType, body, skipLogging = false) {
   response.statusCode = statusCode;
   response.setHeader('Content-Type', contentType);
   response.setHeader('Access-Control-Allow-Origin', '*');
-  if (contentType.startsWith('image/') || contentType === 'application/javascript') {
-    response.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-  }
-
   // enable shared array buffer for videoFxProcessor
-  // response.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  response.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
   // enable shared array buffer for videoFxProcessor
-  // response.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  response.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
   response.end(body);
   if (contentType === 'application/json' && !skipLogging) {
     log(body);
