@@ -434,7 +434,7 @@ export class DemoMeetingApp
     'button-video-stats': 'off',
     'button-promote-to-primary': 'on',
     'button-video-filter': 'off',
-    'button-video-recording-drop': 'off',
+    'button-video-recording-drop': 'on',
     'button-record-self': 'off',
     'button-record-cloud': 'off',
     'button-live-connector': 'off'
@@ -544,6 +544,20 @@ export class DemoMeetingApp
   }
 }
 
+  // Method to determine if the current user is the host
+  isHost(): boolean {
+    if (localStorage.getItem("userId") === localStorage.getItem("host_id")){
+      this.allowAttendeeCapabilities = true;
+      return true;
+
+    } else {
+      this.allowAttendeeCapabilities = false;
+      return false;
+    }
+  }
+
+
+
 
   // Method for the host to remove an attendee
   async removeAttendee(attendeeId: string): Promise<void> {
@@ -559,17 +573,6 @@ export class DemoMeetingApp
     }
   }
   
-  // Method to determine if the current user is the host
-  isHost(): boolean {
-    if (localStorage.getItem("userId") === localStorage.getItem("host_id")){
-      this.allowAttendeeCapabilities = true;
-      return true;
-
-    } else {
-      this.allowAttendeeCapabilities = false;
-      return false;
-    }
-  }
   
   // Method to pass host privileges to another attendee
   passHostPrivileges(newHostId: string): void {
@@ -3703,7 +3706,8 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       }
       const attendeeName =
         externalUserId.split('#').slice(-1)[0] + (isContentAttendee ? ' «Content»' : '');
-      this.roster.addAttendee(attendeeId, attendeeName, this.allowAttendeeCapabilities);
+      this.roster.addAttendee(attendeeId, attendeeName, this.isHost());
+      this.initAttendeeCapabilityFeature();
 
       this.volumeIndicatorHandler = async (
         attendeeId: string,
@@ -5576,9 +5580,9 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
     this.disablePeriodicKeyframeRequestOnContentSender = (document.getElementById(
       'disable-content-keyframe'
     ) as HTMLInputElement).checked;
-    this.allowAttendeeCapabilities = (document.getElementById(
-      'allow-attendee-capabilities'
-    ) as HTMLInputElement).checked;
+      this.allowAttendeeCapabilities = (document.getElementById(
+        'allow-attendee-capabilities'
+      ) as HTMLInputElement).checked;  
     this.enableWebAudio = (document.getElementById('webaudio') as HTMLInputElement).checked;
     this.usePriorityBasedDownlinkPolicy = (document.getElementById(
       'priority-downlink-policy'

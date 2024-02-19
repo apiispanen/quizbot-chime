@@ -8,6 +8,16 @@ import * as bootstrap from 'bootstrap';
 document.addEventListener('DOMContentLoaded', function() {
 // BEGIN DOMCONTENTLOADED
 
+// check the following inputs by ID: join-muted, simulcast, allow-attendee-capabilities
+for (let element of ['join-muted', 'simulcast', 'allow-attendee-capabilities']) {
+    let input = document.getElementById(element);
+    if (input) {
+            let value = this.checked;
+            window.demoMeetingAppInstance.updateMeetingSettings({ [element]: value });
+    }
+}
+
+
 console.log("quizbot.js loaded");
 
 // **********************************************************************
