@@ -963,46 +963,47 @@
         <div id="roster-message-container" class="flex-column h-100 animate__animated animate__slideInLeft" style="width: 20%;">
           <a href="https://app.larq.ai" id="back-button3"><p class="btn btn-primary px-3">Return to Dashboard</p></a>
 
-          <div id="roster-menu-container" class="justify-content-end py-2 gap-3"
-            style="flex: 0 0 auto; border-color: transparent !important;">
-            <div id="roster-menu-instruction" class="d-flex align-items-center text-white"></div>
-            <div class="btn-group">
-              <button class="btn btn-sm dropdown-toggle btn-outline-secondary" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <%= require('../../node_modules/open-iconic/svg/ellipses.svg') %>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-start">
-                <li class="px-3 text-nowrap user-select-none">Attendee capabilities</li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li id="roster-menu-none-seleced">
-                  <div class="px-3 text-nowrap text-muted">Select one or more attendees to update.</div>
-                </li>
-                <li id="roster-menu-one-attendee" class="hidden">
-                  <button class="dropdown-item" type="button" data-bs-target="#attendee-capabilities-modal"
-                    data-bs-toggle="modal" data-bs-type="one-attendee">
-                    <div class="me-2 d-inline-block" style="transform: scale(0.75);">
-                      <%= require('../../node_modules/open-iconic/svg/person.svg') %>
-                    </div>
-                    <span>Update the selected attendee</span>
-                  </button>
-                </li>
-                <li id="roster-menu-all-attendees-except" class="hidden">
-                  <button class="dropdown-item" type="button" data-bs-target="#attendee-capabilities-modal"
-                    data-bs-toggle="modal" data-bs-type="all-attendees-except">
-                    <div class="me-2 d-inline-block" style="transform: scale(0.75);">
-                      <%= require('../../node_modules/open-iconic/svg/people.svg') %>
-                    </div>
-                    <span id="roster-menu-all-attendees-except-label"></span>
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="bs-component scrollbar-new-design p-1" style="flex: 1 1 auto; overflow-y: auto; height: 20%;max-height:25%">
+          <div class="bs-component scrollbar-new-design p-1" style="flex: 1 1 auto; overflow-y: auto;max-height:25%">
             <ul id="roster" class="list-group"></ul>
           </div>
+          <div id="roster-menu-container" class="justify-content-end py-2 gap-3"
+          style="flex: 0 0 auto; border-color: transparent !important;">
+          <div id="roster-menu-instruction" class="d-flex align-items-center text-white"></div>
+          <div class="btn-group">
+            <button class="btn btn-sm dropdown-toggle btn-outline-secondary" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <%= require('../../node_modules/open-iconic/svg/ellipses.svg') %>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-start">
+              <li class="px-3 text-nowrap user-select-none">Attendee capabilities</li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li id="roster-menu-none-seleced">
+                <div class="px-3 text-nowrap text-muted">Select one or more attendees to update.</div>
+              </li>
+              <li id="roster-menu-one-attendee" class="hidden">
+                <button class="dropdown-item" type="button" data-bs-target="#attendee-capabilities-modal"
+                  data-bs-toggle="modal" data-bs-type="one-attendee">
+                  <div class="me-2 d-inline-block" style="transform: scale(0.75);">
+                    <%= require('../../node_modules/open-iconic/svg/person.svg') %>
+                  </div>
+                  <span>Update the selected attendee</span>
+                </button>
+              </li>
+              <li id="roster-menu-all-attendees-except" class="hidden">
+                <button class="dropdown-item" type="button" data-bs-target="#attendee-capabilities-modal"
+                  data-bs-toggle="modal" data-bs-type="all-attendees-except">
+                  <div class="me-2 d-inline-block" style="transform: scale(0.75);">
+                    <%= require('../../node_modules/open-iconic/svg/people.svg') %>
+                  </div>
+                  <span id="roster-menu-all-attendees-except-label"></span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
           <div class="message d-flex flex-column pt-1" id="messages"
             style="flex: 1 1 auto; overflow: hidden; height: 80%;">
             <div class="list-group receive-message scrollbar-new-design my-2" id="receive-message" style="flex: 1 1 auto; overflow-y: auto;

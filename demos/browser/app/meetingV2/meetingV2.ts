@@ -435,8 +435,8 @@ export class DemoMeetingApp
     'button-promote-to-primary': 'on',
     'button-video-filter': 'off',
     'button-video-recording-drop': 'on',
-    'button-record-self': 'off',
-    'button-record-cloud': 'off',
+    'button-record-self': 'on',
+    'button-record-cloud': 'on',
     'button-live-connector': 'off'
   };
 
