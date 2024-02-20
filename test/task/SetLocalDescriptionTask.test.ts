@@ -136,7 +136,7 @@ describe('SetLocalDescriptionTask', () => {
 
     it('will call setAudioPayloadTypes of transceiverController', async () => {
       domMockBehavior = new DOMMockBehavior();
-      domMockBehavior.browserName = 'chrome';
+      domMockBehavior.browserName = 'chrome116';
       domMockBuilder = new DOMMockBuilder(domMockBehavior);
       context.transceiverController = new DefaultTransceiverController(
         context.logger,
@@ -147,6 +147,22 @@ describe('SetLocalDescriptionTask', () => {
       context.audioProfile = new AudioProfile();
       await task.run();
       expect(spy.calledOnce).to.be.true;
+    });
+
+    it('sets start bitrate for SVC content', async () => {
+      class TestPeerConnectionMock extends RTCPeerConnection {
+        setLocalDescription(description: RTCSessionDescriptionInit): Promise<void> {
+          expect(description.sdp).to.be.equal(sdpOffer.sdp);
+          return new Promise<void>((resolve, _reject) => {
+            resolve();
+          });
+        }
+      }
+      const peer: RTCPeerConnection = new TestPeerConnectionMock();
+      context.peer = peer;
+      context.audioVideoController.configuration.credentials.attendeeId = 'attendee#content';
+      context.audioVideoController.configuration.enableSVC = true;
+      await task.run();
     });
   });
 

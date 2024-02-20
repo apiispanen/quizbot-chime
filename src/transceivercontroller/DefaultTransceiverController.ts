@@ -8,8 +8,8 @@ import BrowserBehavior from '../browserbehavior/BrowserBehavior';
 import ClientMetricReport from '../clientmetricreport/ClientMetricReport';
 import RedundantAudioRecoveryMetricReport from '../clientmetricreport/RedundantAudioRecoveryMetricReport';
 import Logger from '../logger/Logger';
-import LogLevel from '../logger/LogLevel';
 import RedundantAudioEncoder from '../redundantaudioencoder/RedundantAudioEncoder';
+import RedundantAudioEncoderWorkerCode from '../redundantaudioencoderworkercode/RedundantAudioEncoderWorkerCode';
 import RedundantAudioRecoveryMetricsObserver from '../redundantaudiorecoverymetricsobserver/RedundantAudioRecoveryMetricsObserver';
 import AsyncScheduler from '../scheduler/AsyncScheduler';
 import VideoStreamIdSet from '../videostreamidset/VideoStreamIdSet';
@@ -474,9 +474,7 @@ export default class DefaultTransceiverController
 
     if (supportsRTCScriptTransform) {
       // This is the prefered approach according to
-      // https://github.com/w3c/webrtc-encoded-transform/blob/main/explainer.md
-      // but chrome doesn't seem to support it as of chrome 111.0
-      // Safari 16.3 seems to support this.
+      // https://github.com/w3c/webrtc-encoded-transform/blob/main/explainer.md.
       this.logger.info(
         '[AudioRed] Supports encoded insertable streams using RTCRtpScriptTransform'
       );
@@ -493,25 +491,15 @@ export default class DefaultTransceiverController
       );
     }
 
-    // Stringify the `RedundantAudioEncoder` class code and get the new name of the `RedundantAudioEncoder` class since
-    // its name is changed in the browser.
-    const redWorkerCode = RedundantAudioEncoder.toString();
-    const redClassName = redWorkerCode.match(/class\s*(\w+)\s*\{/)[1];
-
-    const blobParts: BlobPart[] = [redWorkerCode];
-    if (this.logger.getLogLevel() === LogLevel.DEBUG) {
-      blobParts.push(`${redClassName}.shouldLogDebug=1;`);
-    }
-    blobParts.push(`${redClassName}.shouldReportStats=1;`);
-    blobParts.push(`${redClassName}.initializeWorker();`);
-
-    this.audioRedWorkerURL = URL.createObjectURL(
-      new Blob(blobParts, {
-        type: 'application/javascript',
-      })
-    );
-    this.logger.info(`[AudioRed] Redundant audio worker URL ${this.audioRedWorkerURL}`);
+    // Run the entire redundant audio worker setup in a `try` block to allow any errors to trigger a reconnect with
+    // audio redundancy disabled.
     try {
+      this.audioRedWorkerURL = URL.createObjectURL(
+        new Blob([RedundantAudioEncoderWorkerCode], {
+          type: 'application/javascript',
+        })
+      );
+      this.logger.info(`[AudioRed] Redundant audio worker URL ${this.audioRedWorkerURL}`);
       this.audioRedWorker = new Worker(this.audioRedWorkerURL);
     } catch (error) {
       this.logger.error(`[AudioRed] Unable to create audio red worker due to ${error}`);
@@ -535,8 +523,8 @@ export default class DefaultTransceiverController
     // to the main thread for logging
     this.audioRedWorker.onmessage = (event: MessageEvent) => {
       /* istanbul ignore else */
-      if (event.data.type === 'REDWorkerDebugLog') {
-        this.logger.debug(event.data.log);
+      if (event.data.type === 'REDWorkerLog') {
+        this.logger.info(event.data.log);
       } /* istanbul ignore next */ else if (event.data.type === 'RedundantAudioEncoderStats') {
         const redMetricReport = new RedundantAudioRecoveryMetricReport();
         redMetricReport.currentTimestampMs = Date.now();
@@ -560,7 +548,8 @@ export default class DefaultTransceiverController
         this.audioRedWorker,
         { type: 'ReceiverTransform' }
       );
-    } /* istanbul ignore else */ else if (supportsInsertableStreams) {
+      // eslint-disable-next-line
+    } else /* istanbul ignore else */ if (supportsInsertableStreams) {
       // @ts-ignore
       const sendStreams = this._localAudioTransceiver.sender.createEncodedStreams();
       // @ts-ignore
@@ -614,13 +603,25 @@ export default class DefaultTransceiverController
       transceiver.receiver.transform = new RTCRtpScriptTransform(this.audioRedWorker, {
         type: 'PassthroughTransform',
       });
-    } /* istanbul ignore else */ else if (supportsInsertableStreams) {
+      // eslint-disable-next-line
+    } else /* istanbul ignore else */ if (supportsInsertableStreams) {
       // @ts-ignore
       const sendStreams = transceiver.sender.createEncodedStreams();
-      sendStreams.readable.pipeTo(sendStreams.writable);
       // @ts-ignore
       const receiveStreams = transceiver.receiver.createEncodedStreams();
-      receiveStreams.readable.pipeTo(receiveStreams.writable);
+      this.audioRedWorker.postMessage(
+        {
+          msgType: 'PassthroughTransform',
+          send: sendStreams,
+          receive: receiveStreams,
+        },
+        [
+          sendStreams.readable,
+          sendStreams.writable,
+          receiveStreams.readable,
+          receiveStreams.writable,
+        ]
+      );
     }
 
     return transceiver;
@@ -660,6 +661,7 @@ export default class DefaultTransceiverController
   metricsDidReceive(clientMetricReport: ClientMetricReport): void {
     const { currentTimestampMs } = clientMetricReport;
     const rtcStatsReport = clientMetricReport.getRTCStatsReport();
+    let receiverReportReceptionTimestampMs: number = 0;
     let currentTotalPacketsSent: number = 0;
     let currentTotalPacketsLost: number = 0;
 
@@ -670,27 +672,38 @@ export default class DefaultTransceiverController
         if (report.type === 'outbound-rtp') {
           currentTotalPacketsSent = report.packetsSent;
         } /* istanbul ignore else */ else if (report.type === 'remote-inbound-rtp') {
+          // Use the timestamp that the receiver report was received on the client side to get a more accurate time
+          // interval for the metrics.
+          receiverReportReceptionTimestampMs = report.timestamp;
           currentTotalPacketsLost = report.packetsLost;
         }
       }
     });
 
-    // Make sure packetsSent is greater than the most recent value
-    // in the history before consuming to avoid divide-by-zero while
-    // calculating loss percent.
+    // Since the timestamp from the server side is only updated when a new receiver report is generated, only add
+    // metrics with new timestamps to our metrics history.
+    //
+    // Also, make sure that the total packets sent is greater than the most recent value in the history before consuming
+    // to avoid divide-by-zero while calculating uplink loss percent.
     if (
-      this.audioMetricsHistory.length > 0 &&
-      currentTotalPacketsSent <=
-        this.audioMetricsHistory[this.audioMetricsHistory.length - 1].totalPacketsSent
+      this.audioMetricsHistory.length === 0 ||
+      (receiverReportReceptionTimestampMs >
+        this.audioMetricsHistory[this.audioMetricsHistory.length - 1].timestampMs &&
+        currentTotalPacketsSent >
+          this.audioMetricsHistory[this.audioMetricsHistory.length - 1].totalPacketsSent)
     ) {
-      return;
+      // Note that although the total packets sent is updated anytime we get the WebRTC stats, we are only adding a new
+      // metric for total packets sent when we receive a new receiver report. We only care about the total packets that
+      // the server was expected to receive at the time that the latest `packetsLost` metric was calculated in order to
+      // do our uplink loss calculation. Therefore, we only record the total packets sent when we receive a new receiver
+      // report, which will give us an estimate of the number of packets that the server was supposed to receive at the
+      // time when the latest `packetsLost` metric was calculated.
+      this.audioMetricsHistory.push({
+        timestampMs: receiverReportReceptionTimestampMs,
+        totalPacketsSent: currentTotalPacketsSent,
+        totalPacketsLost: currentTotalPacketsLost,
+      });
     }
-
-    this.audioMetricsHistory.push({
-      timestampMs: currentTimestampMs,
-      totalPacketsSent: currentTotalPacketsSent,
-      totalPacketsLost: currentTotalPacketsLost,
-    });
 
     // Remove the oldest metric report from our list
     if (this.audioMetricsHistory.length > this.maxAudioMetricsHistory) {
@@ -772,8 +785,9 @@ export default class DefaultTransceiverController
     if (this.audioMetricsHistory.length < 2) {
       return 0;
     }
-    const currentTimestampMs: number = this.audioMetricsHistory[this.audioMetricsHistory.length - 1]
-      .timestampMs;
+    const latestReceiverReportTimestampMs: number = this.audioMetricsHistory[
+      this.audioMetricsHistory.length - 1
+    ].timestampMs;
     const currentTotalPacketsSent: number = this.audioMetricsHistory[
       this.audioMetricsHistory.length - 1
     ].totalPacketsSent;
@@ -782,17 +796,17 @@ export default class DefaultTransceiverController
     ].totalPacketsLost;
 
     // Iterate backwards in the metrics history, from the report immediately preceeding
-    // the latest one, until we find the first metric report that whose timestamp differs
+    // the latest one, until we find the first metric report whose timestamp differs
     // from the latest report by atleast timeWindowMs
     for (let i = this.audioMetricsHistory.length - 2; i >= 0; i--) {
-      if (currentTimestampMs - this.audioMetricsHistory[i].timestampMs >= timeWindowMs) {
+      if (
+        latestReceiverReportTimestampMs - this.audioMetricsHistory[i].timestampMs >=
+        timeWindowMs
+      ) {
         const lossDelta = currentTotalPacketsLost - this.audioMetricsHistory[i].totalPacketsLost;
         const sentDelta = currentTotalPacketsSent - this.audioMetricsHistory[i].totalPacketsSent;
-        let lossPercent = 100 * (lossDelta / sentDelta);
-        /* istanbul ignore if */
-        if (lossPercent < 0) lossPercent = 0;
-        /* istanbul ignore if */ else if (lossPercent > 100) lossPercent = 100;
-        return lossPercent;
+        const lossPercent = 100 * (lossDelta / sentDelta);
+        return Math.max(0, Math.min(lossPercent, 100));
       }
     }
     // If we are here, we don't have enough entries in history

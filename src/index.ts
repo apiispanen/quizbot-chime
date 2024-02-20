@@ -103,6 +103,7 @@ import DefaultTranscriptionController from './transcript/DefaultTranscriptionCon
 import DefaultUserAgentParser from './useragentparser/DefaultUserAgentParser';
 import DefaultVideoCaptureAndEncodeParameter from './videocaptureandencodeparameter/DefaultVideoCaptureAndEncodeParameter';
 import DefaultVideoFrameProcessorPipeline from './videoframeprocessor/DefaultVideoFrameProcessorPipeline';
+import DefaultVideoFrameProcessorTimer from './videoframeprocessor/DefaultVideoFrameProcessorTimer';
 import DefaultVideoStreamIdSet from './videostreamidset/DefaultVideoStreamIdSet';
 import DefaultVideoStreamIndex from './videostreamindex/DefaultVideoStreamIndex';
 import DefaultVideoTile from './videotile/DefaultVideoTile';
@@ -156,6 +157,7 @@ import MediaStreamBroker from './mediastreambroker/MediaStreamBroker';
 import MediaStreamBrokerObserver from './mediastreambrokerobserver/MediaStreamBrokerObserver';
 import MeetingEventsClientConfiguration from './eventsclientconfiguration/MeetingEventsClientConfiguration';
 import MeetingEventsClientConfigurationAttributes from './eventsclientconfiguration/MeetingEventsClientConfigurationAttributes';
+import MeetingFeatures from './meetingsession/MeetingFeatures';
 import MeetingHistoryState from './eventcontroller/MeetingHistoryState';
 import MeetingReadinessChecker from './meetingreadinesschecker/MeetingReadinessChecker';
 import MeetingReadinessCheckerConfiguration from './meetingreadinesschecker/MeetingReadinessCheckerConfiguration';
@@ -294,6 +296,7 @@ import VideoFrameBuffer from './videoframeprocessor/VideoFrameBuffer';
 import VideoFrameProcessor from './videoframeprocessor/VideoFrameProcessor';
 import VideoFrameProcessorPipeline from './videoframeprocessor/VideoFrameProcessorPipeline';
 import VideoFrameProcessorPipelineObserver from './videoframeprocessor/VideoFrameProcessorPipelineObserver';
+import VideoFrameProcessorTimer from './videoframeprocessor/VideoFrameProcessorTimer';
 import VideoFxBlurStrength from './videofx/VideoFxBlurStrength';
 import VideoFxConfig from './videofx/VideoFxConfig';
 import VideoFxProcessor from './videofx/VideoFxProcessor';
@@ -304,6 +307,7 @@ import VideoPreference from './videodownlinkbandwidthpolicy/VideoPreference';
 import VideoPreferences from './videodownlinkbandwidthpolicy/VideoPreferences';
 import VideoPriorityBasedPolicy from './videodownlinkbandwidthpolicy/VideoPriorityBasedPolicy';
 import VideoPriorityBasedPolicyConfig from './videodownlinkbandwidthpolicy/VideoPriorityBasedPolicyConfig';
+import VideoQualityAdaptationPreference from './videodownlinkbandwidthpolicy/VideoQualityAdaptationPreference';
 import VideoQualitySettings from './devicecontroller/VideoQualitySettings';
 import VideoSource from './videosource/VideoSource';
 import VideoStreamDescription from './videostreamindex/VideoStreamDescription';
@@ -443,6 +447,7 @@ export {
   DefaultUserAgentParser,
   DefaultVideoCaptureAndEncodeParameter,
   DefaultVideoFrameProcessorPipeline,
+  DefaultVideoFrameProcessorTimer,
   DefaultVideoStreamIdSet,
   DefaultVideoStreamIndex,
   DefaultVideoTile,
@@ -499,6 +504,7 @@ export {
   MediaStreamBrokerObserver,
   MeetingEventsClientConfiguration,
   MeetingEventsClientConfigurationAttributes,
+  MeetingFeatures,
   MeetingHistoryState,
   MeetingReadinessChecker,
   MeetingReadinessCheckerConfiguration,
@@ -641,6 +647,7 @@ export {
   VideoFrameProcessor,
   VideoFrameProcessorPipeline,
   VideoFrameProcessorPipelineObserver,
+  VideoFrameProcessorTimer,
   VideoFxBlurStrength,
   VideoFxConfig,
   VideoFxProcessor,
@@ -651,6 +658,7 @@ export {
   VideoPreferences,
   VideoPriorityBasedPolicy,
   VideoPriorityBasedPolicyConfig,
+  VideoQualityAdaptationPreference,
   VideoQualitySettings,
   VideoSource,
   VideoStreamDescription,

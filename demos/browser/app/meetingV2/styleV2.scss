@@ -103,7 +103,7 @@ a:hover {
   }
 
   #tile-area > video-tile > video {
-    object-fit: cover;
+    object-fit: contain;
   }
 
   #tile-area > video-tile > div,
@@ -115,9 +115,9 @@ a:hover {
     display: none !important;
   }
 
-  // #meeting-container {
-  //   height: auto !important;
-  // }
+  #meeting-container {
+    max-height: 1000vh !important;
+  }
 
 
   // #tile-transcript-container {
@@ -530,7 +530,7 @@ body {
   justify-content: center;
   // background-color: #f5f5f5;
   // background-color: #1e1e1e;
-  background-color: black;
+  background: #1e1e1e;
 }
 
 // svg {
@@ -589,6 +589,7 @@ body {
 
 #flow-meeting {
   min-width: 320px;
+  height: calc(100%-100px);
 }
 
 
@@ -621,20 +622,20 @@ a.markdown:active {
 }
 
 .message-bubble-self {
-  color: #3f4149;
+  color: #1e1e1e;
 
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
   border-radius: 8px;
-  border: 1px solid #e6e6e6;
-  background: #fff;
+  background: #8e509c30;
   padding: 0.3rem;
   margin-left: 1rem;
   margin-right: 1rem;
   margin-top: 0rem;
   margin-bottom: 0.5rem;
+  word-break: break-all;
 }
 
 .message-bubble-user  {
@@ -652,6 +653,7 @@ a.markdown:active {
   margin-right: 1rem;
   margin-top: 0rem;
   margin-bottom: 0.5rem;
+  word-break: break-all;
 }
 
 .message-bubble-other {
@@ -675,7 +677,7 @@ a.markdown:active {
   margin-bottom: 0.25rem;
   color: #3f4149;
 
-  font-size: 18px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 700;
   line-height: 100%;
@@ -958,6 +960,7 @@ a.markdown:active {
   display: none;
   font-size: 18px;
   overflow: hidden;
+  background:#1e1e1e
 }
 
 .video-tile.active {
@@ -985,7 +988,7 @@ a.markdown:active {
   left: 0;
   height: 100%;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .video-tile-nameplate {
@@ -995,11 +998,15 @@ a.markdown:active {
   color: #fff;
   text-shadow: 0px 0px 5px black;
   letter-spacing: 0.1em;
+  background: #1e1e1e;
+    border-radius: 5px;
+    padding: 1px;
+    opacity: .8;
 }
 
 .button-video-tile-config {
+  display:none;
   position: absolute;
-  display: inline-block;
   top: 10px;
   right: 10px;
 }
@@ -1039,9 +1046,9 @@ a.markdown:active {
   padding: 1rem;
 }
 
-.video-tile.active:hover > .video-tile-attendee-id {
-  display: block;
-}
+// .video-tile.active:hover > .video-tile-attendee-id {
+//   display: block;
+// }
 
 .video-tile-pause-state {
   position: absolute;
@@ -1214,9 +1221,16 @@ opacity:0;
   text-decoration-color: red;
 }
 
+.box-label {
+  font-size: 10px;
+  color: white;
+  margin-bottom: 0px;
+  margin-top:0px;
+  padding: 1px;
+}
+
 #receive-message{
   padding-top: 5px;
-  margin-right: 5px;
   max-height: 55%;
   flex:none
 }
@@ -2142,8 +2156,7 @@ input[type='radio'] {
   line-height: 150%;
 }
 .send-message {
-  padding: 5px;
-  border-radius: 8px;
+  border-radius: 0.375rem;
   width:100%
 }
 

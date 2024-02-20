@@ -962,7 +962,10 @@
         style="flex: unset;gap: 10px; ">
         <div id="roster-message-container" class="flex-column h-100 animate__animated animate__slideInLeft" style="width: 20%;">
           <a href="https://app.larq.ai" id="back-button3"><p class="btn btn-primary px-3">Return to Dashboard</p></a>
-
+          <p class="box-label" style="
+          font-size: 10px;
+          color: white;
+      ">Attendees</p>
           <div class="bs-component scrollbar-new-design p-1" style="flex: 1 1 auto; overflow-y: auto;max-height:25%">
             <ul id="roster" class="list-group"></ul>
           </div>
@@ -1003,14 +1006,18 @@
             </ul>
           </div>
         </div>
-
+        <p class="box-label" style="
+        font-size: 10px;
+        color: white;
+    ">Chats</p>
           <div class="message d-flex flex-column pt-1" id="messages"
             style="flex: 1 1 auto; overflow: hidden; height: 80%;">
             <div class="list-group receive-message scrollbar-new-design my-2" id="receive-message" style="flex: 1 1 auto; overflow-y: auto;
             border: 1px solid rgba(0, 0, 0, 0.125); background-color: #fff"></div>
+            <p class="box-label">Send a message</p>
             <div class="input-group send-message" style="display:flex;flex:0 0 auto;margin-top:0.2rem">
-              <textarea class="form-control shadow-none scrollbar-new-design" style="height: 100px; padding: 15px;" id="send-message" rows="1"
-                placeholder="Type a message (markdown supported)"></textarea>
+              <textarea class="form-control shadow-none scrollbar-new-design" style="height: 75px; padding: 15px;" id="send-message" rows="1"
+                placeholder="Type a message"></textarea>
             </div>
           </div>
         </div>

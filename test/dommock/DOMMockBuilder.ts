@@ -647,9 +647,12 @@ export default class DOMMockBuilder {
       'Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Mobile/15E148 Safari/604.1';
     const SAMSUNG_INTERNET_USERAGENT =
       'Mozilla/5.0 (Linux; Android 11; Pixel 3a XL) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/13.0 Chrome/83.0.4103.106 Mobile Safari/537.36';
+    const CHROME_116_MAC_USER_AGENT =
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36';
 
     const USER_AGENTS = new Map<string, string>();
     USER_AGENTS.set('chrome', CHROME_USERAGENT);
+    USER_AGENTS.set('chrome116', CHROME_116_MAC_USER_AGENT);
     USER_AGENTS.set('firefox', FIREFOX_USERAGENT);
     USER_AGENTS.set('safari', SAFARI_USERAGENT);
     USER_AGENTS.set('safari12', SAFARI12_USERAGENT);
@@ -1230,6 +1233,7 @@ export default class DOMMockBuilder {
       }
     };
 
+    GlobalAny.Blob = DOMBlobMock;
     GlobalAny.matchMedia = function mockMatchMedia(_query: string): MediaQueryList {
       return new GlobalAny.MediaQueryList();
     };
@@ -1519,15 +1523,6 @@ export default class DOMMockBuilder {
       connect(_destinationParam: AudioParam, _output?: number): void {}
 
       disconnect(): void {}
-    };
-
-    GlobalAny.crypto = {
-      getRandomValues(_data: Uint32Array): Uint32Array {
-        return new Uint32Array([
-          Math.trunc(Math.random() * 2 ** 32),
-          Math.trunc(Math.random() * 2 ** 32),
-        ]);
-      },
     };
 
     GlobalAny.HTMLVideoElement = class MockHTMLVideoElement {
@@ -1840,6 +1835,5 @@ export default class DOMMockBuilder {
     delete GlobalAny.AudioBuffer;
     delete GlobalAny.MediaStreamAudioDestinationNode;
     delete GlobalAny.MediaStreamAudioSourceNode;
-    delete GlobalAny.crypto;
   }
 }

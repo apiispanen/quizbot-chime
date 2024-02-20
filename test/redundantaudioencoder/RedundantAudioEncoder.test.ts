@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as chai from 'chai';
+import * as sinon from 'sinon';
 
 import { NoOpDebugLogger } from '../../src';
 import RedundantAudioEncoder from '../../src/redundantaudioencoder/RedundantAudioEncoder';
@@ -392,6 +393,33 @@ describe('RedundantAudioEncoder', () => {
       expect(receiveReadable.locked).to.be.true;
       expect(receiveWritable.locked).to.be.true;
 
+      const passthroughSendReadable = new ReadableStream();
+      const passthroughSendWritable = new WritableStream();
+      const passthroughReceiveReadable = new ReadableStream();
+      const passthroughReceiveWritable = new WritableStream();
+
+      expect(passthroughSendReadable.locked).to.be.false;
+      expect(passthroughSendWritable.locked).to.be.false;
+      expect(passthroughReceiveReadable.locked).to.be.false;
+      expect(passthroughReceiveWritable.locked).to.be.false;
+
+      audioRedWorker.postMessage({
+        msgType: 'PassthroughTransform',
+        send: {
+          readable: passthroughSendReadable,
+          writable: passthroughSendWritable,
+        },
+        receive: {
+          readable: passthroughReceiveReadable,
+          writable: passthroughReceiveWritable,
+        },
+      });
+
+      expect(passthroughSendReadable.locked).to.be.true;
+      expect(passthroughSendWritable.locked).to.be.true;
+      expect(passthroughReceiveReadable.locked).to.be.true;
+      expect(passthroughReceiveWritable.locked).to.be.true;
+
       const redPayloadType = 63;
       let newRedPayloadType: number;
 
@@ -500,7 +528,7 @@ describe('RedundantAudioEncoder', () => {
     });
   });
 
-  describe('setupReceivedTransform', () => {
+  describe('setupReceiverTransform', () => {
     it('creates the transform pipe', () => {
       const readable: ReadableStream = new ReadableStream();
       const writable: WritableStream = new WritableStream();
@@ -554,16 +582,7 @@ describe('RedundantAudioEncoder', () => {
 
     beforeEach(() => {
       redPayloadType = encoder['redPayloadType'];
-
-      frame = {
-        data: new ArrayBuffer(0),
-        timestamp: 0,
-        // @ts-ignore
-        getMetadata: () => {
-          // @ts-ignore
-          return { payloadType: redPayloadType } as RTCEncodedAudioFrameMetadata;
-        },
-      };
+      frame = createRTCEncodedAudioFrame(0, redPayloadType, 0);
 
       controller = {
         desiredSize: 0,
@@ -571,6 +590,34 @@ describe('RedundantAudioEncoder', () => {
         error: () => {},
         terminate: () => {},
       };
+    });
+
+    it('enqueues audio payloads that are <= the size limit', () => {
+      frame = createRTCEncodedAudioFrame(0, undefined, 0);
+      const enqueueSpy = sinon.spy(controller, 'enqueue');
+
+      frame.data = new ArrayBuffer(500);
+      expect(enqueueSpy.calledOnce).to.be.false;
+      encoder['senderTransform'](frame, controller);
+      expect(enqueueSpy.calledOnce).to.be.true;
+      enqueueSpy.resetHistory();
+
+      frame.data = new ArrayBuffer(1000);
+      expect(enqueueSpy.calledOnce).to.be.false;
+      encoder['senderTransform'](frame, controller);
+      expect(enqueueSpy.calledOnce).to.be.true;
+      enqueueSpy.restore();
+    });
+
+    it('does not enqueue audio payloads that are > the size limit', () => {
+      frame = createRTCEncodedAudioFrame(0, undefined, 0);
+      const enqueueSpy = sinon.spy(controller, 'enqueue');
+
+      frame.data = new ArrayBuffer(1100);
+      expect(enqueueSpy.calledOnce).to.be.false;
+      encoder['senderTransform'](frame, controller);
+      expect(enqueueSpy.calledOnce).to.be.false;
+      enqueueSpy.restore();
     });
 
     it('forwards non-RED frames', () => {
@@ -638,15 +685,8 @@ describe('RedundantAudioEncoder', () => {
           0,
           importantPayload.byteLength
         );
-        frame = {
-          data: createRedPayload([header], [importantPayload]),
-          timestamp: packetizationTime * i,
-          // @ts-ignore
-          getMetadata: () => {
-            // @ts-ignore
-            return { payloadType: redPayloadType } as RTCEncodedAudioFrameMetadata;
-          },
-        };
+        frame = createRTCEncodedAudioFrame(packetizationTime * i, redPayloadType, 0);
+        frame.data = createRedPayload([header], [importantPayload]);
 
         encoder['senderTransform'](frame, controller);
         if (i < 2) {
@@ -674,15 +714,8 @@ describe('RedundantAudioEncoder', () => {
           0,
           importantPayload.byteLength
         );
-        frame = {
-          data: createRedPayload([header], [importantPayload]),
-          timestamp: packetizationTime * i,
-          // @ts-ignore
-          getMetadata: () => {
-            // @ts-ignore
-            return { payloadType: redPayloadType } as RTCEncodedAudioFrameMetadata;
-          },
-        };
+        frame = createRTCEncodedAudioFrame(packetizationTime * i, redPayloadType, 0);
+        frame.data = createRedPayload([header], [importantPayload]);
 
         encoder['senderTransform'](frame, controller);
         expect(frame.data.byteLength).to.equal(primaryHeaderLenBytes + importantPayload.byteLength);
@@ -712,6 +745,34 @@ describe('RedundantAudioEncoder', () => {
         error: () => {},
         terminate: () => {},
       };
+    });
+
+    it('enqueues audio payloads that are <= the size limit', () => {
+      const frame = createRTCEncodedAudioFrame(0, undefined, 0);
+      const enqueueSpy = sinon.spy(controller, 'enqueue');
+
+      frame.data = new ArrayBuffer(500);
+      expect(enqueueSpy.calledOnce).to.be.false;
+      encoder['senderTransform'](frame, controller);
+      expect(enqueueSpy.calledOnce).to.be.true;
+      enqueueSpy.resetHistory();
+
+      frame.data = new ArrayBuffer(1000);
+      expect(enqueueSpy.calledOnce).to.be.false;
+      encoder['senderTransform'](frame, controller);
+      expect(enqueueSpy.calledOnce).to.be.true;
+      enqueueSpy.restore();
+    });
+
+    it('does not enqueue audio payloads that are > the size limit', () => {
+      const frame = createRTCEncodedAudioFrame(0, undefined, 0);
+      const enqueueSpy = sinon.spy(controller, 'enqueue');
+
+      frame.data = new ArrayBuffer(1100);
+      expect(enqueueSpy.calledOnce).to.be.false;
+      encoder['senderTransform'](frame, controller);
+      expect(enqueueSpy.calledOnce).to.be.false;
+      enqueueSpy.restore();
     });
 
     it('forwards non-RED frames', () => {
@@ -1236,7 +1297,7 @@ describe('RedundantAudioEncoder', () => {
       expect(encoder['encode'](0, new ArrayBuffer(encoder['maxRedPacketSizeBytes']))).to.equal(
         null
       );
-      expect(encoder['encode'](0, new ArrayBuffer(encoder['maxAudioRtpPacketSizeBytes']))).to.equal(
+      expect(encoder['encode'](0, new ArrayBuffer(encoder['maxAudioPayloadSizeBytes']))).to.equal(
         null
       );
     });
@@ -1307,7 +1368,7 @@ describe('RedundantAudioEncoder', () => {
       // The RED payload should not include the previously added important payload as that would cause the packet size
       // limit to be exceeded.
       const payloadLenBytes =
-        encoder['maxAudioRtpPacketSizeBytes'] - encoder['redLastHeaderSizeBytes'];
+        encoder['maxAudioPayloadSizeBytes'] - encoder['redLastHeaderSizeBytes'];
       expect(
         encoder['encode'](packetizationTime * 2, new ArrayBuffer(payloadLenBytes)).byteLength
       ).to.equal(encoder['redLastHeaderSizeBytes'] + payloadLenBytes);

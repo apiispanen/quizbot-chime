@@ -90,11 +90,10 @@
 				</a>
 				<ul>
 					<li><a href="https://aws.amazon.com/chime/chime-sdk/">Amazon Chime SDK Overview</a></li>
-					<li><a href="https://aws.amazon.com/chime/pricing/#Chime_SDK_">Pricing</a></li>
+					<li><a href="https://aws.amazon.com/chime/chime-sdk/pricing/">Pricing</a></li>
 					<li><a href="https://docs.aws.amazon.com/chime-sdk/latest/dg/meetings-sdk.html#mtg-browsers">Supported Browsers</a></li>
 					<li><a href="guides/20_Builders_Journey.md">Getting Started Guides</a></li>
 					<li><a href="https://docs.aws.amazon.com/chime-sdk/latest/dg/meetings-sdk.html">Developer Guide</a></li>
-					<li><a href="https://docs.aws.amazon.com/chime-sdk/latest/dg/build-lambdas-for-sip-sdk.html">PSTN Audio Developer Guide</a></li>
 					<li><a href="https://docs.aws.amazon.com/chime-sdk/latest/APIReference/welcome.html">Control Plane API Reference</a></li>
 					<li><a href="https://aws.github.io/amazon-chime-sdk-js/modules/faqs.html">Frequently Asked Questions (FAQ)</a></li>
 				</ul>
@@ -123,7 +122,6 @@
 					<li><a href="https://aws.amazon.com/blogs/business-productivity/capture-amazon-chime-sdk-meetings-using-media-capture-pipelines/">Capturing Amazon Chime SDK Meeting Content</a></li>
 					<li><a href="https://aws.amazon.com/blogs/business-productivity/monitoring-and-troubleshooting-with-amazon-chime-sdk-meeting-events/">Monitoring and Troubleshooting With Amazon Chime SDK Meeting Events</a></li>
 					<li><a href="https://aws.amazon.com/blogs/business-productivity/build-meeting-features-into-your-amazon-chime-sdk-messaging-application/">Build Meetings features into your Amazon Chime SDK messaging application</a></li>
-					<li><a href="https://aws.amazon.com/blogs/business-productivity/integrating-pstn-callers-with-amazon-chime-sdk-meetings/">Integrating PSTN callers with Amazon Chime SDK meetings</a></li>
 					<li><a href="https://aws.amazon.com/blogs/business-productivity/using-the-amazon-chime-sdk-to-create-automated-outbound-call-notifications/">Using the Amazon Chime SDK to Create Automated Outbound Call Notifications</a></li>
 					<li><a href="https://aws.amazon.com/blogs/business-productivity/building-voice-menus-and-call-routing-with-the-amazon-chime-sdk/">Building voice menus and call routing with the Amazon Chime SDK</a></li>
 				</ul>
@@ -184,7 +182,6 @@
 				</a>
 				<p>The following developer guides cover the Amazon Chime SDK more broadly.</p>
 				<ul>
-					<li><a href="https://docs.aws.amazon.com/chime-sdk/latest/dg/build-lambdas-for-sip-sdk.html">PSTN Audio developer guide</a></li>
 					<li><a href="https://docs.aws.amazon.com/chime-sdk/latest/dg/using-the-messaging-sdk.html">Messaging developer guide</a></li>
 					<li><a href="https://docs.aws.amazon.com/chime-sdk/latest/dg/media-pipelines.html">Media Pipelines developer guide</a></li>
 				</ul>
@@ -233,7 +230,7 @@
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h2>Installation</h2>
 				</a>
-				<p>Make sure you have Node.js version 12 or higher. Node 14 is recommended and supported.</p>
+				<p>Make sure you have Node.js version 18 or higher. Node 20 is recommended and supported.</p>
 				<p>To add the Amazon Chime SDK for JavaScript into an existing application,
 				install the package directly from npm:</p>
 				<pre><code><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">install</span><span style="color: #000000"> </span><span style="color: #001080">amazon</span><span style="color: #000000">-</span><span style="color: #001080">chime</span><span style="color: #000000">-</span><span style="color: #001080">sdk</span><span style="color: #000000">-</span><span style="color: #001080">js</span><span style="color: #000000"> --</span><span style="color: #001080">save</span>
@@ -1166,7 +1163,7 @@
 				<pre><code class="language-js"><span style="color: #001080">meetingSession</span><span style="color: #000000">.</span><span style="color: #001080">audioVideo</span><span style="color: #000000">.</span><span style="color: #795E26">setContentAudioProfile</span><span style="color: #000000">(</span><span style="color: #001080">AudioProfile</span><span style="color: #000000">.</span><span style="color: #795E26">fullbandMusicStereo</span><span style="color: #000000">());</span>
 </code></pre>
 				<p><strong>Use case 35.</strong> Redundant Audio</p>
-				<p>Starting from version 3.18.1, the SDK starts sending redundant audio data to our servers on detecting packet loss
+				<p>Starting from version 3.18.2, the SDK starts sending redundant audio data to our servers on detecting packet loss
 					to help reduce its effect on audio quality. Redundant audio packets are only sent out for packets containing active
 					audio, ie, speech or music. This may increase the bandwidth consumed by audio to up to 3 times the normal amount
 					depending on the amount of packet loss detected. The SDK will automatically stop sending redundant data if it hasn&#39;t
@@ -1445,6 +1442,9 @@
 						<a href="enums/videologevent.html" class="tsd-kind-icon">Video<wbr>Log<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-enum">
+						<a href="enums/videoqualityadaptationpreference.html" class="tsd-kind-icon">Video<wbr>Quality<wbr>Adaptation<wbr>Preference</a>
+					</li>
+					<li class=" tsd-kind-enum">
 						<a href="enums/websocketreadystate.html" class="tsd-kind-icon">Web<wbr>Socket<wbr>Ready<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -1613,6 +1613,9 @@
 						<a href="classes/defaultvideoframeprocessorpipeline.html" class="tsd-kind-icon">Default<wbr>Video<wbr>Frame<wbr>Processor<wbr>Pipeline</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/defaultvideoframeprocessortimer.html" class="tsd-kind-icon">Default<wbr>Video<wbr>Frame<wbr>Processor<wbr>Timer</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/defaultvideostreamidset.html" class="tsd-kind-icon">Default<wbr>Video<wbr>Stream<wbr>IdSet</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -1692,6 +1695,9 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/meetingeventsclientconfiguration.html" class="tsd-kind-icon">Meeting<wbr>Events<wbr>Client<wbr>Configuration</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/meetingfeatures.html" class="tsd-kind-icon">Meeting<wbr>Features</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/meetingreadinesscheckerconfiguration.html" class="tsd-kind-icon">Meeting<wbr>Readiness<wbr>Checker<wbr>Configuration</a>
@@ -1815,9 +1821,6 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/receiveremotevideopauseresumetask.html" class="tsd-kind-icon">Receive<wbr>Remote<wbr>Video<wbr>Pause<wbr>Resume<wbr>Task</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/receiveturncredentialstask.html" class="tsd-kind-icon">ReceiveTURNCredentials<wbr>Task</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/receivevideoinputtask.html" class="tsd-kind-icon">Receive<wbr>Video<wbr>Input<wbr>Task</a>
@@ -2271,6 +2274,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/videoframeprocessorpipelineobserver.html" class="tsd-kind-icon">Video<wbr>Frame<wbr>Processor<wbr>Pipeline<wbr>Observer</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/videoframeprocessortimer.html" class="tsd-kind-icon">Video<wbr>Frame<wbr>Processor<wbr>Timer</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/videofxconfig.html" class="tsd-kind-icon">Video<wbr>FxConfig</a>
