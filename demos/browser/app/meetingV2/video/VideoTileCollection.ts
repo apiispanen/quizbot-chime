@@ -272,7 +272,7 @@ export default class VideoTileCollection implements AudioVideoObserver {
             `video-${i} changed to portrait mode resolution ${videoElem.videoWidth}x${videoElem.videoHeight}`
           );
         } else {
-          videoElem.style.objectFit = 'cover';
+          videoElem.style.objectFit = 'contain';
         }
       };
     }

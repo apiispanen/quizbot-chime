@@ -103,7 +103,7 @@ a:hover {
   }
 
   #tile-area > video-tile > video {
-    object-fit: contain;
+    object-fit: contain !important;
   }
 
   #tile-area > video-tile > div,
@@ -513,7 +513,7 @@ a:hover {
 }
 html {
   height: 100%;
-  background-color: black;
+  background-color: #1e1e1e;
 }
 
 body {
@@ -589,7 +589,7 @@ body {
 
 #flow-meeting {
   min-width: 320px;
-  height: calc(100%-100px);
+  height: calc(100% - 100px);
 }
 
 
@@ -1000,7 +1000,7 @@ a.markdown:active {
   letter-spacing: 0.1em;
   background: #1e1e1e;
     border-radius: 5px;
-    padding: 1px;
+    padding: 3px;
     opacity: .8;
 }
 
@@ -1170,7 +1170,7 @@ opacity:0;
   display: none;
   position: fixed;
   z-index: 1;
-  padding-top: 100px;
+  padding-top: 50px;
   left: 0;
   top: 0;
   width: 100%;
@@ -2552,7 +2552,7 @@ input[type="Submit"]:hover{
       min-width: 350px;
       position: relative;
       right: 0px;
-      padding-bottom: 12vh;
+      padding-bottom: 5vh;
       top: -10px;      
     }
 

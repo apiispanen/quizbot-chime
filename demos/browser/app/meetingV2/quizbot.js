@@ -8,14 +8,14 @@ import * as bootstrap from 'bootstrap';
 document.addEventListener('DOMContentLoaded', function() {
 // BEGIN DOMCONTENTLOADED
 
-// check the following inputs by ID: join-muted, simulcast, allow-attendee-capabilities
-for (let element of ['join-muted', 'simulcast', 'allow-attendee-capabilities']) {
-    let input = document.getElementById(element);
-    if (input) {
-            let value = this.checked;
-            window.demoMeetingAppInstance.updateMeetingSettings({ [element]: value });
-    }
-}
+// // check the following inputs by ID: join-muted, simulcast, allow-attendee-capabilities
+// for (let element of ['join-muted', 'simulcast', 'allow-attendee-capabilities']) {
+//     let input = document.getElementById(element);
+//     if (input) {
+//             let value = this.checked;
+//             window.demoMeetingAppInstance.updateMeetingSettings({ [element]: value });
+//     }
+// }
 
 
 console.log("quizbot.js loaded");
@@ -292,6 +292,7 @@ const x = document.getElementById('myDIV');
 const quizButton = document.getElementById('quiz-button');
 
 quizButton.addEventListener('click', function() {
+    console.log("quiz-button clicked");
     if (window.demoMeetingAppInstance.isHost()) {
         console.log("You're the host, you can create Quiz!");
         if (x){

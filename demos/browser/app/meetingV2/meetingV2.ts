@@ -544,17 +544,6 @@ export class DemoMeetingApp
   }
 }
 
-  // Method to determine if the current user is the host
-  isHost(): boolean {
-    if (localStorage.getItem("userId") === localStorage.getItem("host_id")){
-      this.allowAttendeeCapabilities = true;
-      return true;
-
-    } else {
-      this.allowAttendeeCapabilities = false;
-      return false;
-    }
-  }
 
 
 
@@ -572,6 +561,17 @@ export class DemoMeetingApp
       this.log('Only the host can remove attendees');
     }
   }
+    // Method to determine if the current user is the host
+    isHost(): boolean {
+      if (localStorage.getItem("userId") === localStorage.getItem("host_id")){
+        this.allowAttendeeCapabilities = true;
+        return true;
+  
+      } else {
+        this.allowAttendeeCapabilities = false;
+        return false;
+      }
+    }
   
   
   // Method to pass host privileges to another attendee
@@ -993,10 +993,10 @@ export class DemoMeetingApp
     buttonTranscription.addEventListener('click', _e => {
       var x = document.getElementById('transcript-container');
       if (x.style.display === 'none') {
-        // x.style.display = 'block';
+        x.style.display = 'block';
         this.toggleButton('button-live-transcription');
       } else {
-        // x.style.display = 'none';
+        x.style.display = 'none';
         this.toggleButton('button-live-transcription');
       }
     });
@@ -1234,6 +1234,7 @@ updateBodyBackgroundColor();
     // *****************************
     // *****************************
     // BEGIN QUIZBOT
+    console.log('BEGIN QUIZBOT');
     
     const submitQuizBot = document.getElementById('submit-quiz') as HTMLButtonElement;
     submitQuizBot.addEventListener('click', async (): Promise<void> => {
@@ -3311,8 +3312,8 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
   }
 
   metricsDidReceive(clientMetricReport: ClientMetricReport): void {
-    this.logAudioStreamPPS(clientMetricReport);
-    this.logRedRecoveryPercent(clientMetricReport);
+    // this.logAudioStreamPPS(clientMetricReport);
+    // this.logRedRecoveryPercent(clientMetricReport);
     const metricReport = clientMetricReport.getObservableMetrics();
     this.videoMetricReport = clientMetricReport.getObservableVideoMetrics();
     this.displayEstimatedUplinkBandwidth(metricReport.availableOutgoingBitrate);
@@ -5595,19 +5596,20 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
     ) as HTMLInputElement).value;
 
     const chosenLogLevel = (document.getElementById('logLevelSelect') as HTMLSelectElement).value;
+    
     switch (chosenLogLevel) {
-      case 'info':
-        this.logLevel = LogLevel.INFO;
-        break;
-      case 'debug':
-        this.logLevel = LogLevel.DEBUG;
-        break;
-      case 'warn':
-        this.logLevel = LogLevel.WARN;
-        break;
-      case 'error':
-        this.logLevel = LogLevel.ERROR;
-        break;
+      // case 'info':
+      //   this.logLevel = LogLevel.INFO;
+      //   break;
+      // case 'debug':
+      //   this.logLevel = LogLevel.DEBUG;
+      //   break;
+      // case 'warn':
+      //   this.logLevel = LogLevel.WARN;
+      //   break;
+      // case 'error':
+      //   this.logLevel = LogLevel.ERROR;
+      //   break;
       default:
         this.logLevel = LogLevel.OFF;
         break;

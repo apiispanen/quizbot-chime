@@ -48,22 +48,29 @@
 
     <img src="https://storage.googleapis.com/ringledingle/tests/Original%20on%20Transparent.png" class="w-100">
         </h1>
-        <form id="loginForm" class="animate__animated animate__fadeIn"><div class="txt_field p-1 color-white"><input name="username" required="" style="
-          color: white;
-      "> <span class="text-white"></span> <label class="text-white">Username</label></div><div class="txt_field p-1 text-white"><input type="password" name="password" required="" class="text-white"> <span></span> <label class="text-white">Password</label></div><div class="pass" id="incorrect-pass" style="display:none"><label>User or Password is incorrect. Try again.</label></div><div class="pass"><a href="mailto:info@teachserv.com" style="text-decoration: none;">Forgot Password?</a></div><input name="submit" type="Submit" value="Login" style="
-          font-weight: 600;
-          font-size: 19px;
-      ">
-      <div class="signup_link" id="go-to-register">Not a Member ? <b id="button-signup">Signup</b><br>Or <a href="https://teachserv.com/wp-login.php">Sign in with Teachserv</a>
-        <a href="#" id="join-view-only" class="form-check-input" style="
-          background: none;
-          padding: 5px;
-          font-weight: 800;
-          border: none;
-          display:none;
-      "><label for="join-view-only" class="form-check-label">Join Meeting As Guest</label></a></div>
-      
-    </form>
+        <form id="loginForm" class="animate__animated animate__fadeIn">
+          <div class="txt_field p-1 color-white">
+            <input name="username" required="" style="color: black;background-color: white;" placeholder="Username">
+            <span class="text-white"></span>
+          </div>
+          <div class="txt_field p-1 text-white">
+            <input type="password" name="password" required="" style="color: black;background-color: white;" class="text-black" placeholder="Password">
+            <span></span>
+          </div>
+          <div class="pass" id="incorrect-pass" style="display:none">
+            <label>User or Password is incorrect. Try again.</label>
+          </div>
+          <div class="pass">
+            <a href="mailto:info@teachserv.com" style="text-decoration: none;">Forgot Password?</a>
+          </div>
+          <input name="submit" type="Submit" value="Login" style="font-weight: 600; font-size: 19px;">
+          <div class="signup_link" id="go-to-register">
+            Not a Member ? <b id="button-signup">Signup</b><br>Or <a href="https://teachserv.com/wp-login.php">Sign in with Teachserv</a>
+            <a href="#" id="join-view-only" class="form-check-input" style="background: none; padding: 5px; font-weight: 800; border: none; display:none;">
+              <label for="join-view-only" class="form-check-label">Join Meeting As Guest</label>
+            </a>
+          </div>
+        </form>
 
           <!-- Registration Page -->
 <div class="register container animate__animated animate__fadeIn" id="register-container" style="display:none">
@@ -2078,11 +2085,11 @@ aria-hidden="true">
           <fieldset>
             <div class="form-floating mb-3" style="text-align: left;">
               <select name="logLevel" class="form-select" id="logLevelSelect">
+                <option value="off">Off</option>
                 <option value="debug">Debug</option>
                 <option value="info">Info</option>
                 <option value="warn">Warn</option>
                 <option value="error">Error</option>
-                <option value="off">Off</option>
               </select>
               <label for="logLevel" style="text-align: left;">Log Level:</label>
             </div>
