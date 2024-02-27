@@ -1238,7 +1238,16 @@ updateBodyBackgroundColor();
     
     const submitQuizBot = document.getElementById('submit-quiz') as HTMLButtonElement;
     submitQuizBot.addEventListener('click', async (): Promise<void> => {
-      
+    // Add a flag to track if a request is pending
+    let isRequestPending = false;
+
+    // Inside your function/method where the request is sent
+    if (isRequestPending) {
+      console.log('Request is already pending.');
+      return;
+    }
+    isRequestPending = true;
+
 
       if (this.isHost()){
         console.log("You're are host, you can create Quiz!");
@@ -1321,7 +1330,7 @@ updateBodyBackgroundColor();
           generationError.classList.remove('d-none');
           document.getElementById("quiz_question").style.display = 'none';
           // now make the error message the error message from the server
-          generationError.innerText = 'There was an error generating the quiz. Please try again.';
+          generationError.innerText = 'There was an error generating the quiz. No response from the server, please try again.';
           create_quiz.style.display = 'block';
           return;
         }
@@ -1473,40 +1482,7 @@ updateBodyBackgroundColor();
                                 optionLabel.classList.add('editing');
                                 // optionLabel.classList.add('form-control');
                                 this.focus();
-                                // const originalText = answerLabel.value;
-                
-                                // answerLabel.addEventListener('blur', () => {
-                                //   let newText = this.value.trim();
-                                //   answerLabel.contentEditable = 'false';
-                                //     optionLabel.classList.remove('editing');
-                                //     // optionLabel.classList.remove('form-control');
-                    
-                                //         if (newText === '') {
-                                //           answerLabel.value = answer;
-                                //         }
-                                        
-                                      
-                                //         if (newText !== originalText) {
-                                //           // Update the answer label in the DOM
-                                //           answerLabel.value = newText;
-                                          
-                                //       }
-                                //       if (optionInput.checked) {
-                                //         // If this option is checked, update the correct answer
-                                //         question.correct_answer = newText;
-                                //         quizJson.questions[index].correct_answer = newText;
-
-                                //            } else {
-                                //         // Update a wrong answer
-                                //         question.wrong_answers[ansIndex - 1] = newText;
-                                //         quizJson.questions[index].wrong_answers[ansIndex - 1] = newText;
-
-                                //           }
-                                                          
-                                //         localStorage.setItem('quizJson', JSON.stringify(quizJson));
-                                //         console.log('quizJson in localstorage:', quizJson);
-  
-                          // }, { once: true }); // Ensure the blur event only fires once per editing session
+      
                           answerLabel.addEventListener('blur', function () {
                             let newText = this.value.trim();
                             if (newText !== answer) {
@@ -1583,6 +1559,9 @@ updateBodyBackgroundColor();
           create_quiz.style.display = 'block';
   
   
+        } finally {
+          // Reset the request pending flag
+          isRequestPending = false;
         }
 
 
