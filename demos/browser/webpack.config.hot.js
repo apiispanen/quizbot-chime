@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * This file is a fork of webpack.config.js. 
+ * This file is a fork of webpack.config.js.
  * My apologies. Please make changes in both places if applicable.
- * 
+ *
  * It's a fork because they need separate dev/source-map properties so that we can test CSP.
- * 
+ *
  * TODO: use tooling to share a base config.
  */
 
@@ -25,9 +25,9 @@ module.exports = env => {
     devServer: {
       hot: true,
       devMiddleware: {
-        index: `${app}.html`
+        index: `${app}.html`,
       },
-      onListening: (server) => {
+      onListening: server => {
         // Just so that the code in server.js isn't confused about
         // which app finally made it through the gauntlet.
         process.env.npm_config_app = app;
@@ -48,7 +48,7 @@ module.exports = env => {
         '/update_attendee_capabilities': 'http://127.0.0.1:8081',
         '/batch_update_attendee_capabilities_except': 'http://127.0.0.1:8081',
         '/get_attendee': 'http://127.0.0.1:8081',
-      }
+      },
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -59,8 +59,9 @@ module.exports = env => {
       }),
       new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [new RegExp(`${app}`)]),
       new webpack.EnvironmentPlugin({
-        IS_LOCAL: process.env.npm_config_is_local === 'true' ? 'true' : 'false'
-      })
+        IS_LOCAL: process.env.npm_config_is_local === 'true' ? 'true' : 'false',
+      }),
+      new webpack.HotModuleReplacementPlugin(),
     ],
     entry: [`./app/${app}/${app}.ts`],
     resolve: {
@@ -77,29 +78,32 @@ module.exports = env => {
       rules: [
         {
           test: /\.(svg)$/,
-          type: 'asset/source'
+          type: 'asset/source',
         },
         {
           test: /\.(scss)$/,
-          use: [{
-            loader: 'style-loader',
-            options: {
-              insert: 'head',
+          use: [
+            {
+              loader: 'style-loader',
+              options: {
+                insert: 'head',
+              },
             },
-          }, {
-            loader: 'css-loader',
-          }, {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                plugins: [
-                  "autoprefixer"
-                ]
-              }
+            {
+              loader: 'css-loader',
             },
-          }, {
-            loader: 'sass-loader',
-          }]
+            {
+              loader: 'postcss-loader',
+              options: {
+                postcssOptions: {
+                  plugins: ['autoprefixer'],
+                },
+              },
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
         },
         {
           test: /\.tsx?$/,
