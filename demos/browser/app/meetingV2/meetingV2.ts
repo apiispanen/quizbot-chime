@@ -4587,7 +4587,7 @@ export class DemoMeetingApp
 
   async populateVideoInputList(): Promise<void> {
     const genericName = 'Camera';
-    const additionalDevices = ['None', 'Blue', 'SMPTE Color Bars'];
+    const additionalDevices = [] as string[];
     this.populateDeviceList(
       'video-input',
       genericName,
