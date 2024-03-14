@@ -49,6 +49,9 @@ module.exports = env => {
         '/batch_update_attendee_capabilities_except': 'http://127.0.0.1:8081',
         '/get_attendee': 'http://127.0.0.1:8081',
       },
+      headers: {
+        'Cache-Control': 'no-store',
+      },
     },
     plugins: [
       new HtmlWebpackPlugin({

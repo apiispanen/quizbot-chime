@@ -4297,7 +4297,7 @@ export class DemoMeetingApp
       });
     }
     if (additionalOptions.length) {
-      this.createDropdownMenuItem(menu, '──────────', () => {}).classList.add('text-center');
+      //this.createDropdownMenuItem(menu, '──────────', () => {}).classList.add('text-center');
       for (const additionalOption of additionalOptions) {
         this.createDropdownMenuItem(
           menu,
@@ -4310,7 +4310,7 @@ export class DemoMeetingApp
       }
     }
     if (additionalToggles?.length) {
-      this.createDropdownMenuItem(menu, '──────────', () => {}).classList.add('text-center');
+      //this.createDropdownMenuItem(menu, '──────────', () => {}).classList.add('text-center');
       for (const { name, oncreate, action } of additionalToggles) {
         const id = `toggle-${elementId}-${name.replace(/\s/g, '-')}`;
         const elem = this.createDropdownMenuItem(menu, name, action, id);
@@ -4443,21 +4443,15 @@ export class DemoMeetingApp
 
   async populateAudioInputList(): Promise<void> {
     const genericName = 'Microphone';
-    let additionalDevices = [
-      'None',
-      '440 Hz',
-      'Prerecorded Speech',
-      'Prerecorded Speech Loop (Mono)',
-      'Echo',
-    ];
-    const additionalStereoTestDevices = ['L-500Hz R-1000Hz', 'Prerecorded Speech Loop (Stereo)'];
+    let additionalDevices = [] as string[];
+    const additionalStereoTestDevices = [] as string[];
     const additionalToggles = [];
 
-    if (!this.defaultBrowserBehavior.hasFirefoxWebRTC()) {
-      // We don't add this in Firefox because there is no known mechanism, using MediaStream or WebAudio APIs,
-      // to *not* generate audio in Firefox. By default, everything generates silent audio packets in Firefox.
-      additionalDevices.push('No Audio');
-    }
+    // if (!this.defaultBrowserBehavior.hasFirefoxWebRTC()) {
+    //   // We don't add this in Firefox because there is no known mechanism, using MediaStream or WebAudio APIs,
+    //   // to *not* generate audio in Firefox. By default, everything generates silent audio packets in Firefox.
+    //   additionalDevices.push('No Audio');
+    // }
 
     // This can't work unless Web Audio is enabled.
     if (this.enableWebAudio && this.supportsVoiceFocus) {
