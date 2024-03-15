@@ -5187,37 +5187,42 @@ export class DemoMeetingApp
           'attendee-capabilities-modal-description'
         );
 
-        const audioSelectElement = document.getElementById(
-          'attendee-capabilities-modal-audio-select'
-        ) as HTMLSelectElement;
-        const videoSelectElement = document.getElementById(
-          'attendee-capabilities-modal-video-select'
-        ) as HTMLSelectElement;
-        const contentSelectElement = document.getElementById(
-          'attendee-capabilities-modal-content-select'
-        ) as HTMLSelectElement;
+        // const audioSelectElement = document.getElementById(
+        //   'attendee-capabilities-modal-audio-select'
+        // ) as HTMLSelectElement;
+        // const videoSelectElement = document.getElementById(
+        //   'attendee-capabilities-modal-video-select'
+        // ) as HTMLSelectElement;
+        // const contentSelectElement = document.getElementById(
+        //   'attendee-capabilities-modal-content-select'
+        // ) as HTMLSelectElement;
 
-        audioSelectElement.value = '';
-        videoSelectElement.value = '';
-        contentSelectElement.value = '';
+        // audioSelectElement.value = '';
+        // videoSelectElement.value = '';
+        // contentSelectElement.value = '';
 
-        audioSelectElement.disabled = true;
-        videoSelectElement.disabled = true;
-        contentSelectElement.disabled = true;
+        // audioSelectElement.disabled = true;
+        // videoSelectElement.disabled = true;
+        // contentSelectElement.disabled = true;
 
         // Clone the `selectedAttendeeSet` upon selecting the menu option to open a modal.
         // Note that the `selectedAttendeeSet` may change when API calls are made.
         const selectedAttendeeSet = new Set(this.roster.selectedAttendeeSet);
+        console.log('The selected attendee set is: ', selectedAttendeeSet);
 
         if (type === 'one-attendee') {
           const [selectedAttendee] = selectedAttendeeSet;
-          descriptionElement.innerHTML = `Update <b>${selectedAttendee.name}</b>'s attendee capabilities.`;
+          if (selectedAttendee.muted) {
+            descriptionElement.innerHTML = `Unmute <b>${selectedAttendee.name}</b>`;
+          } else {
+            descriptionElement.innerHTML = `Mute <b>${selectedAttendee.name}</b>`;
+          }
 
           // Load the selected attendee's capabilities.
-          const { Attendee } = await this.getAttendee(selectedAttendee.id);
-          audioSelectElement.value = Attendee.Capabilities.Audio;
-          videoSelectElement.value = Attendee.Capabilities.Video;
-          contentSelectElement.value = Attendee.Capabilities.Content;
+          //const { Attendee } = await this.getAttendee(selectedAttendee.id);
+          // audioSelectElement.value = Attendee.Capabilities.Audio;
+          // videoSelectElement.value = Attendee.Capabilities.Video;
+          // contentSelectElement.value = Attendee.Capabilities.Content;
         } else {
           if (this.roster.selectedAttendeeSet.size === 0) {
             descriptionElement.innerHTML = `Update the capabilities of all attendees.`;
@@ -5229,14 +5234,14 @@ export class DemoMeetingApp
               .join('')}</ul>`;
           }
 
-          audioSelectElement.value = 'SendReceive';
-          videoSelectElement.value = 'SendReceive';
-          contentSelectElement.value = 'SendReceive';
+          // audioSelectElement.value = 'SendReceive';
+          // videoSelectElement.value = 'SendReceive';
+          // contentSelectElement.value = 'SendReceive';
         }
 
-        audioSelectElement.disabled = false;
-        videoSelectElement.disabled = false;
-        contentSelectElement.disabled = false;
+        // audioSelectElement.disabled = false;
+        // videoSelectElement.disabled = false;
+        // contentSelectElement.disabled = false;
 
         const saveButton = document.getElementById(
           'attendee-capabilities-save-button'
@@ -5249,18 +5254,14 @@ export class DemoMeetingApp
           try {
             if (type === 'one-attendee') {
               const [selectedAttendee] = selectedAttendeeSet;
-              await this.updateAttendeeCapabilities(
-                selectedAttendee.id,
-                audioSelectElement.value,
-                videoSelectElement.value,
-                contentSelectElement.value
-              );
+              const { Attendee } = await this.getAttendee(selectedAttendee.id);
+              console.log('The Attendee is: ', Attendee);
+              await this.muteAttendee(Attendee);
             } else {
-              await this.updateAttendeeCapabilitiesExcept(
-                [...selectedAttendeeSet].map(attendee => attendee.id),
-                audioSelectElement.value,
-                videoSelectElement.value,
-                contentSelectElement.value
+              await Promise.all(
+                [...selectedAttendeeSet].map(async attendee => {
+                  await this.muteAttendee(attendee.id);
+                })
               );
             }
           } catch (error) {
