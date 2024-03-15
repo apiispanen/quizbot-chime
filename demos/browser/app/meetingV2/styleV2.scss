@@ -119,6 +119,20 @@ a:hover {
     max-height: 1000vh !important;
   }
 
+  #mobile-message {
+    display: none; // Ensures it's hidden by default
+    position: fixed;
+    top: 0; // Position at the top of the viewport
+    left: 0;
+    width: 100%; // Ensure it spans the full width
+    background-color: rgba(0, 0, 0, 0.7); // Semi-transparent dark background
+    color: white; // White text for contrast
+    text-align: center; // Center the text within the element
+    padding: 10px 0; // Padding to give some space around the text
+    box-sizing: border-box;
+    z-index: 1001; // Ensure it's above other elements
+  }
+
   // #tile-transcript-container {
   //   height: auto !important;
   // }

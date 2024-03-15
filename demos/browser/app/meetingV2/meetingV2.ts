@@ -6092,6 +6092,13 @@ function showForumQuestion(dataMessage: any, selfID: string, senderName: string)
 document.addEventListener('DOMContentLoaded', () => {
   // DREW REGISTRATION
 
+  var mobileMessage = document.getElementById('mobile-message');
+
+  if (window.innerWidth <= 768) {
+    // This assumes devices with width <= 768px are mobile devices
+    mobileMessage.style.display = 'block';
+  }
+
   const registerButton = document.getElementById('register-button') as HTMLButtonElement;
   const registerForm = document.getElementById('registerForm') as HTMLFormElement;
   const loginSpinner = document.getElementById('login-spinner') as HTMLElement;
