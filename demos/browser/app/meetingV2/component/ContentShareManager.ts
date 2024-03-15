@@ -27,10 +27,10 @@ export default class ContentShareManager implements ContentShareObserver {
     'https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.360p.vp9.webm';
   static SourceOptionElementIds = [
     'dropdown-item-content-share-screen-capture',
-    'dropdown-item-content-share-screen-test-video',
-    'dropdown-item-content-share-test-mono-audio-speech',
-    'dropdown-item-content-share-test-stereo-audio-speech',
-    'dropdown-item-content-share-test-stereo-audio-tone',
+    // 'dropdown-item-content-share-screen-test-video',
+    // 'dropdown-item-content-share-test-mono-audio-speech',
+    // 'dropdown-item-content-share-test-stereo-audio-speech',
+    // 'dropdown-item-content-share-test-stereo-audio-tone',
     'dropdown-item-content-share-file-item',
   ];
 
@@ -55,7 +55,7 @@ export default class ContentShareManager implements ContentShareObserver {
 
   async start(): Promise<void> {
     let activeSourceSelection: Element | undefined = undefined;
-    document.querySelectorAll('.content-share-source-option').forEach((element) => {
+    document.querySelectorAll('.content-share-source-option').forEach(element => {
       if (element.classList.contains('active')) {
         activeSourceSelection = element;
       }
@@ -74,7 +74,10 @@ export default class ContentShareManager implements ContentShareObserver {
             this.streamProvider = new ScreenShareMediaStreamProvider(this.frameRate || 15);
           } else {
             // Just use helper method
-            await this.audioVideo.startContentShareFromScreenCapture(undefined, this.frameRate || undefined);
+            await this.audioVideo.startContentShareFromScreenCapture(
+              undefined,
+              this.frameRate || undefined
+            );
           }
         } catch (e) {
           // `getUserMedia` can throw
@@ -112,13 +115,22 @@ export default class ContentShareManager implements ContentShareObserver {
       }
     }
 
-    if (this.enableCirculeCut && (await this.streamProvider.getMediaStream()).getVideoTracks().length !== 0) {
+    if (
+      this.enableCirculeCut &&
+      (await this.streamProvider.getMediaStream()).getVideoTracks().length !== 0
+    ) {
       const stages = [new CircularCut()];
       const videoTransformDevice = new DefaultVideoTransformDevice(this.logger, undefined, stages);
-      this.streamProvider = new VideoTransformDeviceMediaStreamProvider(this.streamProvider, videoTransformDevice);
+      this.streamProvider = new VideoTransformDeviceMediaStreamProvider(
+        this.streamProvider,
+        videoTransformDevice
+      );
     }
 
-    if (this.enableVolumeReduction && (await this.streamProvider.getMediaStream()).getAudioTracks().length !== 0) {
+    if (
+      this.enableVolumeReduction &&
+      (await this.streamProvider.getMediaStream()).getAudioTracks().length !== 0
+    ) {
       this.streamProvider = new AudioGainMediaStreamProvider(this.streamProvider, 0.1);
     }
 
@@ -141,7 +153,7 @@ export default class ContentShareManager implements ContentShareObserver {
 
   private initContentShareUI(): void {
     const buttonContentShare = document.getElementById('button-content-share');
-    buttonContentShare.addEventListener('click', (_e) => {
+    buttonContentShare.addEventListener('click', _e => {
       if (!this.started) {
         this.start();
       } else {
@@ -149,8 +161,10 @@ export default class ContentShareManager implements ContentShareObserver {
       }
     });
 
-    const buttonPauseContentShare = document.getElementById('dropdown-item-content-share-pause-resume');
-    buttonPauseContentShare.addEventListener('click', (_e) => {
+    const buttonPauseContentShare = document.getElementById(
+      'dropdown-item-content-share-pause-resume'
+    );
+    buttonPauseContentShare.addEventListener('click', _e => {
       if (!this.started) {
         this.logger.error('Content share cannot be paused if content share is not enabled');
         return;
@@ -169,7 +183,7 @@ export default class ContentShareManager implements ContentShareObserver {
     });
 
     for (const id of ContentShareManager.SourceOptionElementIds) {
-      document.getElementById(id).addEventListener('click', (event) => {
+      document.getElementById(id).addEventListener('click', event => {
         (event.target as HTMLElement).classList.add('active');
         for (const idToMaybeStrip of ContentShareManager.SourceOptionElementIds) {
           if (id === idToMaybeStrip) {
@@ -191,7 +205,7 @@ export default class ContentShareManager implements ContentShareObserver {
         }
       });
     }
-    document.getElementById('content-share-item').addEventListener('change', (_e) => {
+    document.getElementById('content-share-item').addEventListener('change', _e => {
       if (this.pendingLocalFileStart) {
         this.start();
         this.pendingLocalFileStart = false;
@@ -199,19 +213,27 @@ export default class ContentShareManager implements ContentShareObserver {
     });
 
     if (!this.usingStereoMusicAudioProfile) {
-      document.getElementById('dropdown-item-content-share-test-stereo-audio-speech').style.display = 'none';
-      document.getElementById('dropdown-item-content-share-test-stereo-audio-tone').style.display = 'none';
+      document.getElementById(
+        'dropdown-item-content-share-test-stereo-audio-speech'
+      ).style.display = 'none';
+      document.getElementById('dropdown-item-content-share-test-stereo-audio-tone').style.display =
+        'none';
     }
 
     document.getElementById('button-save-content-share-configs').addEventListener('click', () => {
-      this.frameRate = parseInt((document.getElementById('content-capture-frame-rate') as HTMLInputElement).value, 10);
+      this.frameRate = parseInt(
+        (document.getElementById('content-capture-frame-rate') as HTMLInputElement).value,
+        10
+      );
 
       const previousEnableVolumeReduction = this.enableVolumeReduction;
       const previousEnableCircularCut = this.enableCirculeCut;
       this.enableVolumeReduction = (document.getElementById(
         'content-enable-volume-reduction'
       ) as HTMLInputElement).checked;
-      this.enableCirculeCut = (document.getElementById('content-enable-circular-cut') as HTMLInputElement).checked;
+      this.enableCirculeCut = (document.getElementById(
+        'content-enable-circular-cut'
+      ) as HTMLInputElement).checked;
       if (
         previousEnableVolumeReduction !== this.enableVolumeReduction ||
         previousEnableCircularCut !== this.enableCirculeCut
@@ -225,27 +247,40 @@ export default class ContentShareManager implements ContentShareObserver {
         }
       }
 
-      const enableSimulcastForContentShare = (document.getElementById('content-enable-simulcast') as HTMLInputElement)
-        .checked;
+      const enableSimulcastForContentShare = (document.getElementById(
+        'content-enable-simulcast'
+      ) as HTMLInputElement).checked;
       if (enableSimulcastForContentShare) {
         const lowMaxBitratesKbps =
-          parseInt((document.getElementById('content-simulcast-low-max-bitratekbps') as HTMLInputElement).value) ||
-          undefined;
+          parseInt(
+            (document.getElementById('content-simulcast-low-max-bitratekbps') as HTMLInputElement)
+              .value
+          ) || undefined;
         const lowScaleFactor =
-          parseInt((document.getElementById('content-simulcast-low-scale-factor') as HTMLInputElement).value) ||
-          undefined;
+          parseInt(
+            (document.getElementById('content-simulcast-low-scale-factor') as HTMLInputElement)
+              .value
+          ) || undefined;
         const lowMaxFramerate =
-          parseInt((document.getElementById('content-simulcast-low-max-framerate') as HTMLInputElement).value) ||
-          undefined;
+          parseInt(
+            (document.getElementById('content-simulcast-low-max-framerate') as HTMLInputElement)
+              .value
+          ) || undefined;
         const highMaxBitratesKbps =
-          parseInt((document.getElementById('content-simulcast-high-max-bitratekbps') as HTMLInputElement).value) ||
-          undefined;
+          parseInt(
+            (document.getElementById('content-simulcast-high-max-bitratekbps') as HTMLInputElement)
+              .value
+          ) || undefined;
         const highScaleFactor =
-          parseInt((document.getElementById('content-simulcast-high-scale-factor') as HTMLInputElement).value) ||
-          undefined;
+          parseInt(
+            (document.getElementById('content-simulcast-high-scale-factor') as HTMLInputElement)
+              .value
+          ) || undefined;
         const highMaxFramerate =
-          parseInt((document.getElementById('content-simulcast-high-max-framerate') as HTMLInputElement).value) ||
-          undefined;
+          parseInt(
+            (document.getElementById('content-simulcast-high-max-framerate') as HTMLInputElement)
+              .value
+          ) || undefined;
         this.audioVideo.enableSimulcastForContentShare(true, {
           low: {
             maxBitrateKbps: lowMaxBitratesKbps,
@@ -266,7 +301,9 @@ export default class ContentShareManager implements ContentShareObserver {
 
   private updateContentShareUX(): void {
     this.logger.info(`Updating content share UX, started:${this.started} paused:${this.paused}`);
-    const contentSharePauseResumeElement = document.getElementById('dropdown-item-content-share-pause-resume');
+    const contentSharePauseResumeElement = document.getElementById(
+      'dropdown-item-content-share-pause-resume'
+    );
     contentSharePauseResumeElement.style.display = this.started ? 'block' : 'none';
     contentSharePauseResumeElement.innerHTML = `${this.paused ? 'Resume' : 'Pause'} Content Share`;
   }
