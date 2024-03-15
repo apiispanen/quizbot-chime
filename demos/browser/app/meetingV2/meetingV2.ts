@@ -1059,7 +1059,7 @@ export class DemoMeetingApp
     const buttonChat = document.getElementById('button-chat') as HTMLButtonElement | null;
     buttonChat?.addEventListener('click', _e => {
       const x = document.getElementById('roster-message-container');
-      if (x && (x.style.display === 'none' || x.classList.contains('d-none'))) {
+      if (x && (x.style.display === 'none' || x.classList.contains('d-none') || !x.style.display)) {
         x.classList.remove('d-none');
         x.classList.add('d-flex');
         x.style.display = 'block';
@@ -1169,7 +1169,9 @@ export class DemoMeetingApp
       console.log('button-participants');
 
       var x = document.getElementById('roster-message-container');
-      if (x.style.display === 'none' || x.classList.contains('d-none')) {
+      console.log('the styles are', x.style.display);
+      console.log('the class list are', x.classList);
+      if (x.style.display === 'none' || x.classList.contains('d-none') || !x.style.display) {
         // add d-hidden to hide the roster
         x.classList.remove('d-none');
         x.classList.add('d-flex');
