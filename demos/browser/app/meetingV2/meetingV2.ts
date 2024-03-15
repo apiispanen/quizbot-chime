@@ -111,7 +111,8 @@ let SHOULD_EARLY_CONNECT = (() => {
 })();
 
 let SHOULD_DIE_ON_FATALS = (() => {
-  const isLocal = document.location.host === '127.0.0.1:8080' || document.location.host === 'localhost:8080';
+  const isLocal =
+    document.location.host === '127.0.0.1:8080' || document.location.host === 'localhost:8080';
   const fatalYes = document.location.search.includes('fatal=1');
   const fatalNo = document.location.search.includes('fatal=0');
   return fatalYes || (isLocal && !fatalNo);
@@ -124,7 +125,6 @@ declare global {
   interface Window {
     webkitAudioContext: typeof AudioContext;
     demoMeetingAppInstance: DemoMeetingApp;
-
   }
 }
 
@@ -167,7 +167,7 @@ function getVoiceFocusSpec(joinInfo: any): VoiceFocusSpec {
     spec.name = es ? voiceFocusName('ns_es') : voiceFocusName('default');
   }
   return spec;
-};
+}
 
 const MAX_VOICE_FOCUS_COMPLEXITY: VoiceFocusModelComplexity | undefined = undefined;
 
@@ -228,7 +228,7 @@ const BACKGROUND_FILTER_V2_LIST: VideoFilterName[] = [
   'Background Replacement 2.0 - (Default)',
 ];
 
-const VIDEO_FILTERS: VideoFilterName[] = ['Emojify', 'NoOp', 'Resize (9/16)', 'CircularCut'];
+//const VIDEO_FILTERS: VideoFilterName[] = ['Emojify', 'NoOp', 'Resize (9/16)', 'CircularCut'];
 
 type ButtonState = 'on' | 'off' | 'disabled';
 
@@ -250,7 +250,7 @@ interface Toggle {
 }
 
 interface TranscriptSegment {
-  contentSpan: HTMLSpanElement,
+  contentSpan: HTMLSpanElement;
   attendee: Attendee;
   startTimeMs: number;
   endTimeMs: number;
@@ -282,18 +282,16 @@ interface QuizJSON {
   questions: QuizQuestion[];
   status: string;
   quiz_id: string;
-
 }
 
-
 interface QuizAttempt {
-  quiz_id: string
-  score: number
-  timestamp: string
-  user_id: string | null
+  quiz_id: string;
+  score: number;
+  timestamp: string;
+  user_id: string | null;
   // incorrect is a list of numbers
-  incorrect: number[]
-  correct: number[]
+  incorrect: number[];
+  correct: number[];
 }
 
 type Field = {
@@ -316,9 +314,8 @@ type Meeting = {
   users: number[];
   timestamp: string;
   duration: number;
-  meeting_name:string;
+  meeting_name: string;
 };
-
 
 export class DemoMeetingApp
   implements AudioVideoObserver, DeviceChangeObserver, ContentShareObserver, VideoDownlinkObserver {
@@ -330,7 +327,7 @@ export class DemoMeetingApp
     location.pathname.replace(/\/*$/, '/').replace('/v2', ''),
   ].join('');
 
-  // *************************** 
+  // ***************************
   // SEND FORUM MESSAGE FUNCTION
   sendForumMessage = (messageObject: any): void => {
     AsyncScheduler.nextTick(() => {
@@ -407,7 +404,6 @@ export class DemoMeetingApp
   // eslint-disable-next-line
   roster: Roster = new Roster();
 
-
   private static _instance: DemoMeetingApp;
 
   public static getInstance(): DemoMeetingApp {
@@ -416,8 +412,6 @@ export class DemoMeetingApp
     }
     return this._instance;
   }
-
-
 
   contentShare: ContentShareManager | undefined = undefined;
 
@@ -437,9 +431,8 @@ export class DemoMeetingApp
     'button-video-recording-drop': 'on',
     'button-record-self': 'on',
     'button-record-cloud': 'on',
-    'button-live-connector': 'off'
+    'button-live-connector': 'off',
   };
-
 
   isViewOnly = false;
 
@@ -454,7 +447,7 @@ export class DemoMeetingApp
 
   enableSimulcast = false;
   usePriorityBasedDownlinkPolicy = false;
-  videoPriorityBasedPolicyConfig = new VideoPriorityBasedPolicyConfig;
+  videoPriorityBasedPolicyConfig = new VideoPriorityBasedPolicyConfig();
   enablePin = false;
   echoReductionCapability = false;
   usingStereoMusicAudioProfile = false;
@@ -465,7 +458,7 @@ export class DemoMeetingApp
   voiceFocusIsActive = false;
 
   supportsBackgroundBlur = true;
-  supportsBackgroundReplacement = false; 
+  supportsBackgroundReplacement = false;
   supportsVideoFx = false;
 
   enableLiveTranscription = true;
@@ -484,7 +477,7 @@ export class DemoMeetingApp
   meetingSessionPOSTLogger: POSTLogger;
   meetingEventPOSTLogger: POSTLogger;
 
-  meetingHostId: string | null = null;  // Store the current host ID
+  meetingHostId: string | null = null; // Store the current host ID
 
   hasChromiumWebRTC: boolean = this.defaultBrowserBehavior.hasChromiumWebRTC();
 
@@ -519,34 +512,27 @@ export class DemoMeetingApp
       isEnabled: false,
       backgroundImageURL: null,
       defaultColor: 'black',
-    }
+    },
   };
   videoFxProcessor: VideoFxProcessor | undefined;
   videoFxConfig: VideoFxConfig = this.DEFAULT_VIDEO_FX_CONFIG;
 
   meetingLogger: Logger | undefined = undefined;
 
-
-
-
   // Drew Host paste
-  
+
   async muteAttendee(attendeeId: string): Promise<void> {
     if (this.isHost()) {
-    try {
-      await this.audioVideo.realtimeMuteLocalAudio();
-      this.log(`Attendee has muted: ${attendeeId}`);
-    } catch (error) {
-      this.log(`Failed to mute attendee: ${error}`);
+      try {
+        await this.audioVideo.realtimeMuteLocalAudio();
+        this.log(`Attendee has muted: ${attendeeId}`);
+      } catch (error) {
+        this.log(`Failed to mute attendee: ${error}`);
+      }
+    } else {
+      this.log('Only the host can mute attendees');
     }
-  } else {
-    this.log('Only the host can mute attendees');
   }
-}
-
-
-
-
 
   // Method for the host to remove an attendee
   async removeAttendee(attendeeId: string): Promise<void> {
@@ -561,19 +547,17 @@ export class DemoMeetingApp
       this.log('Only the host can remove attendees');
     }
   }
-    // Method to determine if the current user is the host
-    isHost(): boolean {
-      if (localStorage.getItem("userId") === localStorage.getItem("host_id")){
-        this.allowAttendeeCapabilities = true;
-        return true;
-  
-      } else {
-        this.allowAttendeeCapabilities = false;
-        return false;
-      }
+  // Method to determine if the current user is the host
+  isHost(): boolean {
+    if (localStorage.getItem('userId') === localStorage.getItem('host_id')) {
+      this.allowAttendeeCapabilities = true;
+      return true;
+    } else {
+      this.allowAttendeeCapabilities = false;
+      return false;
     }
-  
-  
+  }
+
   // Method to pass host privileges to another attendee
   passHostPrivileges(newHostId: string): void {
     if (this.isHost()) {
@@ -585,7 +569,7 @@ export class DemoMeetingApp
       this.log('Only the host can pass host privileges');
     }
   }
-  
+
   // Create a quiz by the host
   async createQuiz(): Promise<void> {
     if (this.isHost()) {
@@ -596,18 +580,20 @@ export class DemoMeetingApp
       this.log('Only the host can create a quiz');
     }
   }
-  
+
   // Add a handler to the onDataMessage event to listen for host transfer requests
   setupHostTransferHandler(): void {
-    this.audioVideo.realtimeSubscribeToReceiveDataMessage('transferHost', (dataMessage: DataMessage) => {
-      const messageData = JSON.parse(dataMessage.text());
-      if (messageData.action === 'transferHost' && this.isHost()) {
-        this.passHostPrivileges(messageData.newHostId);
+    this.audioVideo.realtimeSubscribeToReceiveDataMessage(
+      'transferHost',
+      (dataMessage: DataMessage) => {
+        const messageData = JSON.parse(dataMessage.text());
+        if (messageData.action === 'transferHost' && this.isHost()) {
+          this.passHostPrivileges(messageData.newHostId);
+        }
       }
-    });
+    );
   }
   // END DREW HOST PASTE
-
 
   // If you want to make this a repeatable SPA, change this to 'spa'
   // and fix some state (e.g., video buttons).
@@ -768,7 +754,7 @@ export class DemoMeetingApp
   async resolveSupportsVideoFX(): Promise<void> {
     const logger = new ConsoleLogger('SDK', LogLevel.DEBUG);
     try {
-      this.supportsVideoFx = await VideoFxProcessor.isSupported(logger)
+      this.supportsVideoFx = await VideoFxProcessor.isSupported(logger);
     } catch (e) {
       this.log(`[DEMO] Does not support background blur/background replacement v2: ${e.message}`);
       this.supportsVideoFx = false;
@@ -847,13 +833,11 @@ export class DemoMeetingApp
         x.style.display = 'none';
         joining_page.style.display = 'flex';
         this.switchToFlow('flow-authenticate');
-
       }
-    }
-    );
+    });
 
     // do the same functions if ?m= is in the url (instead of clicking):
-    const meetingParam:any = new URL(window.location.href).searchParams.get('m');
+    const meetingParam: any = new URL(window.location.href).searchParams.get('m');
     if (meetingParam) {
       // make #inputMeeting readonly
       const inputMeeting = document.getElementById('inputMeeting') as HTMLInputElement;
@@ -866,7 +850,7 @@ export class DemoMeetingApp
       // remove the token from the url
 
       // change href for #back-button to be app.larq.ai?token=tokenParam
-    
+
       // Create a URL object from the current location
       const url = new URL(window.location.href);
       url.searchParams.delete('token');
@@ -876,94 +860,82 @@ export class DemoMeetingApp
 
       // Update the URL without reloading the page
       window.history.replaceState({}, document.title, newUrl);
-
     }
 
     var dash_page = document.getElementById('joining-page');
     var joining_page = document.getElementById('main-page');
 
     verifyToken(localStorage.getItem('authToken')).then(verified => {
-    
+      // If meeting is specified and user is logged in:
+      if (verified) {
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('loginForm').style.display = 'none';
+        dash_page.style.display = 'none';
+        joining_page.style.display = 'flex';
 
-    // If meeting is specified and user is logged in:
-    if (verified) {
+        // Add token to the back button href
+        const token = localStorage.getItem('authToken');
+        const backButton = document.getElementById('back-button') as HTMLAnchorElement;
+        const backButton2 = document.getElementById('back-button2') as HTMLAnchorElement;
+        const backButton3 = document.getElementById('back-button3') as HTMLAnchorElement;
+        backButton.href = `https://app.larq.ai?token=${token}`;
+        backButton2.href = `https://app.larq.ai?token=${token}`;
+        backButton3.href = `https://app.larq.ai?token=${token}`;
 
-    document.getElementById('login-container').style.display = 'none';
-    document.getElementById('loginForm').style.display = 'none';  
-    dash_page.style.display = 'none';
-    joining_page.style.display = 'flex';
+        // Else if meeting is specified and user is not logged in:
+      } else {
+        localStorage.clear();
+        document.getElementById('login-container').style.display = 'block';
+        document.getElementById('loginForm').style.display = 'block';
+        joining_page.style.display = 'none';
+      }
+    });
 
-    // Add token to the back button href
-    const token = localStorage.getItem('authToken');
-    const backButton = document.getElementById('back-button') as HTMLAnchorElement;
-    const backButton2 = document.getElementById('back-button2') as HTMLAnchorElement;
-    const backButton3 = document.getElementById('back-button3') as HTMLAnchorElement;
-    backButton.href = `https://app.larq.ai?token=${token}`;
-    backButton2.href = `https://app.larq.ai?token=${token}`;
-    backButton3.href = `https://app.larq.ai?token=${token}`;
-
-
-
-    // Else if meeting is specified and user is not logged in:
-  } else {
-      localStorage.clear();
-      document.getElementById('login-container').style.display = 'block';
-      document.getElementById('loginForm').style.display = 'block';  
-      joining_page.style.display = 'none';
-    }
-  });
-
-
-    function verifyToken(token: string) { 
+    function verifyToken(token: string) {
       return fetch(`https://api.larq.ai/verify-token?token=${token}`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ token:token })
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: token }),
       })
-      .then(response => {
+        .then(response => {
           if (!response.ok) {
-              throw new Error('Login failed. Please check your username and password.');
+            throw new Error('Login failed. Please check your username and password.');
           }
           return response.json();
-      })
-      .then(data => {
+        })
+        .then(data => {
           if (data.status === 'success') {
-              console.log('Token Authorized:', data);
-              document.getElementById('login-container').style.display = 'none';
-              document.getElementById('loginForm').style.display = 'none';  
-              joining_page.style.display = 'flex';
-              return true;
+            console.log('Token Authorized:', data);
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'none';
+            joining_page.style.display = 'flex';
+            return true;
           } else {
-              console.log('Token Unauthorized:', data);
-              // You might need to handle UI changes here as well
-              document.getElementById('login-container').style.display = 'block';
-              document.getElementById('loginForm').style.display = 'block';  
-              joining_page.style.display = 'none';
-              return false;
+            console.log('Token Unauthorized:', data);
+            // You might need to handle UI changes here as well
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('loginForm').style.display = 'block';
+            joining_page.style.display = 'none';
+            return false;
           }
-      })
-      .catch(error => {
+        })
+        .catch(error => {
           console.error('Verification error:', error);
           document.getElementById('login-container').style.display = 'block';
-          document.getElementById('loginForm').style.display = 'block';  
+          document.getElementById('loginForm').style.display = 'block';
           joining_page.style.display = 'none';
           return false;
-      });
+        });
     }
 
-    
-
-    const registerParam:any = new URL(window.location.href).searchParams.get('register');
+    const registerParam: any = new URL(window.location.href).searchParams.get('register');
     if (registerParam) {
       document.getElementById('login-container').style.display = 'block';
       document.getElementById('loginForm').style.display = 'none';
       document.getElementById('register-container').style.display = 'block';
-    };
-
-
-
+    }
 
     const buttonQueriesTabs = document.getElementById('queries') as HTMLButtonElement;
     buttonQueriesTabs.addEventListener('click', _e => {
@@ -1001,9 +973,6 @@ export class DemoMeetingApp
       }
     });
 
-
-
-
     // SEND QUIZBOT FORM TO USERS DREW SEND
 
     const buttonPublishQuiz = document.getElementById('publish-quiz-button') as HTMLButtonElement;
@@ -1013,60 +982,56 @@ export class DemoMeetingApp
       if (x) {
         x.style.display = 'block';
         html_quiz_question.style.display = 'none';
-      } 
-    
+      }
+
       // Fetch the stored quiz data
       const storedQuiz: QuizJSON = JSON.parse(localStorage.getItem('quizJson') || '{}');
-          // set #view-larq-stats to go to https://app.larq.ai/quiz_id/results when clicked:
-          const viewLarqStats = document.getElementById('view-larq-stats') as HTMLAnchorElement;
-          viewLarqStats.href = `https://app.larq.ai/quiz/${storedQuiz.quiz_id}/results`;
-      
+      // set #view-larq-stats to go to https://app.larq.ai/quiz_id/results when clicked:
+      const viewLarqStats = document.getElementById('view-larq-stats') as HTMLAnchorElement;
+      viewLarqStats.href = `https://app.larq.ai/quiz/${storedQuiz.quiz_id}/results`;
 
       // DREW ADDITIONS
 
       const generateFormData = (quiz: QuizJSON) => {
         const questions: QuizQuestion[] = quiz.questions;
-    
-        const formData = {
-            title: quiz.quiz_title,
-            fields: [
-                { label: 'Quiz Title', type: 'text', value: quiz.quiz_title }, 
-                ...questions.map((question) => {
-                    return {
-                        label: question.question,
-                        type: 'dropdown',
-                        options: [question.correct_answer, ...question.wrong_answers],
-                        correct_answer: question.correct_answer,
-                    };
-                })
-            ],
-            host: this.meetingSession.configuration.credentials.attendeeId,
-            quiz_id: quiz.quiz_id
-        };
-    
-        return formData;
-    }
-    
-    const formData = generateFormData(storedQuiz);
-    console.log("Checkpoint 2 Form Data", formData);
 
-    console.log(formData);
-    
+        const formData = {
+          title: quiz.quiz_title,
+          fields: [
+            { label: 'Quiz Title', type: 'text', value: quiz.quiz_title },
+            ...questions.map(question => {
+              return {
+                label: question.question,
+                type: 'dropdown',
+                options: [question.correct_answer, ...question.wrong_answers],
+                correct_answer: question.correct_answer,
+              };
+            }),
+          ],
+          host: this.meetingSession.configuration.credentials.attendeeId,
+          quiz_id: quiz.quiz_id,
+        };
+
+        return formData;
+      };
+
+      const formData = generateFormData(storedQuiz);
+      console.log('Checkpoint 2 Form Data', formData);
+
+      console.log(formData);
 
       // END DREW ADDITIONS
 
-
-
       const formDataString = JSON.stringify(formData);
       console.log('Checkpoint 3 formDataString:', formDataString);
-    
+
       // Send the formData as a stringified JSON
       this.audioVideo.realtimeSendDataMessage(
         'displayForm',
         formDataString,
         DemoMeetingApp.DATA_MESSAGE_LIFETIME_MS
       );
-    
+
       this.dataMessageHandler(
         new DataMessage(
           Date.now(),
@@ -1077,12 +1042,9 @@ export class DemoMeetingApp
         )
       );
     });
-    
+
     // make a function displayForm():
     // Sample data for radio buttons
-
-
-
 
     // this.dataMessageHandler(
     //   new DataMessage(
@@ -1093,111 +1055,101 @@ export class DemoMeetingApp
     //     this.meetingSession.configuration.credentials.externalUserId
     //   )
     // );
-  
 
+    const buttonChat = document.getElementById('button-chat') as HTMLButtonElement | null;
+    buttonChat?.addEventListener('click', _e => {
+      const x = document.getElementById('roster-message-container');
+      if (x && (x.style.display === 'none' || x.classList.contains('d-none') || !x.style.display)) {
+        x.classList.remove('d-none');
+        x.classList.add('d-flex');
+        x.style.display = 'block';
+      } else {
+        x?.classList.add('d-none');
+        x?.classList.remove('d-flex');
+        if (x) {
+          x.style.display = 'none';
+        }
+      }
+    });
 
+    const registerButton = document.getElementById('go-to-register') as HTMLButtonElement | null;
+    registerButton?.addEventListener('click', _e => {
+      const x = document.getElementById('loginForm');
+      const y = document.getElementById('register-container');
+      if (x && x.style.display === 'none') {
+        x.style.display = 'block';
+        if (y) {
+          y.style.display = 'none';
+        }
+      } else {
+        if (x) {
+          x.style.display = 'none';
+        }
+        if (y) {
+          y.style.display = 'block';
+        }
+      }
+    });
 
-const buttonChat = document.getElementById('button-chat') as HTMLButtonElement | null;
-buttonChat?.addEventListener('click', _e => {
-  const x = document.getElementById('roster-message-container');
-  if (x && (x.style.display === 'none' || x.classList.contains('d-none'))) {
-    x.classList.remove('d-none');
-    x.classList.add('d-flex');
-    x.style.display = 'block';
-  } else {
-    x?.classList.add('d-none');
-    x?.classList.remove('d-flex');
-    if (x) {
-      x.style.display = 'none';
+    const loginButton = document.getElementById('login') as HTMLButtonElement | null;
+    loginButton?.addEventListener('click', _e => {
+      const x = document.getElementById('register-container');
+      const y = document.getElementById('loginForm');
+      if (x && x.style.display === 'none') {
+        x.style.display = 'block';
+        if (y) {
+          y.style.display = 'none';
+        }
+      } else {
+        if (x) {
+          x.style.display = 'none';
+        }
+        if (y) {
+          y.style.display = 'block';
+        }
+        updateBodyBackgroundColor(); // Call this at the end of both event listeners
+      }
+    });
+
+    const body = document.getElementById('body');
+    const loginContainer = document.getElementById('login-container');
+    const registerContainer = document.getElementById('register-container');
+    if (
+      (loginContainer && loginContainer.style.display === 'block') ||
+      (registerContainer && registerContainer.style.display === 'block')
+    ) {
+      if (body) {
+        body.style.background = '#1e1e1e';
+      }
+    } else {
+      if (body) {
+        body.style.background = '#fff';
+      }
     }
-  }
-});
 
+    function updateBodyBackgroundColor() {
+      const loginContainer = document.getElementById('login-container');
+      const registerContainer = document.getElementById('register-container');
+      const body = document.getElementById('body');
 
-
-
-
-
-const registerButton = document.getElementById('go-to-register') as HTMLButtonElement | null;
-registerButton?.addEventListener('click', _e => {
-  const x = document.getElementById('loginForm');
-  const y = document.getElementById('register-container');
-  if (x && x.style.display === 'none') {
-    x.style.display = 'block';
-    if (y) {
-      y.style.display = 'none';
+      if (
+        (loginContainer && loginContainer.style.display === 'block') ||
+        (registerContainer && registerContainer.style.display === 'block')
+      ) {
+        if (body) {
+          body.style.background = '#1e1e1e';
+        }
+      } else {
+        if (body) {
+          body.style.background = '#fff';
+        }
+      }
     }
-  } else {
-    if (x) {
-      x.style.display = 'none';
-    }
-    if (y) {
-      y.style.display = 'block';
-    }
-  }
-});
 
-const loginButton = document.getElementById('login') as HTMLButtonElement | null;
-loginButton?.addEventListener('click', _e => {
-  const x = document.getElementById('register-container');
-  const y = document.getElementById('loginForm');
-  if (x && x.style.display === 'none') {
-    x.style.display = 'block';
-    if (y) {
-      y.style.display = 'none';
-    }
-  } else {
-
-  if (x) {
-    x.style.display = 'none';
-  }
-  if (y) {
-    y.style.display = 'block';
-  }
-  updateBodyBackgroundColor(); // Call this at the end of both event listeners
-    
-
-  }
-});
-
-const body = document.getElementById('body');
-const loginContainer = document.getElementById('login-container');
-const registerContainer = document.getElementById('register-container');
-if (loginContainer && loginContainer.style.display === 'block' || registerContainer && registerContainer.style.display === 'block') {
-  if (body) {
-    body.style.background = '#1e1e1e';
-  }
-} else {
-  if (body) {
-    body.style.background = '#fff';
-  }
-}
-
-function updateBodyBackgroundColor() {
-  const loginContainer = document.getElementById('login-container');
-  const registerContainer = document.getElementById('register-container');
-  const body = document.getElementById('body');
-
-  if (
-    (loginContainer && loginContainer.style.display === 'block') || 
-    (registerContainer && registerContainer.style.display === 'block')
-  ) {
-    if (body) {
-      body.style.background = '#1e1e1e';
-    }
-  } else {
-    if (body) {
-      body.style.background = '#fff';
-    }
-  }
-}
-
-// Initial call
-updateBodyBackgroundColor();
-
+    // Initial call
+    updateBodyBackgroundColor();
 
     // FAULTY CODE
-
 
     const startingQuizButton = document.getElementById('starting-quiz') as HTMLButtonElement;
     startingQuizButton.addEventListener('click', _e => {
@@ -1217,7 +1169,9 @@ updateBodyBackgroundColor();
       console.log('button-participants');
 
       var x = document.getElementById('roster-message-container');
-      if (x.style.display === 'none' || x.classList.contains('d-none')) {
+      console.log('the styles are', x.style.display);
+      console.log('the class list are', x.classList);
+      if (x.style.display === 'none' || x.classList.contains('d-none') || !x.style.display) {
         // add d-hidden to hide the roster
         x.classList.remove('d-none');
         x.classList.add('d-flex');
@@ -1229,437 +1183,420 @@ updateBodyBackgroundColor();
       }
     });
 
-
     // *****************************
     // *****************************
     // *****************************
     // BEGIN QUIZBOT
     console.log('BEGIN QUIZBOT');
-    
+
     const submitQuizBot = document.getElementById('submit-quiz') as HTMLButtonElement;
-    submitQuizBot.addEventListener('click', async (): Promise<void> => {
-    // Add a flag to track if a request is pending
-    let isRequestPending = false;
+    submitQuizBot.addEventListener(
+      'click',
+      async (): Promise<void> => {
+        // Add a flag to track if a request is pending
+        let isRequestPending = false;
 
-    // Inside your function/method where the request is sent
-    if (isRequestPending) {
-      console.log('Request is already pending.');
-      return;
-    }
-    isRequestPending = true;
+        // Inside your function/method where the request is sent
+        if (isRequestPending) {
+          console.log('Request is already pending.');
+          return;
+        }
+        isRequestPending = true;
 
-
-      if (this.isHost()){
-        console.log("You're are host, you can create Quiz!");
-      }
-      else{
-        console.log("You're not the host, you can't create quizzes!");
-        alert("You're not the host, you can't create quizzes!");
-        return;
-      }
+        if (this.isHost()) {
+          console.log("You're are host, you can create Quiz!");
+        } else {
+          console.log("You're not the host, you can't create quizzes!");
+          alert("You're not the host, you can't create quizzes!");
+          return;
+        }
         // STEP 1: CONFIGURATION FORM
         const create_quiz = document.getElementById('create-quiz');
         var generating_quiz = document.getElementById('generating-quiz');
-        var html_quiz_question = document.getElementById('quiz_question'); 
+        var html_quiz_question = document.getElementById('quiz_question');
         if (generating_quiz) {
           create_quiz.style.display = 'none';
           generating_quiz.style.display = 'block';
-        } 
-
+        }
 
         console.log('submit quiz');
         const transcript = document.getElementById('transcript-container').innerText;
 
         const transcriptData: any = {
-            "transcript": transcript
-            // "transcript" : "This is a test transcript, I want to see if this works. There are 5 questions in this quiz. This quiz was made on October 11th 2023. We will be quizzing on this content."
-          };
+          transcript: transcript,
+          // "transcript" : "This is a test transcript, I want to see if this works. There are 5 questions in this quiz. This quiz was made on October 11th 2023. We will be quizzing on this content."
+        };
 
-        let selectedNumber = localStorage.getItem('selectedNumber')
+        let selectedNumber = localStorage.getItem('selectedNumber');
         if (selectedNumber) {
-            transcriptData.num_questions = selectedNumber;
-            console.log('selectedNumber:', selectedNumber);
+          transcriptData.num_questions = selectedNumber;
+          console.log('selectedNumber:', selectedNumber);
         }
-        let vector_id = localStorage.getItem('vector_id')
+        let vector_id = localStorage.getItem('vector_id');
         if (vector_id) {
-            transcriptData.vector_id = vector_id;
-            console.log('vector_id:', vector_id);
+          transcriptData.vector_id = vector_id;
+          console.log('vector_id:', vector_id);
         }
 
         let userID = JSON.parse(localStorage.getItem('data')).user_id;
         if (userID) {
-            transcriptData.user_id = userID;
-            console.log('user_id:', userID);
+          transcriptData.user_id = userID;
+          console.log('user_id:', userID);
         }
 
         // remove #generation-error if it exists:
         const generationError = document.getElementById('generation-error');
-        if (generationError.classList.contains('d-none') === false ) {
-        generationError.classList.add('d-none');
+        if (generationError.classList.contains('d-none') === false) {
+          generationError.classList.add('d-none');
         }
-        
-        const url = "https://api.larq.ai/MakeQuiz";
-        console.log("TRANSCRIPT DATA:", transcriptData);
+
+        const url = 'https://api.larq.ai/MakeQuiz';
+        console.log('TRANSCRIPT DATA:', transcriptData);
         try {
-        const response = await fetch(url, {
+          const response = await fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify(transcriptData)
-        })
-        // Check if the response is ok (status in the range 200-299)
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+            body: JSON.stringify(transcriptData),
+          });
+          // Check if the response is ok (status in the range 200-299)
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
 
-        // on response, show #html_quiz_question:
-        const quizJson = await response.json();
+          // on response, show #html_quiz_question:
+          const quizJson = await response.json();
 
-        // if quizJson.success === false, alert the user and return
-        if (quizJson.success === false) {
-          generationError.classList.remove('d-none');
-          document.getElementById("quiz_question").style.display = 'none';
-          // now make the error message the error message from the server
-          generationError.innerText = quizJson.message;
-          create_quiz.style.display = 'block';
-          return;
-        } 
-        // else if no response, alert the user and return
-        else if (!response) {
-          generationError.classList.remove('d-none');
-          document.getElementById("quiz_question").style.display = 'none';
-          // now make the error message the error message from the server
-          generationError.innerText = 'There was an error generating the quiz. No response from the server, please try again.';
-          create_quiz.style.display = 'block';
-          return;
-        }
+          // if quizJson.success === false, alert the user and return
+          if (quizJson.success === false) {
+            generationError.classList.remove('d-none');
+            document.getElementById('quiz_question').style.display = 'none';
+            // now make the error message the error message from the server
+            generationError.innerText = quizJson.message;
+            create_quiz.style.display = 'block';
+            return;
+          }
+          // else if no response, alert the user and return
+          else if (!response) {
+            generationError.classList.remove('d-none');
+            document.getElementById('quiz_question').style.display = 'none';
+            // now make the error message the error message from the server
+            generationError.innerText =
+              'There was an error generating the quiz. No response from the server, please try again.';
+            create_quiz.style.display = 'block';
+            return;
+          }
 
-        // localStorage.setItem("quizID", quizJson.quiz_id);
-        html_quiz_question.style.display = 'block';
-        generating_quiz.style.display = 'none';
+          // localStorage.setItem("quizID", quizJson.quiz_id);
+          html_quiz_question.style.display = 'block';
+          generating_quiz.style.display = 'none';
 
-        console.log('quizJson:', quizJson);
-        
-        // add quizJson to the local storage
-        localStorage.setItem('quizJson', JSON.stringify(quizJson));
+          console.log('quizJson:', quizJson);
 
-        // const quizID = quizJson.quiz_id;
-        // localStorage.setItem('quizID', quizID);
-        const quizTitle = quizJson.quiz_title;
-        console.log(quizTitle);
-        
+          // add quizJson to the local storage
+          localStorage.setItem('quizJson', JSON.stringify(quizJson));
 
-        const quizTitleHTML = document.getElementById('quiz-title') as HTMLElement;
-        quizTitleHTML.innerText = quizTitle;
+          // const quizID = quizJson.quiz_id;
+          // localStorage.setItem('quizID', quizID);
+          const quizTitle = quizJson.quiz_title;
+          console.log(quizTitle);
 
-        const quizFormTitleHTML = document.getElementById('quiz-form-title') as HTMLElement;
-        quizFormTitleHTML.innerText = quizTitle;
+          const quizTitleHTML = document.getElementById('quiz-title') as HTMLElement;
+          quizTitleHTML.innerText = quizTitle;
 
-        const questions = quizJson.questions;
-        console.log(questions);
+          const quizFormTitleHTML = document.getElementById('quiz-form-title') as HTMLElement;
+          quizFormTitleHTML.innerText = quizTitle;
 
-        const quizNumbers = document.getElementById('quiz-numbers') as HTMLElement;
-        // clear html of quizNumbers
-        quizNumbers.innerHTML = '';
-        const quizQuestionElement = document.getElementById('quiz-question') as HTMLElement;
-        const quizOptions = document.getElementById('quiz-options') as HTMLElement;
+          const questions = quizJson.questions;
+          console.log(questions);
 
-        // Populate quiz numbers
-        questions.forEach(
-          (
-            question: {
-              answer_reason: string;
-              correct_answer: string;
-              question: string;
-              question_number: number;
-              wrong_answers: string[];
-            },
-            index: number
-          ) => {
-            let questionNumber = question.question_number;
-            let questionBlock = document.createElement('div');
-            questionBlock.className = 'numbers-block';
-            questionBlock.innerText = `${questionNumber}`;
-            quizNumbers.appendChild(questionBlock);
+          const quizNumbers = document.getElementById('quiz-numbers') as HTMLElement;
+          // clear html of quizNumbers
+          quizNumbers.innerHTML = '';
+          const quizQuestionElement = document.getElementById('quiz-question') as HTMLElement;
+          const quizOptions = document.getElementById('quiz-options') as HTMLElement;
 
-            // Attach a click event to each questionBlock
-            questionBlock.addEventListener('click', function () {
-              // Display the selected question and its options
+          // Populate quiz numbers
+          questions.forEach(
+            (
+              question: {
+                answer_reason: string;
+                correct_answer: string;
+                question: string;
+                question_number: number;
+                wrong_answers: string[];
+              },
+              index: number
+            ) => {
+              let questionNumber = question.question_number;
+              let questionBlock = document.createElement('div');
+              questionBlock.className = 'numbers-block';
+              questionBlock.innerText = `${questionNumber}`;
+              quizNumbers.appendChild(questionBlock);
 
+              // Attach a click event to each questionBlock
+              questionBlock.addEventListener('click', function () {
+                // Display the selected question and its options
 
-                    console.log('questionNumber', questionNumber);
-                    const currentActive = document.querySelector('.numbers-block.active-numbers-block');
-                    if (currentActive) {
-                      currentActive.classList.remove('active-numbers-block');
-                    }
-                    questionBlock.classList.add('active-numbers-block');
+                console.log('questionNumber', questionNumber);
+                const currentActive = document.querySelector('.numbers-block.active-numbers-block');
+                if (currentActive) {
+                  currentActive.classList.remove('active-numbers-block');
+                }
+                questionBlock.classList.add('active-numbers-block');
 
-                    quizQuestionElement.innerText = quizJson.questions[questionNumber-1].question;
-                    quizOptions.innerHTML = ''; // Clear previous options
-                    
-                    let correctAnswer = quizJson.questions[questionNumber-1].correct_answer;
-                    let wrongAnswers = quizJson.questions[questionNumber-1].wrong_answers.filter((answer: string) => answer != null);
-                    let allAnswers = [correctAnswer, ...wrongAnswers]; // No randomization
-                
-                    allAnswers.forEach((answer, ansIndex) => {
-                      let optionLabel = document.createElement('label');
-                      optionLabel.className = 'form-check form-check-inline';
-                      
-                      let optionInput = document.createElement('input');
-                      optionInput.type = 'radio';
-                      optionInput.id = `option-${index}-${ansIndex}`;
-                      optionInput.name = 'option';
-                      optionInput.value = `${ansIndex}`;
-                      optionInput.className = 'btn-check form-check-input';
-                      // DRAFT ANSWERS (FOR REFERENCE)
-                      if (answer === correctAnswer) {
-                        // Check the correct answer
-                        optionInput.checked = true;
-                        
-                      }
-                      optionLabel.classList.toggle('correct-answer', answer === correctAnswer);
+                quizQuestionElement.innerText = quizJson.questions[questionNumber - 1].question;
+                quizOptions.innerHTML = ''; // Clear previous options
 
-                      // Update local storage
-                     localStorage.setItem('quizJson', JSON.stringify(quizJson));
+                let correctAnswer = quizJson.questions[questionNumber - 1].correct_answer;
+                let wrongAnswers = quizJson.questions[questionNumber - 1].wrong_answers.filter(
+                  (answer: string) => answer != null
+                );
+                let allAnswers = [correctAnswer, ...wrongAnswers]; // No randomization
 
+                allAnswers.forEach((answer, ansIndex) => {
+                  let optionLabel = document.createElement('label');
+                  optionLabel.className = 'form-check form-check-inline';
 
-                      let answerselectorLabel = document.createElement('label');
-                      answerselectorLabel.className = 'btn btn-outline';
-                      answerselectorLabel.htmlFor = optionInput.id;
-                      answerselectorLabel.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12L9 16L19 6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-
-                      let answerLabel = document.createElement('input');
-                      answerLabel.className = 'form-control answer-text w-75';
-                      // answerLabel.htmlFor = optionInput.id;
-                      answerLabel.value = answer;
-
-                      optionLabel.appendChild(optionInput);
-                      optionLabel.appendChild(answerselectorLabel);
-                      optionLabel.appendChild(answerLabel);
-                      quizOptions.appendChild(optionLabel);
-                      
-                    quizQuestionElement.addEventListener('click', function () {
-                                this.contentEditable = 'true';
-                                // click on the object again now that its editable
-                                this.focus();
-                                const originalText = this.textContent;
-                        
-                                this.addEventListener('blur', function () {
-                                    const newText = this.textContent?.trim() || '';
-                                    this.contentEditable = 'false';
-                        
-                                    if (newText !== originalText) {
-                                      quizJson.questions[questionNumber-1].question = newText;
-                                        localStorage.setItem('quizJson', JSON.stringify(quizJson));
-                                        console.log('quizJson in localstorage:', quizJson);
-                                    }
-                                }, { once: true });
-                              // End of questionElement.addEventListener
-                      });
-  
-                      quizTitleHTML.addEventListener('click', function () {
-                        this.contentEditable = 'true';
-                        this.focus();
-                        const originalText = this.textContent;
-                
-                        this.addEventListener('blur', function () {
-                            const newText = this.textContent?.trim() || '';
-                            this.contentEditable = 'false';
-                
-                            if (newText !== originalText) {
-                                // Assuming you have a title field in your quizJson.
-                                quizJson.quiz_title = newText;
-                                localStorage.setItem('quizJson', JSON.stringify(quizJson));
-                                console.log('quizJson in localstorage:', quizJson);
-                            }
-                        }, { once: true });
-                    });
-                
-
-                    optionLabel.addEventListener('click', () => {
-                                answerLabel.contentEditable = 'true';
-                                optionLabel.classList.add('editing');
-                                // optionLabel.classList.add('form-control');
-                                this.focus();
-      
-                          answerLabel.addEventListener('blur', function () {
-                            let newText = this.value.trim();
-                            if (newText !== answer) {
-                              // Update the correct answer if this is the selected option
-                              if (optionInput.checked) {
-                                quizJson.questions[index].correct_answer = newText;
-                              } else {
-                                // Find the index for the wrong answer and update
-                                let wrongAnswerIndex = quizJson.questions[index].wrong_answers.indexOf(answer);
-                                if (wrongAnswerIndex !== -1) {
-                                  quizJson.questions[index].wrong_answers[wrongAnswerIndex] = newText;
-                                }
-                              }
-                              // Update local storage
-                              localStorage.setItem('quizJson', JSON.stringify(quizJson));
-                            }
-                          });
-                    
-                          
-
-
-                          // if there has been a click that is not the option label, then remove the editing class
-                          document.addEventListener('click', (event) => {
-                            const target = event.target as HTMLElement;
-                            if (!target.classList.contains('editing')) {
-                              optionLabel.classList.remove('editing');
-                              // optionLabel.classList.remove('form-control');
-                            }
-                          });
-                         
-                          optionInput.addEventListener('change', () => {
-                            if (optionInput.checked) {
-                              quizJson.questions[index].correct_answer = answerLabel.value.trim();
-
-                              optionLabel.classList.add('correct-answer');
-                              // remove the correct-answer class from all other options
-                              const allOptionLabels = document.querySelectorAll('.form-check.form-check-inline');
-                              allOptionLabels.forEach((label) => {
-                                if (label !== optionLabel) {
-                                  label.classList.remove('correct-answer');
-                                }
-                              });
-                              
-                                // Update the correct answer.
-                                quizJson.questions[questionNumber-1].correct_answer = answerLabel.innerText;
-                                localStorage.setItem('quizJson', JSON.stringify(quizJson));
-                                console.log('quizJson in localstorage:', quizJson);
-                            }
-                           });
-                
-                
-                    
-                          
-                            // End of optionLabel.addEventListener 
-                          });
-                      // End of allAnswers.forEach
-                    });
-                    // End of Click form
-                  });
-                  if (index === 0) {
-                    (questionBlock as HTMLElement).click();
+                  let optionInput = document.createElement('input');
+                  optionInput.type = 'radio';
+                  optionInput.id = `option-${index}-${ansIndex}`;
+                  optionInput.name = 'option';
+                  optionInput.value = `${ansIndex}`;
+                  optionInput.className = 'btn-check form-check-input';
+                  // DRAFT ANSWERS (FOR REFERENCE)
+                  if (answer === correctAnswer) {
+                    // Check the correct answer
+                    optionInput.checked = true;
                   }
-        
+                  optionLabel.classList.toggle('correct-answer', answer === correctAnswer);
+
+                  // Update local storage
+                  localStorage.setItem('quizJson', JSON.stringify(quizJson));
+
+                  let answerselectorLabel = document.createElement('label');
+                  answerselectorLabel.className = 'btn btn-outline';
+                  answerselectorLabel.htmlFor = optionInput.id;
+                  answerselectorLabel.innerHTML =
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12L9 16L19 6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+                  let answerLabel = document.createElement('input');
+                  answerLabel.className = 'form-control answer-text w-75';
+                  // answerLabel.htmlFor = optionInput.id;
+                  answerLabel.value = answer;
+
+                  optionLabel.appendChild(optionInput);
+                  optionLabel.appendChild(answerselectorLabel);
+                  optionLabel.appendChild(answerLabel);
+                  quizOptions.appendChild(optionLabel);
+
+                  quizQuestionElement.addEventListener('click', function () {
+                    this.contentEditable = 'true';
+                    // click on the object again now that its editable
+                    this.focus();
+                    const originalText = this.textContent;
+
+                    this.addEventListener(
+                      'blur',
+                      function () {
+                        const newText = this.textContent?.trim() || '';
+                        this.contentEditable = 'false';
+
+                        if (newText !== originalText) {
+                          quizJson.questions[questionNumber - 1].question = newText;
+                          localStorage.setItem('quizJson', JSON.stringify(quizJson));
+                          console.log('quizJson in localstorage:', quizJson);
+                        }
+                      },
+                      { once: true }
+                    );
+                    // End of questionElement.addEventListener
+                  });
+
+                  quizTitleHTML.addEventListener('click', function () {
+                    this.contentEditable = 'true';
+                    this.focus();
+                    const originalText = this.textContent;
+
+                    this.addEventListener(
+                      'blur',
+                      function () {
+                        const newText = this.textContent?.trim() || '';
+                        this.contentEditable = 'false';
+
+                        if (newText !== originalText) {
+                          // Assuming you have a title field in your quizJson.
+                          quizJson.quiz_title = newText;
+                          localStorage.setItem('quizJson', JSON.stringify(quizJson));
+                          console.log('quizJson in localstorage:', quizJson);
+                        }
+                      },
+                      { once: true }
+                    );
+                  });
+
+                  optionLabel.addEventListener('click', () => {
+                    answerLabel.contentEditable = 'true';
+                    optionLabel.classList.add('editing');
+                    // optionLabel.classList.add('form-control');
+                    this.focus();
+
+                    answerLabel.addEventListener('blur', function () {
+                      let newText = this.value.trim();
+                      if (newText !== answer) {
+                        // Update the correct answer if this is the selected option
+                        if (optionInput.checked) {
+                          quizJson.questions[index].correct_answer = newText;
+                        } else {
+                          // Find the index for the wrong answer and update
+                          let wrongAnswerIndex = quizJson.questions[index].wrong_answers.indexOf(
+                            answer
+                          );
+                          if (wrongAnswerIndex !== -1) {
+                            quizJson.questions[index].wrong_answers[wrongAnswerIndex] = newText;
+                          }
+                        }
+                        // Update local storage
+                        localStorage.setItem('quizJson', JSON.stringify(quizJson));
+                      }
+                    });
+
+                    // if there has been a click that is not the option label, then remove the editing class
+                    document.addEventListener('click', event => {
+                      const target = event.target as HTMLElement;
+                      if (!target.classList.contains('editing')) {
+                        optionLabel.classList.remove('editing');
+                        // optionLabel.classList.remove('form-control');
+                      }
+                    });
+
+                    optionInput.addEventListener('change', () => {
+                      if (optionInput.checked) {
+                        quizJson.questions[index].correct_answer = answerLabel.value.trim();
+
+                        optionLabel.classList.add('correct-answer');
+                        // remove the correct-answer class from all other options
+                        const allOptionLabels = document.querySelectorAll(
+                          '.form-check.form-check-inline'
+                        );
+                        allOptionLabels.forEach(label => {
+                          if (label !== optionLabel) {
+                            label.classList.remove('correct-answer');
+                          }
+                        });
+
+                        // Update the correct answer.
+                        quizJson.questions[questionNumber - 1].correct_answer =
+                          answerLabel.innerText;
+                        localStorage.setItem('quizJson', JSON.stringify(quizJson));
+                        console.log('quizJson in localstorage:', quizJson);
+                      }
+                    });
+
+                    // End of optionLabel.addEventListener
+                  });
+                  // End of allAnswers.forEach
+                });
+                // End of Click form
+              });
+              if (index === 0) {
+                (questionBlock as HTMLElement).click();
+              }
+
               // End of questions.forEach
-            });
-          
+            }
+          );
+
           // Promise and quizbot
         } catch (error) {
           console.error('Error:', error);
           generationError.classList.remove('d-none');
-          document.getElementById("quiz_question").style.display = 'none';
+          document.getElementById('quiz_question').style.display = 'none';
           // now make the error message the error message from the server
           generationError.innerText = 'There was an error generating the quiz. Please try again.';
           create_quiz.style.display = 'block';
-  
-  
         } finally {
           // Reset the request pending flag
           isRequestPending = false;
         }
+      }
+    );
 
+    // DREW CODE END
+    // document.addEventListener('DOMContentLoaded', function() {
+    // Get the form element
+    console.log('Dom loaded');
+    const myDIV = document.getElementById('myDIV');
 
+    const video_container = document.getElementById('content-share-video');
+    const starting_quiz_container = document.getElementById('starting_quiz_container');
+    const meeting_container = document.getElementById('meeting-container');
+    const roster_tile_container = document.getElementById('roster-tile-container');
+    const quiz_question = document.getElementById('quiz_question');
 
-          }
+    // Function to close the form (hide it in this case)
+    function closeForm() {
+      if (myDIV) {
+        quiz_question.style.display = 'none';
+        meeting_container.style.display = 'block';
+        (video_container.style.display = 'block'), (myDIV.style.display = 'none');
+        roster_tile_container.style.display = 'block';
+        starting_quiz_container.style.display = 'none';
+      }
+    }
 
+    // Listen to clicks on elements with class .btn-close and .cancel-button
+    document.querySelectorAll('.cancel-button').forEach(button => {
+      button.addEventListener('click', closeForm);
+    });
 
+    document.querySelectorAll('.deleteButton').forEach(button => {
+      button.addEventListener('click', function () {
+        var html_create_quiz = document.getElementById('create-quiz');
+        var html_quiz_question = document.getElementById('quiz_question');
+        var generating_quiz = document.getElementById('generating-quiz');
+        html_create_quiz.style.display = 'block';
+        html_quiz_question.style.display = 'none';
+        generating_quiz.style.display = 'none';
+      });
+    });
 
-        );
+    // FIRST FORM NUMBER OF QUESTIONS
+    let selectedNumber: string | null = null;
 
+    const numberContainer = document.getElementById('numberofQuestions');
 
-        // DREW CODE END
-        // document.addEventListener('DOMContentLoaded', function() {
-                // Get the form element
-                console.log("Dom loaded");
-                const myDIV = document.getElementById('myDIV');
-            
-                const video_container = document.getElementById('content-share-video');
-                const starting_quiz_container = document.getElementById('starting_quiz_container');
-                const meeting_container = document.getElementById('meeting-container');
-                const roster_tile_container = document.getElementById('roster-tile-container');
-                const quiz_question = document.getElementById("quiz_question");
+    if (numberContainer) {
+      numberContainer.addEventListener('click', event => {
+        const target = event.target as HTMLElement;
 
-                // Function to close the form (hide it in this case)
-                function closeForm() {
-                    if (myDIV) {
-                      quiz_question.style.display = 'none';
-                      meeting_container.style.display = 'block';  
-                      video_container.style.display = 'block',
-                      myDIV.style.display = 'none';
-                      roster_tile_container.style.display = 'block';
-                      starting_quiz_container.style.display = 'none';
-                                          }
-                }
-            
-                // Listen to clicks on elements with class .btn-close and .cancel-button
-                document.querySelectorAll('.cancel-button').forEach(button => {
-                        button.addEventListener('click', closeForm);
-                });
+        if (target.classList.contains('numbers-block')) {
+          // Remove active-numbers-block class from all children
+          Array.from(numberContainer.children).forEach(child => {
+            (child as HTMLElement).classList.remove('active-numbers-block');
+          });
 
-                document.querySelectorAll('.deleteButton').forEach(button => {
-                      button.addEventListener('click', function(){
+          selectedNumber = target.getAttribute('value');
+          // console.log('selectedNumber:', selectedNumber);
+          // add active-numbers-block class
+          target.classList.add('active-numbers-block');
+          // save it to localstorage
+          localStorage.setItem('selectedNumber', selectedNumber);
+        }
+      });
+    }
 
-                        var html_create_quiz = document.getElementById('create-quiz');
-                        var html_quiz_question = document.getElementById('quiz_question');
-                        var generating_quiz = document.getElementById('generating-quiz');
-                        html_create_quiz.style.display = 'block';
-                          html_quiz_question.style.display = 'none';
-                          generating_quiz.style.display = 'none';
-                  
-                });
-        });
-        
-
-
-
-
-        // FIRST FORM NUMBER OF QUESTIONS
-          let selectedNumber: string | null = null;
-      
-          const numberContainer = document.getElementById('numberofQuestions');
-      
-          if (numberContainer) {
-              numberContainer.addEventListener('click', (event) => {
-                  const target = event.target as HTMLElement;
-      
-                  if (target.classList.contains('numbers-block')) {
-                      // Remove active-numbers-block class from all children
-                      Array.from(numberContainer.children).forEach(child => {
-                          (child as HTMLElement).classList.remove('active-numbers-block');
-                      });
-      
-                      selectedNumber = target.getAttribute('value');
-                      // console.log('selectedNumber:', selectedNumber);
-                      // add active-numbers-block class
-                      target.classList.add('active-numbers-block');
-                      // save it to localstorage
-                      localStorage.setItem('selectedNumber', selectedNumber);
-                        }
-                    });
-                }
-      
-      
-
-
-
-
-          
-      // });
+    // });
     // END QUIZBOT
-   // *****************************
+    // *****************************
     // *****************************
     // *****************************
     // load the js file quizbot.js
 
     // when you click #joinButton, also click #button-start-transcription:
     const joinButton = document.getElementById('joinButton');
-    joinButton?.addEventListener('click', function() {
+    joinButton?.addEventListener('click', function () {
       var startTranscription = document.getElementById('button-start-transcription');
       if (startTranscription) {
         (startTranscription as HTMLElement).click();
@@ -1668,10 +1605,8 @@ updateBodyBackgroundColor();
         if (tc) {
           tc.style.display = 'none';
         }
-
       }
     });
-
 
     // var tc = document.getElementById('transcript-container');
     // if (tc) {
@@ -1679,167 +1614,176 @@ updateBodyBackgroundColor();
     //   // this.toggleButton('button-live-transcription');
     // }
 
+    // DREW LOGIN
 
-
-
-
-
-// DREW LOGIN
-
-// if you have localStorage.getItem('authToken') then hide the login form and show the joining page:
-if (!localStorage.getItem('authToken')) {
-  document.getElementById('login-container')!.style.display = 'block';
-  document.getElementById('joining-page')!.style.display = 'none';
-  document.getElementById('flow-meeting')!.style.display = 'none';
-  // this.switchToFlow('login-container');
-} else if (localStorage.getItem('authToken') === 'viewonly') {
-  this.isViewOnly = true;
-}
-
-
-// Assuming you have a type definition for the response data structure. 
-// If not, you can use 'any' or create a more detailed type.
-
-interface ResponseData {
-  status: string;
-  token?: string;
-  message?: string;
-  user_id?: string;
-  first_name?: string;
-  last_name?: string;
-}
-document.querySelector('#loginForm')?.addEventListener('submit', (event: Event) => {
-  event.preventDefault();
-  document.getElementById('incorrect-pass')!.style.display = 'none';
-  const loginSpinner = document.getElementById('login-spinner')!;
-  loginSpinner.style.display = 'block';
-
-  const targetForm = event.target as HTMLFormElement;
-  const username: string = targetForm.username.value.toLowerCase();
-  // take the lowercase of the username
-
-  const password: string = targetForm.password.value;
-
-  // Convert username and password to base64
-  const base64Credentials = btoa(username + ':' + password);
-
-  fetch(`https://api.larq.ai/login`, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + base64Credentials
-      },
-      body: JSON.stringify({
-          username: username,
-          password: password
-      })
-
-  }).then(response => {
-    if (!response.ok) {
-      throw new Error('Login failed. Please check your username and password.');
+    // if you have localStorage.getItem('authToken') then hide the login form and show the joining page:
+    if (!localStorage.getItem('authToken')) {
+      document.getElementById('login-container')!.style.display = 'block';
+      document.getElementById('joining-page')!.style.display = 'none';
+      document.getElementById('flow-meeting')!.style.display = 'none';
+      // this.switchToFlow('login-container');
+    } else if (localStorage.getItem('authToken') === 'viewonly') {
+      this.isViewOnly = true;
     }
-    return response.json();
-  }).then((data: ResponseData) => {
-    if (data.status === 'success') {
-    console.log('Success:', data);
-    // first clear the local storage
-    localStorage.clear();
-    localStorage.setItem('authToken', data.token!);
-    localStorage.setItem('firstName', data.first_name!);
-    localStorage.setItem('lastName', data.last_name!);
-    localStorage.setItem('userId', data.user_id!);
-    localStorage.setItem('data', JSON.stringify(data));
-    // hide #login-spinner
-    document.getElementById('login-spinner')!.style.display = 'none';
-    // reload page
-    location.reload();
-    // document.getElementById('login-container')!.style.display = 'none';
-    // document.getElementById('joining-page')!.style.display = 'block';
 
-    // Console log user_id and last_name
-    console.log("User ID:", data.user_id);
-    console.log("Last Name:", data.last_name);
-    // console.log("Dashboard Stats:", data.dashboard_stats);
+    // Assuming you have a type definition for the response data structure.
+    // If not, you can use 'any' or create a more detailed type.
 
+    interface ResponseData {
+      status: string;
+      token?: string;
+      message?: string;
+      user_id?: string;
+      first_name?: string;
+      last_name?: string;
+    }
+    document.querySelector('#loginForm')?.addEventListener('submit', (event: Event) => {
+      event.preventDefault();
+      document.getElementById('incorrect-pass')!.style.display = 'none';
+      const loginSpinner = document.getElementById('login-spinner')!;
+      loginSpinner.style.display = 'block';
 
-  } else {
-    // Handle non-successful response
-    loginSpinner.style.display = 'none';
-    document.getElementById('incorrect-pass')!.innerHTML = 'Incorrect username or password.';
-    document.getElementById('incorrect-pass')!.style.display = 'block';
-  }
-  loginSpinner.style.display = 'none';
-})
-.catch(error => {
-  loginSpinner.style.display = 'none';
-  document.getElementById('incorrect-pass')!.style.display = 'block';
-  document.getElementById('incorrect-pass')!.innerHTML = error.message;
-});
-});
+      const targetForm = event.target as HTMLFormElement;
+      const username: string = targetForm.username.value.toLowerCase();
+      // take the lowercase of the username
 
+      const password: string = targetForm.password.value;
 
+      // Convert username and password to base64
+      const base64Credentials = btoa(username + ':' + password);
 
-  // Drew take 2
+      fetch(`https://api.larq.ai/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Basic ' + base64Credentials,
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Login failed. Please check your username and password.');
+          }
+          return response.json();
+        })
+        .then((data: ResponseData) => {
+          if (data.status === 'success') {
+            console.log('Success:', data);
+            // first clear the local storage
+            localStorage.clear();
+            localStorage.setItem('authToken', data.token!);
+            localStorage.setItem('firstName', data.first_name!);
+            localStorage.setItem('lastName', data.last_name!);
+            localStorage.setItem('userId', data.user_id!);
+            localStorage.setItem('data', JSON.stringify(data));
+            // hide #login-spinner
+            document.getElementById('login-spinner')!.style.display = 'none';
+            // reload page
+            location.reload();
+            // document.getElementById('login-container')!.style.display = 'none';
+            // document.getElementById('joining-page')!.style.display = 'block';
+
+            // Console log user_id and last_name
+            console.log('User ID:', data.user_id);
+            console.log('Last Name:', data.last_name);
+            // console.log("Dashboard Stats:", data.dashboard_stats);
+          } else {
+            // Handle non-successful response
+            loginSpinner.style.display = 'none';
+            document.getElementById('incorrect-pass')!.innerHTML =
+              'Incorrect username or password.';
+            document.getElementById('incorrect-pass')!.style.display = 'block';
+          }
+          loginSpinner.style.display = 'none';
+        })
+        .catch(error => {
+          loginSpinner.style.display = 'none';
+          document.getElementById('incorrect-pass')!.style.display = 'block';
+          document.getElementById('incorrect-pass')!.innerHTML = error.message;
+        });
+    });
+
+    // Drew take 2
     // Retrieve data from localStorage
     const storedData = JSON.parse(localStorage.getItem('data'));
     const data = storedData?.dashboard_stats || {}; // Check if dashboard_stats exists or default to an empty object
     const emptyDash = document.getElementById('empty-dash') as HTMLElement;
     const fullDash = document.getElementById('full-dash') as HTMLElement;
-    
+
     // Check if data exists and has recent_quizzes
     if (data && data.recent_quizzes && data.recent_quizzes.length > 0) {
-        const recentQuiz = data.recent_quizzes[0];  // Most recent quiz
-        if (fullDash && emptyDash) {
-          fullDash.style.display = 'block';
-            emptyDash.style.display = 'none';
-
-        }
-        document.getElementById('recentQuizTitle').textContent = `Science: Chapter ${recentQuiz.meeting_id}`;
-            // Calculate the Class Average for the recent quiz
-            const recentQuizAttempts = (data.last_attempts && Array.isArray(data.last_attempts)) ? 
-            data.last_attempts.filter((attempt: { quiz_id: any[] }) => attempt.quiz_id === recentQuiz.meeting_id) : [];
-            const recentAverage = recentQuizAttempts.reduce((acc: number, curr: { score: number }) => acc + curr.score, 0) / recentQuizAttempts.length;
-        document.getElementById('recentClassAverage').textContent = recentAverage.toFixed(2);
-
-
-        // Populate the dashboard with real data
-
-        // Calculate the Class Average
-        const average = (data.last_attempts && Array.isArray(data.last_attempts)) ? 
-        data.last_attempts.reduce((acc: number, curr: { score: number }) => acc + curr.score, 0) / data.last_attempts.length : 0;
-        const classAverageElem = document.getElementById('classAverage');
-      if(classAverageElem) {
-          classAverageElem.textContent = average.toFixed(2);
-        }
-
-
-        // Assuming the most difficult question is the one most frequently answered incorrectly
-        // This is just a placeholder, you'll need to replace with actual logic
-        document.getElementById('mostDifficultQuestion').innerHTML = '<p>Sample Difficult Question</p>';
-
-        // Find the top performer and the one needing attention
-        const sortedAttempts = (data.last_attempts && Array.isArray(data.last_attempts)) ? 
-        [...data.last_attempts].sort((a, b) => b.score - a.score) : [];
-            
-        const topPerformer = sortedAttempts.length > 0 ? sortedAttempts[0] : null;
-        const needsAttention = sortedAttempts.length > 0 ? sortedAttempts[sortedAttempts.length - 1] : null;
-        
-      if(topPerformer) {
-          document.getElementById('topPerformer').innerHTML = `<p>${topPerformer.user_id} <span>${(topPerformer.score * 100).toFixed(0)}%</span></p>`;
+      const recentQuiz = data.recent_quizzes[0]; // Most recent quiz
+      if (fullDash && emptyDash) {
+        fullDash.style.display = 'block';
+        emptyDash.style.display = 'none';
       }
-      
-      if(needsAttention) {
-          document.getElementById('needsAttention').innerHTML = `<p>${needsAttention.user_id} <span>${(needsAttention.score * 100).toFixed(0)}%</span></p>`;
-      }              
-        // You can continue populating other sections similarly...
+      document.getElementById(
+        'recentQuizTitle'
+      ).textContent = `Science: Chapter ${recentQuiz.meeting_id}`;
+      // Calculate the Class Average for the recent quiz
+      const recentQuizAttempts =
+        data.last_attempts && Array.isArray(data.last_attempts)
+          ? data.last_attempts.filter(
+              (attempt: { quiz_id: any[] }) => attempt.quiz_id === recentQuiz.meeting_id
+            )
+          : [];
+      const recentAverage =
+        recentQuizAttempts.reduce((acc: number, curr: { score: number }) => acc + curr.score, 0) /
+        recentQuizAttempts.length;
+      document.getElementById('recentClassAverage').textContent = recentAverage.toFixed(2);
 
+      // Populate the dashboard with real data
+
+      // Calculate the Class Average
+      const average =
+        data.last_attempts && Array.isArray(data.last_attempts)
+          ? data.last_attempts.reduce(
+              (acc: number, curr: { score: number }) => acc + curr.score,
+              0
+            ) / data.last_attempts.length
+          : 0;
+      const classAverageElem = document.getElementById('classAverage');
+      if (classAverageElem) {
+        classAverageElem.textContent = average.toFixed(2);
+      }
+
+      // Assuming the most difficult question is the one most frequently answered incorrectly
+      // This is just a placeholder, you'll need to replace with actual logic
+      document.getElementById('mostDifficultQuestion').innerHTML =
+        '<p>Sample Difficult Question</p>';
+
+      // Find the top performer and the one needing attention
+      const sortedAttempts =
+        data.last_attempts && Array.isArray(data.last_attempts)
+          ? [...data.last_attempts].sort((a, b) => b.score - a.score)
+          : [];
+
+      const topPerformer = sortedAttempts.length > 0 ? sortedAttempts[0] : null;
+      const needsAttention =
+        sortedAttempts.length > 0 ? sortedAttempts[sortedAttempts.length - 1] : null;
+
+      if (topPerformer) {
+        document.getElementById('topPerformer').innerHTML = `<p>${topPerformer.user_id} <span>${(
+          topPerformer.score * 100
+        ).toFixed(0)}%</span></p>`;
+      }
+
+      if (needsAttention) {
+        document.getElementById('needsAttention').innerHTML = `<p>${
+          needsAttention.user_id
+        } <span>${(needsAttention.score * 100).toFixed(0)}%</span></p>`;
+      }
+      // You can continue populating other sections similarly...
     } else {
-        // Hide the detailed dashboard and show the "no quizzes" message
+      // Hide the detailed dashboard and show the "no quizzes" message
 
-        if (emptyDash && fullDash) {
-          fullDash.style.display = 'none';
-          emptyDash.style.display = 'block';
-        }
+      if (emptyDash && fullDash) {
+        fullDash.style.display = 'none';
+        emptyDash.style.display = 'block';
+      }
     }
 
     // UPCOMING CLASSES ON LEFT OF DASH
@@ -1847,26 +1791,31 @@ document.querySelector('#loginForm')?.addEventListener('submit', (event: Event) 
     // Clear any existing listings (you might want to keep headers or static content)
     upcomingClassesContainer.innerHTML = '<p>Upcoming Classes</p>';
 
-        // Check if data exists and has next_meetings
-        if (data && data.next_meetings && data.next_meetings.length > 0) {
-  
-          data.next_meetings.forEach((meeting: Meeting) => {
-            // Convert the timestamp string to a Date object
-              const meetingDate = new Date(meeting.timestamp);
-              const today = new Date();
-  
-              let dateString;
-              if (meetingDate.toDateString() === today.toDateString()) {
-                  dateString = `${meetingDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}, Today`;
-              } else {
-                  dateString = `${meetingDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}, ${meetingDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`;
-              }
-  
-              // Construct the listing block for this meeting
-              const meetingBlock = document.createElement('div');
-              meetingBlock.classList.add('listingBlock', 'mt-3', 'mb-3');
-  
-              meetingBlock.innerHTML = `
+    // Check if data exists and has next_meetings
+    if (data && data.next_meetings && data.next_meetings.length > 0) {
+      data.next_meetings.forEach((meeting: Meeting) => {
+        // Convert the timestamp string to a Date object
+        const meetingDate = new Date(meeting.timestamp);
+        const today = new Date();
+
+        let dateString;
+        if (meetingDate.toDateString() === today.toDateString()) {
+          dateString = `${meetingDate.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          })}, Today`;
+        } else {
+          dateString = `${meetingDate.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          })}, ${meetingDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`;
+        }
+
+        // Construct the listing block for this meeting
+        const meetingBlock = document.createElement('div');
+        meetingBlock.classList.add('listingBlock', 'mt-3', 'mb-3');
+
+        meetingBlock.innerHTML = `
                   <div class="d-flex justify-content-between align-items-center meeting-calendar-item">
                       <div>
                           <h5>${meeting.meeting_name}</h5>  <!-- Adjust this if you have a more appropriate title for the meeting -->
@@ -1875,16 +1824,14 @@ document.querySelector('#loginForm')?.addEventListener('submit', (event: Event) 
                       <a href="?m=${meeting.host_id}">(Start the Meeting)</a>
                   </div>
               `;
-  
-              upcomingClassesContainer.appendChild(meetingBlock);
-          });
-  
-      } else {
 
-        const meetingBlock = document.createElement('div');
-        meetingBlock.classList.add('listingBlock', 'mt-3', 'mb-3');
+        upcomingClassesContainer.appendChild(meetingBlock);
+      });
+    } else {
+      const meetingBlock = document.createElement('div');
+      meetingBlock.classList.add('listingBlock', 'mt-3', 'mb-3');
 
-        meetingBlock.innerHTML = `
+      meetingBlock.innerHTML = `
             <div class="d-flex justify-content-between align-items-center meeting-calendar-item">
                 <div>
                     <h5>No Meetings Yet</h5> 
@@ -1893,29 +1840,21 @@ document.querySelector('#loginForm')?.addEventListener('submit', (event: Event) 
             </div>
         `;
 
-        upcomingClassesContainer.appendChild(meetingBlock);
+      upcomingClassesContainer.appendChild(meetingBlock);
 
-          // Handle the case where there are no upcoming meetings, if needed
-      }
-  
+      // Handle the case where there are no upcoming meetings, if needed
+    }
 
+    // Drew take 2 end
 
-  
-  
-  // Drew take 2 end
+    this.enableLiveTranscription = false;
+    this.noWordSeparatorForTranscription = false;
+    this.updateLiveTranscriptionDisplayState();
+    const token: string | null = localStorage.getItem('authToken');
+    if (token) {
+      const data = JSON.parse(localStorage.getItem('data') || '{}');
 
-
-
-
-
-  this.enableLiveTranscription = false;
-  this.noWordSeparatorForTranscription = false;
-  this.updateLiveTranscriptionDisplayState();
-  const token: string | null = localStorage.getItem('authToken');
-  if (token) {
-    const data = JSON.parse(localStorage.getItem('data') || '{}');
-
-    if (data) {
+      if (data) {
         const firstName = data.first_name;
         const lastName = data.last_name;
 
@@ -1925,64 +1864,52 @@ document.querySelector('#loginForm')?.addEventListener('submit', (event: Event) 
         document.getElementById('dropdownLastName').textContent = lastName;
         document.getElementById('dropdownEmail').textContent = data.email;
 
-
         // If you have a list of students for "Completed" and "Did not complete", you'd loop through the data and create elements dynamically
-    }
-
-
-  } else {
+      }
+    } else {
       document.getElementById('login-container')!.style.display = 'block';
       document.getElementById('joining-page')!.style.display = 'none';
-  }
+    }
 
+    function logout(): void {
+      // localStorage.removeItem('authToken');
+      // localStorage.removeItem('data');
+      // remove all localstorage items:
+      localStorage.clear();
+      location.reload();
+    }
+    // if user clicks .logout button class, call logout function
+    document.querySelector('.logout')?.addEventListener('click', logout);
 
+    // if #join-view-only is clicked add "viewonly" to authToken, show #main-page and hide #login-container:
+    document.querySelector('#join-view-only')?.addEventListener('click', () => {
+      alert('clicked view only');
+      localStorage.setItem('authToken', 'viewonly');
+      this.isViewOnly = true;
+      document.getElementById('login-container')!.style.display = 'none';
+      document.getElementById('main-page')!.style.display = 'block';
+      this.switchToFlow('flow-meeting');
+    });
 
-function logout(): void {
-  // localStorage.removeItem('authToken');
-  // localStorage.removeItem('data');
-  // remove all localstorage items:
-  localStorage.clear();
-  location.reload();
-}
-// if user clicks .logout button class, call logout function
-document.querySelector('.logout')?.addEventListener('click', logout);
+    // END DREW LOGIN
 
-// if #join-view-only is clicked add "viewonly" to authToken, show #main-page and hide #login-container:
-document.querySelector('#join-view-only')?.addEventListener('click', () => {
-  alert("clicked view only");
-  localStorage.setItem('authToken', 'viewonly');
-  this.isViewOnly = true;
-  document.getElementById('login-container')!.style.display = 'none';
-  document.getElementById('main-page')!.style.display = 'block';
-  this.switchToFlow('flow-meeting');
-});
+    // DREW REGISTRATION
 
-
-// END DREW LOGIN
-
-// DREW REGISTRATION
-
-
-// add a listener for #end-quiz-button that when clicked will set #quiz_in_progress to display none and #create-quiz to display block
-document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
-  const quiz_in_progress = document.getElementById('quiz_in_progress');
-  const create_quiz = document.getElementById('create-quiz');
-  const end_quiz_modal = document.getElementById('end-quiz-modal');
-  end_quiz_modal.classList.remove('show');
-  if (quiz_in_progress && create_quiz) {
-    quiz_in_progress.style.display = 'none';
-    create_quiz.style.display = 'block';
-  }
- 
-});
-
-
+    // add a listener for #end-quiz-button that when clicked will set #quiz_in_progress to display none and #create-quiz to display block
+    document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
+      const quiz_in_progress = document.getElementById('quiz_in_progress');
+      const create_quiz = document.getElementById('create-quiz');
+      const end_quiz_modal = document.getElementById('end-quiz-modal');
+      end_quiz_modal.classList.remove('show');
+      if (quiz_in_progress && create_quiz) {
+        quiz_in_progress.style.display = 'none';
+        create_quiz.style.display = 'block';
+      }
+    });
 
     // END QUIZBOT
     // *****************************
     // *****************************
-
-
 
     (document.getElementById('join-muted') as HTMLInputElement).addEventListener('change', e => {
       this.joinMuted = (e.target as HTMLInputElement).checked;
@@ -1997,10 +1924,10 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       // Firefox currently does not support audio redundancy through insertable streams or
       // script transform so disable the redundancy checkbox
       (document.getElementById('disable-audio-redundancy') as HTMLInputElement).disabled = true;
-      (document.getElementById('disable-audio-redundancy-checkbox') as HTMLElement).style.display = 'none';
+      (document.getElementById('disable-audio-redundancy-checkbox') as HTMLElement).style.display =
+        'none';
     }
 
-    
     if (!this.defaultBrowserBehavior.hasChromiumWebRTC()) {
       (document.getElementById('simulcast') as HTMLInputElement).disabled = true;
       document.getElementById('content-simulcast-config').style.display = 'none';
@@ -2050,11 +1977,9 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
 
     const replicaMeetingInput = document.getElementById('replica-meeting-input');
     replicaMeetingInput.addEventListener('change', async _e => {
-      (document.getElementById('primary-meeting-external-id') as HTMLInputElement).value = "";
+      (document.getElementById('primary-meeting-external-id') as HTMLInputElement).value = '';
     });
 
-
-    
     document.getElementById('quick-join').addEventListener('click', async e => {
       e.preventDefault();
       this.showProgress('progress-authenticate');
@@ -2065,7 +1990,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       }
       this.redirectFromAuthentication(true);
     });
-    
+
     document.getElementById('form-authenticate').addEventListener('submit', async e => {
       e.preventDefault();
       const makeMeeting = await handleJoinAction();
@@ -2077,7 +2002,6 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       }
       this.redirectFromAuthentication();
     });
-    
 
     async function handleJoinAction(): Promise<boolean> {
       const meetingInput = document.getElementById('inputMeeting') as HTMLInputElement; // Cast to HTMLInputElement
@@ -2087,65 +2011,61 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       try {
         const response = await fetch(`https://api.larq.ai/meetings/${meetingID}`, {
           method: 'GET',
-          headers: {  
+          headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + (localStorage.getItem('authToken') || ''),
+            Authorization: 'Bearer ' + (localStorage.getItem('authToken') || ''),
           },
-          mode: 'cors' // Ensure this is set if you're dealing with CORS
+          mode: 'cors', // Ensure this is set if you're dealing with CORS
         });
-            const data = await response.json();
+        const data = await response.json();
         if (data.status === 'success') {
-              // Handle joining or starting the meeting (NEW MEETING)
-              console.log(data.message);
-              const meeting_id = data.message._id;
-              const host_id = data.message.host_id;
-              // set localstorage "host_id" to data.host_id
-              localStorage.removeItem('host_id');
-              localStorage.removeItem('meeting_id');
+          // Handle joining or starting the meeting (NEW MEETING)
+          console.log(data.message);
+          const meeting_id = data.message._id;
+          const host_id = data.message.host_id;
+          // set localstorage "host_id" to data.host_id
+          localStorage.removeItem('host_id');
+          localStorage.removeItem('meeting_id');
 
-              localStorage.setItem('host_id', host_id);
-              localStorage.setItem('meeting_id', meeting_id);
+          localStorage.setItem('host_id', host_id);
+          localStorage.setItem('meeting_id', meeting_id);
 
-              // if host_id === user_id then show #create-quiz
-              if (host_id === localStorage.getItem('userId')) {
-                document.getElementById('end-meeting-display').classList.remove('d-none');
-              }
-
-              noMeetingAlert?.classList.add('d-none');
-              return true;
-              // Redirect to meeting page or perform other actions
+          // if host_id === user_id then show #create-quiz
+          if (host_id === localStorage.getItem('userId')) {
+            document.getElementById('end-meeting-display').classList.remove('d-none');
           }
-          else {
-              console.error(data.message);
-              // alert(data.message);
-              // redirect them to app.larq.ai:
-              // const token = localStorage.getItem('authToken');
-              // window.location.href = `https://app.larq.ai?token=${token}`;
-              // make #no-meeting-alert visible
-              noMeetingAlert?.classList.remove('d-none');
-              // stop the script from running:
 
+          noMeetingAlert?.classList.add('d-none');
+          return true;
+          // Redirect to meeting page or perform other actions
+        } else {
+          console.error(data.message);
+          // alert(data.message);
+          // redirect them to app.larq.ai:
+          // const token = localStorage.getItem('authToken');
+          // window.location.href = `https://app.larq.ai?token=${token}`;
+          // make #no-meeting-alert visible
+          noMeetingAlert?.classList.remove('d-none');
+          // stop the script from running:
 
-              
-              return false;
-          }
-    } catch (error) {
-         console.error('Error:', error);
+          return false;
         }
+      } catch (error) {
+        console.error('Error:', error);
       }
-    
+    }
 
     const earlyConnectCheckbox = document.getElementById('preconnect') as HTMLInputElement;
     earlyConnectCheckbox.checked = SHOULD_EARLY_CONNECT;
     earlyConnectCheckbox.onchange = () => {
       SHOULD_EARLY_CONNECT = !!earlyConnectCheckbox.checked;
-    }
+    };
 
     const dieCheckbox = document.getElementById('die') as HTMLInputElement;
     dieCheckbox.checked = SHOULD_DIE_ON_FATALS;
     dieCheckbox.onchange = () => {
       SHOULD_DIE_ON_FATALS = !!dieCheckbox.checked;
-    }
+    };
 
     const speechMonoCheckbox = document.getElementById(
       'fullband-speech-mono-quality'
@@ -2301,7 +2221,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
 
     document.getElementById('form-devices').addEventListener('submit', e => {
       e.preventDefault();
-   
+
       AsyncScheduler.nextTick(async () => {
         try {
           this.showProgress('progress-join');
@@ -2416,7 +2336,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
 
         recorder = new MediaRecorder(mixed, { mimeType: 'video/webm; codecs=vp9' });
         console.info('Setting recorder to', recorder);
-        recorder.ondataavailable = (event) => {
+        recorder.ondataavailable = event => {
           if (event.data.size) {
             chunks.push(event.data);
           }
@@ -2454,7 +2374,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
             await this.openVideoInputFromSelection(camera, false);
             this.audioVideo.startLocalVideoTile();
           } catch (err) {
-            this.toggleButton('button-camera', 'off')
+            this.toggleButton('button-camera', 'off');
             fatal(err);
           }
         } else {
@@ -2625,7 +2545,9 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       'custom-language-model-checkbox'
     ) as HTMLInputElement;
     languageModelCb.addEventListener('click', () => {
-      document.getElementById('language-model').classList.toggle('hidden', !languageModelCb.checked);
+      document
+        .getElementById('language-model')
+        .classList.toggle('hidden', !languageModelCb.checked);
     });
 
     const buttonStartTranscription = document.getElementById('button-start-transcription');
@@ -2897,10 +2819,11 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
         }
       }
     });
-    
 
     // STUDENT'S FORUM VIEW
-    const textAreaSendForumMessage = document.getElementById('forumContainer') as HTMLTextAreaElement;
+    const textAreaSendForumMessage = document.getElementById(
+      'forumContainer'
+    ) as HTMLTextAreaElement;
     textAreaSendForumMessage.addEventListener('keydown', e => {
       if (e.key === 'Enter') {
         if (e.shiftKey) {
@@ -2913,8 +2836,11 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
             message: textToSend,
             userId: localStorage.getItem('host_id'),
             time: Date.now(),
-            selfID: window.demoMeetingAppInstance.meetingSession.configuration.credentials.attendeeId,
-            selfName: window.demoMeetingAppInstance.meetingSession.configuration.credentials.attendeeId.split('#').slice(-1)[0]
+            selfID:
+              window.demoMeetingAppInstance.meetingSession.configuration.credentials.attendeeId,
+            selfName: window.demoMeetingAppInstance.meetingSession.configuration.credentials.attendeeId
+              .split('#')
+              .slice(-1)[0],
           };
           // alert("messageObject : " + JSON.stringify(messageObject));
           window.demoMeetingAppInstance.sendForumMessage(messageObject);
@@ -2922,11 +2848,9 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
           queriesBlock2.innerHTML += `<div class="message-bubble-sender">You</div><div class="message-bubble-user"><p class="markdown">${textToSend}</p></div>`;
           textAreaSendForumMessage.rows = 1;
           textAreaSendForumMessage.value = '';
-
         }
       }
     });
-
 
     const buttonMeetingEnd = document.getElementById('button-meeting-end');
     buttonMeetingEnd.addEventListener('click', _e => {
@@ -2971,7 +2895,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
         const pps = (1000 * deltaPackets) / deltaTime;
 
         let overage = 0;
-        if ((pps > 52) || (pps < 47)) {
+        if (pps > 52 || pps < 47) {
           console.error('PPS:', pps, `(${++overage})`);
         } else {
           overage = 0;
@@ -2987,12 +2911,14 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
     // @ts-ignore
     customStatsReports.forEach(report => {
       if (report.type === 'inbound-rtp-red' && report.kind === 'audio') {
-
         const deltaExpected = report.totalAudioPacketsExpected - this.lastTotalAudioPacketsExpected;
         const deltaLost = report.totalAudioPacketsLost - this.lastTotalAudioPacketsLost;
-        const deltaRedRecovered = report.totalAudioPacketsRecoveredRed - this.lastTotalAudioPacketsRecoveredRed;
-        const deltaFecRecovered = report.totalAudioPacketsRecoveredFec - this.lastTotalAudioPacketsRecoveredFec;
-        if (this.lastRedRecoveryMetricsReceived === 0) this.lastRedRecoveryMetricsReceived = report.timestamp;
+        const deltaRedRecovered =
+          report.totalAudioPacketsRecoveredRed - this.lastTotalAudioPacketsRecoveredRed;
+        const deltaFecRecovered =
+          report.totalAudioPacketsRecoveredFec - this.lastTotalAudioPacketsRecoveredFec;
+        if (this.lastRedRecoveryMetricsReceived === 0)
+          this.lastRedRecoveryMetricsReceived = report.timestamp;
         const deltaTime = report.timestamp - this.lastRedRecoveryMetricsReceived;
         this.lastRedRecoveryMetricsReceived = report.timestamp;
         this.lastTotalAudioPacketsExpected = report.totalAudioPacketsExpected;
@@ -3010,12 +2936,18 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
           redRecoveryPercent = 100 * (deltaRedRecovered / deltaLost);
           fecRecoveryPercent = 100 * (deltaFecRecovered / deltaLost);
         }
-        console.debug(`[AudioRed] time since last report = ${deltaTime/1000}s, loss % = ${lossPercent}, red recovery % = ${redRecoveryPercent}, fec recovery % = ${fecRecoveryPercent}, total expected = ${report.totalAudioPacketsExpected}, total lost = ${report.totalAudioPacketsLost}, total red recovered  = ${report.totalAudioPacketsRecoveredRed}, total fec recovered = ${report.totalAudioPacketsRecoveredFec}`);
+        console.debug(
+          `[AudioRed] time since last report = ${
+            deltaTime / 1000
+          }s, loss % = ${lossPercent}, red recovery % = ${redRecoveryPercent}, fec recovery % = ${fecRecoveryPercent}, total expected = ${
+            report.totalAudioPacketsExpected
+          }, total lost = ${report.totalAudioPacketsLost}, total red recovered  = ${
+            report.totalAudioPacketsRecoveredRed
+          }, total fec recovered = ${report.totalAudioPacketsRecoveredFec}`
+        );
       }
     });
   }
-
-
 
   getSupportedMediaRegions(): string[] {
     const supportedMediaRegions: string[] = [];
@@ -3071,7 +3003,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
     }
     await this.audioVideo
       .promoteToPrimaryMeeting(this.primaryMeetingSessionCredentials)
-        .then((status) => {
+      .then(status => {
         const toastContainer = document.getElementById('toast-container');
         const toast = document.createElement('meeting-toast') as MeetingToast;
         toastContainer.appendChild(toast);
@@ -3490,18 +3422,20 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       new DefaultEventController(configuration, this.meetingLogger, this.eventReporter)
     );
 
-    const enableAudioRedundancy = !((document.getElementById('disable-audio-redundancy') as HTMLInputElement).checked);
+    const enableAudioRedundancy = !(document.getElementById(
+      'disable-audio-redundancy'
+    ) as HTMLInputElement).checked;
     let audioProfile: AudioProfile = new AudioProfile(null, enableAudioRedundancy);
     if ((document.getElementById('fullband-speech-mono-quality') as HTMLInputElement).checked) {
       audioProfile = AudioProfile.fullbandSpeechMono(enableAudioRedundancy);
       this.log('Using audio profile fullband-speech-mono-quality');
     } else if (
-        (document.getElementById('fullband-music-mono-quality') as HTMLInputElement).checked
+      (document.getElementById('fullband-music-mono-quality') as HTMLInputElement).checked
     ) {
       audioProfile = AudioProfile.fullbandMusicMono(enableAudioRedundancy);
       this.log('Using audio profile fullband-music-mono-quality');
     } else if (
-        (document.getElementById('fullband-music-stereo-quality') as HTMLInputElement).checked
+      (document.getElementById('fullband-music-stereo-quality') as HTMLInputElement).checked
     ) {
       audioProfile = AudioProfile.fullbandMusicStereo(enableAudioRedundancy);
       this.log('Using audio profile fullband-music-stereo-quality');
@@ -3594,7 +3528,9 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
 
   private isLocalHost(): boolean {
     return (
-      document.location.host === '127.0.0.1:8080' || document.location.host === 'localhost:8080' || document.location.host === '127.0.0.1:8081'
+      document.location.host === '127.0.0.1:8080' ||
+      document.location.host === 'localhost:8080' ||
+      document.location.host === '127.0.0.1:8081'
     );
   }
 
@@ -3749,7 +3685,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
         return;
       }
       this.lastReceivedMessageTimestamp = dataMessage.timestampMs;
-     
+
       // DREW ADD
       // console.log("*************************message:", dataMessage);
       // console.log("*************************message.TYPE:", dataMessage.topic);
@@ -3758,32 +3694,33 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
         const senderName = dataMessage.senderExternalUserId.split('#').slice(-1)[0];
 
         // if the sender is the same as the current user, update the queries block 2 with the question
-        if (JSON.parse(dataMessage.text()).userId === this.meetingSession.configuration.credentials.attendeeId) {
+        if (
+          JSON.parse(dataMessage.text()).userId ===
+          this.meetingSession.configuration.credentials.attendeeId
+        ) {
           // update queries block 2 with the question
           const question = JSON.parse(dataMessage.text()).message;
           const queriesBlock2 = document.getElementById('queries-block2');
           queriesBlock2.innerHTML += `<div class="message-bubble-sender">${senderName}</div><div class="message-bubble-self"><p class="markdown">${question}</p></div>`;
           return;
-
         } else {
- 
-      // alert("Received "+dataMessage.text() + "added senderName to "+ senderName);
-      // get userid
-      const senderAttendeeId = this.meetingSession.configuration.credentials.attendeeId;
-      showForumQuestion(dataMessage.text(),senderAttendeeId, senderName);
-      return;}
- 
+          // alert("Received "+dataMessage.text() + "added senderName to "+ senderName);
+          // get userid
+          const senderAttendeeId = this.meetingSession.configuration.credentials.attendeeId;
+          showForumQuestion(dataMessage.text(), senderAttendeeId, senderName);
+          return;
+        }
       } else if (dataMessage.topic === 'displayForm' && !isSelf) {
-      console.log('*************************RUNNNING DISPLAYFORM:');
-      console.log('Received message:', dataMessage.text());        
-      populateQuiz(dataMessage.text());
-      // QUIZ RECEIVED HANDLER END
+        console.log('*************************RUNNNING DISPLAYFORM:');
+        console.log('Received message:', dataMessage.text());
+        populateQuiz(dataMessage.text());
+        // QUIZ RECEIVED HANDLER END
 
-      let myModalEl = document.getElementById('challenge-modal');
-      if (myModalEl) {
+        let myModalEl = document.getElementById('challenge-modal');
+        if (myModalEl) {
           let myModal = new Modal(myModalEl);
           myModal.show();
-      }
+        }
         return;
       } else if (dataMessage.topic === 'displayForm' && isSelf) {
         // display the "Quiz started at ___ " timestamp on #quiz-timestamp element:
@@ -3792,37 +3729,36 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
         // display the date object in the #quiz-timestamp element:
         quizTimestamp.innerText = `Quiz started at: ${date}`;
 
-        return;        
+        return;
       } else {
+        // DREW ADD END
 
+        const messageDiv = document.getElementById('receive-message') as HTMLDivElement;
+        const messageNameSpan = document.createElement('div') as HTMLDivElement;
+        messageNameSpan.classList.add('message-bubble-sender');
+        messageNameSpan.innerText = dataMessage.senderExternalUserId.split('#').slice(-1)[0];
 
-      // DREW ADD END
+        const messageTextSpan = document.createElement('div') as HTMLDivElement;
+        messageTextSpan.classList.add(isSelf ? 'message-bubble-self' : 'message-bubble-other');
+        messageTextSpan.innerHTML = this.markdown
+          .render(dataMessage.text())
+          .replace(/[<]a /g, '<a target="_blank" ');
 
-      const messageDiv = document.getElementById('receive-message') as HTMLDivElement;
-      const messageNameSpan = document.createElement('div') as HTMLDivElement;
-      messageNameSpan.classList.add('message-bubble-sender');
-      messageNameSpan.innerText = dataMessage.senderExternalUserId.split('#').slice(-1)[0];
-
-      const messageTextSpan = document.createElement('div') as HTMLDivElement;
-      messageTextSpan.classList.add(isSelf ? 'message-bubble-self' : 'message-bubble-other');
-      messageTextSpan.innerHTML = this.markdown
-        .render(dataMessage.text())
-        .replace(/[<]a /g, '<a target="_blank" ');
-
-      const appendClass = (element: HTMLElement, className: string): void => {
-        for (let i = 0; i < element.children.length; i++) {
-          const child = element.children[i] as HTMLElement;
-          child.classList.add(className);
-          appendClass(child, className);
+        const appendClass = (element: HTMLElement, className: string): void => {
+          for (let i = 0; i < element.children.length; i++) {
+            const child = element.children[i] as HTMLElement;
+            child.classList.add(className);
+            appendClass(child, className);
+          }
+        };
+        appendClass(messageTextSpan, 'markdown');
+        if (this.lastMessageSender !== dataMessage.senderAttendeeId) {
+          messageDiv.appendChild(messageNameSpan);
         }
-      };
-      appendClass(messageTextSpan, 'markdown');
-      if (this.lastMessageSender !== dataMessage.senderAttendeeId) {
-        messageDiv.appendChild(messageNameSpan);
+        this.lastMessageSender = dataMessage.senderAttendeeId;
+        messageDiv.appendChild(messageTextSpan);
+        messageDiv.scrollTop = messageDiv.scrollHeight;
       }
-      this.lastMessageSender = dataMessage.senderAttendeeId;
-      messageDiv.appendChild(messageTextSpan);
-      messageDiv.scrollTop = messageDiv.scrollHeight; }
     } else {
       this.log('Message is throttled. Please resend');
     }
@@ -3855,7 +3791,6 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       }
     );
   }
-
 
   transcriptEventHandler = (transcriptEvent: TranscriptEvent): void => {
     if (!this.enableLiveTranscription) {
@@ -4060,7 +3995,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
     spaceSpan.classList.add('transcript-content');
     spaceSpan.innerText = '\u00a0';
     return spaceSpan;
-  };
+  }
 
   appendNewSpeakerTranscriptDiv = (
     segment: TranscriptSegment,
@@ -4355,6 +4290,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
     callback: (name: string) => void
   ): void {
     const menu = document.getElementById(elementId) as HTMLDivElement;
+    console.log('THE ELEMENT ID IS', elementId);
     while (menu.firstElementChild) {
       menu.removeChild(menu.firstElementChild);
     }
@@ -4364,8 +4300,9 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       });
     }
     if (additionalOptions.length) {
-      this.createDropdownMenuItem(menu, '──────────', () => { }).classList.add('text-center');
+      this.createDropdownMenuItem(menu, '──────────', () => {}).classList.add('text-center');
       for (const additionalOption of additionalOptions) {
+        console.log('the additional option is', additionalOption);
         this.createDropdownMenuItem(
           menu,
           additionalOption,
@@ -4377,15 +4314,16 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       }
     }
     if (additionalToggles?.length) {
-      this.createDropdownMenuItem(menu, '──────────', () => { }).classList.add('text-center');
+      //this.createDropdownMenuItem(menu, '──────────', () => {}).classList.add('text-center');
       for (const { name, oncreate, action } of additionalToggles) {
         const id = `toggle-${elementId}-${name.replace(/\s/g, '-')}`;
+        console.log('the toggle id', id);
         const elem = this.createDropdownMenuItem(menu, name, action, id);
         oncreate(elem);
       }
     }
     if (!menu.firstElementChild) {
-      this.createDropdownMenuItem(menu, 'Device selection unavailable', () => { });
+      this.createDropdownMenuItem(menu, 'Device selection unavailable', () => {});
     }
   }
 
@@ -4440,7 +4378,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
     return {
       paths: BACKGROUND_BLUR_PATHS,
       model: BACKGROUND_BLUR_MODEL,
-      ...BACKGROUND_BLUR_ASSET_SPEC
+      ...BACKGROUND_BLUR_ASSET_SPEC,
     };
   }
 
@@ -4449,7 +4387,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
     let filters: VideoFilterName[] = ['None'];
 
     if (this.areVideoFiltersSupported()) {
-      filters = filters.concat(VIDEO_FILTERS);
+      //filters = filters.concat(VIDEO_FILTERS);
       if (platformCanSupportBodyPixWithoutDegradation()) {
         if (!this.loadingBodyPixDependencyPromise) {
           this.loadingBodyPixDependencyPromise = loadBodyPixDependency(
@@ -4457,26 +4395,26 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
           );
         }
         // do not use `await` to avoid blocking page loading
-        this.loadingBodyPixDependencyPromise
-          .then(() => {
-            filters.push('Segmentation');
-            this.populateFilterList(isPreviewWindow, genericName, filters);
-          })
-          .catch(err => {
-            this.log('Could not load BodyPix dependency', err);
-          });
+        // this.loadingBodyPixDependencyPromise
+        //   .then(() => {
+        //     filters.push('Segmentation');
+        //     this.populateFilterList(isPreviewWindow, genericName, filters);
+        //   })
+        //   .catch(err => {
+        //     this.log('Could not load BodyPix dependency', err);
+        //   });
       }
 
-      if (this.supportsBackgroundBlur) {
-        filters.push('Background Blur 10% CPU');
-        filters.push('Background Blur 20% CPU');
-        filters.push('Background Blur 30% CPU');
-        filters.push('Background Blur 40% CPU');
-      }
+      // if (this.supportsBackgroundBlur) {
+      //   filters.push('Background Blur 10% CPU');
+      //   filters.push('Background Blur 20% CPU');
+      //   filters.push('Background Blur 30% CPU');
+      //   filters.push('Background Blur 40% CPU');
+      // }
 
-      if (this.supportsBackgroundReplacement) {
-        filters.push('Background Replacement');
-      }
+      // if (this.supportsBackgroundReplacement) {
+      //   filters.push('Background Replacement');
+      // }
 
       // Add VideoFx functionality/options if the processor is supported
       if (this.supportsVideoFx) {
@@ -4510,15 +4448,15 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
 
   async populateAudioInputList(): Promise<void> {
     const genericName = 'Microphone';
-    let additionalDevices = ['None', '440 Hz', 'Prerecorded Speech', 'Prerecorded Speech Loop (Mono)', 'Echo'];
-    const additionalStereoTestDevices = ['L-500Hz R-1000Hz', 'Prerecorded Speech Loop (Stereo)'];
+    let additionalDevices = [] as string[];
+    const additionalStereoTestDevices = [] as string[];
     const additionalToggles = [];
 
-    if (!this.defaultBrowserBehavior.hasFirefoxWebRTC()) {
-      // We don't add this in Firefox because there is no known mechanism, using MediaStream or WebAudio APIs,
-      // to *not* generate audio in Firefox. By default, everything generates silent audio packets in Firefox.
-      additionalDevices.push('No Audio');
-    }
+    // if (!this.defaultBrowserBehavior.hasFirefoxWebRTC()) {
+    //   // We don't add this in Firefox because there is no known mechanism, using MediaStream or WebAudio APIs,
+    //   // to *not* generate audio in Firefox. By default, everything generates silent audio packets in Firefox.
+    //   additionalDevices.push('No Audio');
+    // }
 
     // This can't work unless Web Audio is enabled.
     if (this.enableWebAudio && this.supportsVoiceFocus) {
@@ -4653,14 +4591,30 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
   }
 
   async populateVideoInputList(): Promise<void> {
+    let filters: VideoFilterName[] = ['None'];
+
+    if (this.areVideoFiltersSupported()) {
+      if (platformCanSupportBodyPixWithoutDegradation()) {
+        if (!this.loadingBodyPixDependencyPromise) {
+          this.loadingBodyPixDependencyPromise = loadBodyPixDependency(
+            this.loadingBodyPixDependencyTimeoutMs
+          );
+        }
+      }
+      if (this.supportsVideoFx) {
+        BACKGROUND_FILTER_V2_LIST.map(effectName => filters.push(effectName));
+      }
+    }
+
     const genericName = 'Camera';
-    const additionalDevices = ['None', 'Blue', 'SMPTE Color Bars'];
+    const additionalDevices = filters;
     this.populateDeviceList(
       'video-input',
       genericName,
       await this.audioVideo.listVideoInputDevices(),
       additionalDevices
     );
+    await this.populateVideoFilterInputList(true);
     this.populateInMeetingDeviceList(
       'dropdown-menu-camera',
       genericName,
@@ -4671,10 +4625,14 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
         try {
           // If video is already started sending or the video button is enabled, then reselect a new stream
           // Otherwise, just update the device.
-          if (this.meetingSession.audioVideo.hasStartedLocalVideoTile()) {
-            await this.openVideoInputFromSelection(name, false);
+          if (filters.includes(name as VideoFilterName)) {
+            await this.selectVideoFilterByName(name as VideoFilterName);
           } else {
-            this.selectedVideoInput = name;
+            if (this.meetingSession.audioVideo.hasStartedLocalVideoTile()) {
+              await this.openVideoInputFromSelection(name, false);
+            } else {
+              this.selectedVideoInput = name;
+            }
           }
         } catch (err) {
           fatal(err);
@@ -4976,7 +4934,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       transformer = VoiceFocusDeviceTransformer.create(spec, { logger }, config, this.joinInfo);
     }
 
-    return this.voiceFocusTransformer = await transformer;
+    return (this.voiceFocusTransformer = await transformer);
   }
 
   private async createVoiceFocusDevice(inner: Device): Promise<VoiceFocusTransformDevice | Device> {
@@ -4994,7 +4952,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
       const vf: VoiceFocusTransformDevice = await transformer.createTransformDevice(inner);
       if (vf) {
         await vf.observeMeetingAudio(this.audioVideo);
-        return this.voiceFocusDevice = vf;
+        return (this.voiceFocusDevice = vf);
       }
     } catch (e) {
       // Fall through.
@@ -5127,18 +5085,16 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
    * @param videoFilter
    */
   private updateFxConfig(videoFilter: string): void {
-    this.videoFxConfig.backgroundBlur.isEnabled = (
+    this.videoFxConfig.backgroundBlur.isEnabled =
       videoFilter === 'Background Blur 2.0 - Low' ||
       videoFilter === 'Background Blur 2.0 - Medium' ||
-      videoFilter === 'Background Blur 2.0 - High'
-    )
+      videoFilter === 'Background Blur 2.0 - High';
 
-    this.videoFxConfig.backgroundReplacement.isEnabled = (
+    this.videoFxConfig.backgroundReplacement.isEnabled =
       videoFilter === 'Background Replacement 2.0 - (Beach)' ||
       videoFilter === 'Background Replacement 2.0 - (Default)' ||
-      videoFilter === 'Background Replacement 2.0 - (Blue)'
-    )
-    switch(videoFilter) {
+      videoFilter === 'Background Replacement 2.0 - (Blue)';
+    switch (videoFilter) {
       case 'Background Blur 2.0 - Low':
         this.videoFxConfig.backgroundBlur.strength = 'low';
         break;
@@ -5373,8 +5329,8 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
 
   audioVideoDidStart(): void {
     this.log('session started');
-     // Assign the host ID if not already set (e.g., to the current user's attendee ID)
-     if (!this.meetingHostId) {
+    // Assign the host ID if not already set (e.g., to the current user's attendee ID)
+    if (!this.meetingHostId) {
       this.meetingHostId = this.meetingSession.configuration.credentials.attendeeId;
     }
   }
@@ -5548,7 +5504,8 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
 
   private redirectFromAuthentication(quickjoin: boolean = false): void {
     this.meeting = (document.getElementById('inputMeeting') as HTMLInputElement).value;
-    this.name = (document.getElementById('inputName') as HTMLInputElement).value || 'Anonymous User';
+    this.name =
+      (document.getElementById('inputName') as HTMLInputElement).value || 'Anonymous User';
     this.region = (document.getElementById('inputRegion') as HTMLInputElement).value;
     this.enableSimulcast = (document.getElementById('simulcast') as HTMLInputElement).checked;
     this.enableEventReporting = (document.getElementById(
@@ -5560,9 +5517,9 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
     this.disablePeriodicKeyframeRequestOnContentSender = (document.getElementById(
       'disable-content-keyframe'
     ) as HTMLInputElement).checked;
-      this.allowAttendeeCapabilities = (document.getElementById(
-        'allow-attendee-capabilities'
-      ) as HTMLInputElement).checked;  
+    this.allowAttendeeCapabilities = (document.getElementById(
+      'allow-attendee-capabilities'
+    ) as HTMLInputElement).checked;
     this.enableWebAudio = (document.getElementById('webaudio') as HTMLInputElement).checked;
     this.usePriorityBasedDownlinkPolicy = (document.getElementById(
       'priority-downlink-policy'
@@ -5575,7 +5532,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
     ) as HTMLInputElement).value;
 
     const chosenLogLevel = (document.getElementById('logLevelSelect') as HTMLSelectElement).value;
-    
+
     switch (chosenLogLevel) {
       // case 'info':
       //   this.logLevel = LogLevel.INFO;
@@ -5633,7 +5590,9 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
           console.error(error);
           const httpErrorMessage =
             'UserMedia is not allowed in HTTP sites. Either use HTTPS or enable media capture on insecure sites.';
-          (document.getElementById('failed-meeting') as HTMLDivElement).innerText = `Meeting ID: ${this.meeting}`;
+          (document.getElementById(
+            'failed-meeting'
+          ) as HTMLDivElement).innerText = `Meeting ID: ${this.meeting}`;
 
           (document.getElementById('failed-meeting-error') as HTMLDivElement).innerText =
             window.location.protocol === 'http:' ? httpErrorMessage : error.message;
@@ -5642,11 +5601,10 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
         }
         (document.getElementById(
           'meeting-id'
-      ) as HTMLSpanElement).innerText = `${this.meeting} (${this.region})`;
-      (document.getElementById(
+        ) as HTMLSpanElement).innerText = `${this.meeting} (${this.region})`;
+        (document.getElementById(
           'chime-meeting-id'
-      ) as HTMLSpanElement).innerText = `Meeting ID: ${chimeMeetingId}`;
-
+        ) as HTMLSpanElement).innerText = `Meeting ID: ${chimeMeetingId}`;
 
         (document.getElementById(
           'mobile-chime-meeting-id'
@@ -5657,7 +5615,7 @@ document.querySelector('#end-quiz-button')?.addEventListener('click', () => {
 
         (document.getElementById(
           'desktop-attendee-id'
-      ) as HTMLSpanElement).innerText = `Attendee ID: ${this.meetingSession.configuration.credentials.attendeeId}`;
+        ) as HTMLSpanElement).innerText = `Attendee ID: ${this.meetingSession.configuration.credentials.attendeeId}`;
         (document.getElementById('info-meeting') as HTMLSpanElement).innerText = this.meeting;
         (document.getElementById('info-name') as HTMLSpanElement).innerText = this.name;
 
@@ -5794,55 +5752,52 @@ window.addEventListener('click', event => {
   }
 });
 const defaultQuizAttempt = {
-  _id: "", // You will fill this in when saving the attempt.
-  quiz_id: "", // You will update this from your quiz data.
+  _id: '', // You will fill this in when saving the attempt.
+  quiz_id: '', // You will update this from your quiz data.
   timestamp: new Date().toISOString(),
-  user_id: localStorage.getItem('userId') || "", // If there's no user_id, it defaults to an empty string.
+  user_id: localStorage.getItem('userId') || '', // If there's no user_id, it defaults to an empty string.
   score: 0,
   correct: [] as number[], // if the array should hold numbers
   incorrect: [] as number[], // if the array should hold numbers
-
 };
-
 
 // *****************
 // DREW FUNCTIONS
 
 // FUNCTION 1 - SUBMIT QUIZ ATTEMPTS
 function submitQuizAttempts() {
-  const url = "https://api.larq.ai/MakeQuizAttempt";
+  const url = 'https://api.larq.ai/MakeQuizAttempt';
   const storedData = localStorage.getItem('QuizAttempts');
   // let quizID = localStorage.getItem('quizID');
   const QuizAttempts = storedData ? JSON.parse(storedData) : defaultQuizAttempt;
-  console.log("QuizAttempts to sent to larq API:",QuizAttempts);
-  let quiz_id =  localStorage.getItem('quiz_id');
-  QuizAttempts['user_id'] = localStorage.getItem('userId') || "";
-  QuizAttempts['quiz_id'] = quiz_id || "";
+  console.log('QuizAttempts to sent to larq API:', QuizAttempts);
+  let quiz_id = localStorage.getItem('quiz_id');
+  QuizAttempts['user_id'] = localStorage.getItem('userId') || '';
+  QuizAttempts['quiz_id'] = quiz_id || '';
   // QuizAttempts['quizID'] = quizID || "";
 
   // Get QuizAttempts.score by calculating the number of answers.isCorrect === true:
   // DO THIS BUT TAKE INTO ACCOUNT A POSSIBLY NULL RESULT, MEANING A 0: QuizAttempts.score = QuizAttempts.answers.filter((answer: any) => answer.isCorrect).length / totalQuestions;
-  
-  QuizAttempts.score = QuizAttempts.correct.length / (QuizAttempts.correct.length + QuizAttempts.incorrect.length);
 
+  QuizAttempts.score =
+    QuizAttempts.correct.length / (QuizAttempts.correct.length + QuizAttempts.incorrect.length);
 
   // alert("Your score is: " + QuizAttempts.score);
   fetch(url, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(QuizAttempts)
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(QuizAttempts),
   }).then(response => {
-      if (!response.ok) {
-          return response.text().then(text => {
-              throw new Error(`Server responded with status ${response.status}: ${text}`);
-          });
-      }
-      console.log("Quiz attempt submitted successfully.");
+    if (!response.ok) {
+      return response.text().then(text => {
+        throw new Error(`Server responded with status ${response.status}: ${text}`);
+      });
+    }
+    console.log('Quiz attempt submitted successfully.');
   });
 }
-
 
 // DREW FUNCTION VARIABLES
 let userId = localStorage.getItem('userId') || '';
@@ -5850,27 +5805,26 @@ let userId = localStorage.getItem('userId') || '';
 const existingAttempts = localStorage.getItem('QuizAttempts');
 const quiz_id = localStorage.getItem('quiz_id');
 
-const QuizAttempts: QuizAttempt = existingAttempts 
-    ? JSON.parse(existingAttempts) 
-    : {
-        quiz_id: quiz_id,
-        timestamp: new Date().toISOString(),
-        user_id: userId,
-        score: 0,
-        correct: [],
-        incorrect: []
+const QuizAttempts: QuizAttempt = existingAttempts
+  ? JSON.parse(existingAttempts)
+  : {
+      quiz_id: quiz_id,
+      timestamp: new Date().toISOString(),
+      user_id: userId,
+      score: 0,
+      correct: [],
+      incorrect: [],
     };
-
 
 // FUNCTION 1 - CLEAR PREVIOUS QUESTIONS
 function clearPreviousQuestions() {
-    const questionBlock = document.getElementById("quiz-taker-question");
-    const answerBlock = document.getElementById("quiz-taker-answers");
-    
-    if (questionBlock && answerBlock) {
-        questionBlock.innerHTML = "";
-        answerBlock.innerHTML = "";
-    }
+  const questionBlock = document.getElementById('quiz-taker-question');
+  const answerBlock = document.getElementById('quiz-taker-answers');
+
+  if (questionBlock && answerBlock) {
+    questionBlock.innerHTML = '';
+    answerBlock.innerHTML = '';
+  }
 }
 
 // FUNCTION 2 - DISPLAY QUESTIONS IN QUIZ HANDLER (TAKING QUIZ)
@@ -5878,71 +5832,68 @@ function displayQuestion(index: number, data: FormData) {
   clearPreviousQuestions(); // Clear previous question and answers
 
   const question = data.fields[index];
-  if (question.type === "dropdown") {
-    document.getElementById("quiz-taker-question")!.textContent = question.label;
+  if (question.type === 'dropdown') {
+    document.getElementById('quiz-taker-question')!.textContent = question.label;
 
-    const answersContainer = document.getElementById("quiz-taker-answers")!;
+    const answersContainer = document.getElementById('quiz-taker-answers')!;
     // Shuffle the options
     const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
     // Find the correct answer index in the shuffled options
     const correctAnswerIndex = shuffledOptions.indexOf(question.correct_answer);
 
     shuffledOptions.forEach((option, optionIndex) => {
-      const radioDiv = document.createElement("div");
-      radioDiv.className = "form-check form-check-inline radioBox";
+      const radioDiv = document.createElement('div');
+      radioDiv.className = 'form-check form-check-inline radioBox';
 
-      const input = document.createElement("input");
-      input.type = "radio";
+      const input = document.createElement('input');
+      input.type = 'radio';
       input.id = `answer_${index}_${optionIndex}`;
       input.name = `question_${index}`;
       let optionSelected = false;
 
-      input.addEventListener("change", () => {
+      input.addEventListener('change', () => {
         if (!optionSelected) {
           optionSelected = true;
-        // Disable all options
-        const allOptions = answersContainer.querySelectorAll(`input[name='question_${index}']`);
-        allOptions.forEach(opt => (opt as HTMLInputElement).disabled = true);
+          // Disable all options
+          const allOptions = answersContainer.querySelectorAll(`input[name='question_${index}']`);
+          allOptions.forEach(opt => ((opt as HTMLInputElement).disabled = true));
 
-        const correctAnswer = question.correct_answer;
-        // set a boolean variable to true if attempt has been made:
-        let attempted = false;
+          const correctAnswer = question.correct_answer;
+          // set a boolean variable to true if attempt has been made:
+          let attempted = false;
 
-        if (!attempted){
-        if (option === correctAnswer) {
-            QuizAttempts.correct.push(index); 
-            attempted = true;
-            radioDiv.className += " correct-answer"; // Highlight correct answer with green outline
+          if (!attempted) {
+            if (option === correctAnswer) {
+              QuizAttempts.correct.push(index);
+              attempted = true;
+              radioDiv.className += ' correct-answer'; // Highlight correct answer with green outline
+            } else {
+              radioDiv.className += ' incorrect-answer'; // Highlight incorrect answer
 
-          } else {
-            radioDiv.className += " incorrect-answer"; // Highlight incorrect answer
+              // same as the other but false
+              QuizAttempts.incorrect.push(index);
+              attempted = true;
 
+              // find the option with the correct answer and highlight it
+              // const correctAnswerIndex = question.options.indexOf(correctAnswer);
+              // const correctAnswerInput = document.getElementById(`answer_${index}_${correctAnswerIndex}`) as HTMLInputElement;
 
-          // same as the other but false
-          QuizAttempts.incorrect.push(index); 
-          attempted = true;
+              const correctAnswerInput = document.getElementById(
+                `answer_${index}_${correctAnswerIndex}`
+              ) as HTMLInputElement;
+              correctAnswerInput.parentElement!.className += ' correct-answer';
+            }
 
-          // find the option with the correct answer and highlight it
-          // const correctAnswerIndex = question.options.indexOf(correctAnswer);
-          // const correctAnswerInput = document.getElementById(`answer_${index}_${correctAnswerIndex}`) as HTMLInputElement;
-
-          const correctAnswerInput = document.getElementById(`answer_${index}_${correctAnswerIndex}`) as HTMLInputElement;
-          correctAnswerInput.parentElement!.className += " correct-answer";
-    
+            // correctAnswerInput.parentElement!.className = "form-check form-check-inline radioBox correct-answer";
+            // now set the quizattempts to localstorage
+            localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
+          }
         }
+      });
 
-          // correctAnswerInput.parentElement!.className = "form-check form-check-inline radioBox correct-answer";
-        // now set the quizattempts to localstorage
-        localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
-      }
-
-      }
-    });
-
-      
-      const label = document.createElement("label");
-      label.className = "form-check-label";
-      label.setAttribute("for", input.id);
+      const label = document.createElement('label');
+      label.className = 'form-check-label';
+      label.setAttribute('for', input.id);
       label.textContent = option;
 
       radioDiv.appendChild(input);
@@ -5961,121 +5912,122 @@ function resetQuiz() {
 
 // FUNCTION 3 - POPULATE THE QUIZ HANDLER
 function populateQuiz(dataString: string) {
-        const data: FormData = JSON.parse(dataString);
-        // alert with all the data json dumped
-        // alert(JSON.stringify(data));
-        // save quiz_id to localstorage
+  const data: FormData = JSON.parse(dataString);
+  // alert with all the data json dumped
+  // alert(JSON.stringify(data));
+  // save quiz_id to localstorage
 
+  localStorage.setItem('quiz_id', data.quiz_id);
+  document.getElementById('quiz-form-title')!.textContent = data.title;
+  document.getElementById('quiz-taker-title')!.textContent = data.title;
 
-        localStorage.setItem('quiz_id', data.quiz_id);
-        document.getElementById("quiz-form-title")!.textContent = data.title;
-        document.getElementById("quiz-taker-title")!.textContent = data.title;
-        
-        // Clear previous question
-        const questionBlock = document.getElementById("quiz-taker-question");
-        const answerBlock = document.getElementById("quiz-taker-answers");
-        answerBlock.innerHTML = "";
-        if (questionBlock && answerBlock) {
-            questionBlock.innerHTML = "";
-            answerBlock.innerHTML = "";
-        }
-    
-        data.fields.forEach((field, index) => {
-            if (field.type === "dropdown") {
-                const question = document.createElement("div");
-                question.className = "quiz-title";
-                question.style.fontSize = "24px";
-                question.textContent = field.label;
-                questionBlock?.appendChild(question);
-
-                let answerSelected = false; // New variable to track if an answer has been selected for this question
-    
-                field.options?.forEach((option, optionIndex) => {
-                    const answerOption = document.createElement("div");
-                    answerOption.className = "form-check form-check-inline radioBox btn-outline-primary"; // Added btn-outline-primary here
-    
-                    const input = document.createElement("input");
-                    input.type = "checkbox";
-                    input.id = `answer-${index}-${optionIndex}`;
-                    input.name = `question-${index}`;
-                    input.value = option;
-                    console.log("populating field ", option);
-                    input.className = "btn btn-outline-primary";
-                    input.addEventListener("click", () => {
-                      if (!answerSelected) {
-                        answerSelected = true; // Mark that an answer has been selected
-                        const correctAnswer = field.correct_answer;
-                          if (option === correctAnswer) {
-                            // add index to QuizAttempts.correct
-                            QuizAttempts.correct.push(index);
-                            answerOption.classList.add('correct-answer'); // Instead of green outline, add .correct-answer
-                          } else {
-                            answerOption.classList.add('incorrect-answer'); // Instead of green outline, add .correct-answer
-                            // push incorrect answer to QuizAttempts, unles it's already there
-                            QuizAttempts.incorrect.push(index);
-                            
-                          }
-      
-                          // Disable all other options for this question
-                          field.options?.forEach((_, otherOptionIndex) => {
-                              if (optionIndex !== otherOptionIndex) {
-                                (document.getElementById(`answer-${index}-${otherOptionIndex}`) as HTMLInputElement).disabled = true; 
-                              }
-                          });
-                      }
-                  });
-      
-    
-                    const label = document.createElement("label");
-                    label.className = "form-check-label";
-                    label.htmlFor = input.id;
-                    label.textContent = option;
-    
-                    answerOption.appendChild(input);
-                    answerOption.appendChild(label);
-                    answerBlock?.appendChild(answerOption);
-                });
-            }
-        });
-
-      // Save quizattempts to localstorage
-      localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
-      let currentQuestionIndex = 0; // To track which question is currently displayed
-      
-
-      // When the next button is clicked
-      document.getElementById("quiz-taker-next")!.addEventListener("click", () => {
-        if (currentQuestionIndex < data.fields.length) {
-          displayQuestion(currentQuestionIndex, data);
-        } else {
-          QuizAttempts.score = QuizAttempts.correct.length / (QuizAttempts.correct.length + QuizAttempts.incorrect.length);
-          // You can redirect or show results here when all questions are done.
-            alert(`Quiz completed! You got ${QuizAttempts.score}% right!`);
-            localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
-            submitQuizAttempts();
-            resetQuiz();
-            document.getElementById("starting_quiz_container")!.style.display = "none";
-            document.getElementById("roster-tile-container")!.style.display = "block";
-        }
-        currentQuestionIndex++;
-
-    });
-
-    displayQuestion(currentQuestionIndex, data); // Display the first question initially
-
-    
+  // Clear previous question
+  const questionBlock = document.getElementById('quiz-taker-question');
+  const answerBlock = document.getElementById('quiz-taker-answers');
+  answerBlock.innerHTML = '';
+  if (questionBlock && answerBlock) {
+    questionBlock.innerHTML = '';
+    answerBlock.innerHTML = '';
   }
 
+  data.fields.forEach((field, index) => {
+    if (field.type === 'dropdown') {
+      const question = document.createElement('div');
+      question.className = 'quiz-title';
+      question.style.fontSize = '24px';
+      question.textContent = field.label;
+      questionBlock?.appendChild(question);
 
-  function appendMessage(containerId: string, senderName: string, message: string, senderAttendeeId: string, selfID:string) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-  
-    // Sanitize message to prevent XSS
-    const sanitizedMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  
-    const messageElement = document.createElement('div');
-    messageElement.innerHTML = `
+      let answerSelected = false; // New variable to track if an answer has been selected for this question
+
+      field.options?.forEach((option, optionIndex) => {
+        const answerOption = document.createElement('div');
+        answerOption.className = 'form-check form-check-inline radioBox btn-outline-primary'; // Added btn-outline-primary here
+
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.id = `answer-${index}-${optionIndex}`;
+        input.name = `question-${index}`;
+        input.value = option;
+        console.log('populating field ', option);
+        input.className = 'btn btn-outline-primary';
+        input.addEventListener('click', () => {
+          if (!answerSelected) {
+            answerSelected = true; // Mark that an answer has been selected
+            const correctAnswer = field.correct_answer;
+            if (option === correctAnswer) {
+              // add index to QuizAttempts.correct
+              QuizAttempts.correct.push(index);
+              answerOption.classList.add('correct-answer'); // Instead of green outline, add .correct-answer
+            } else {
+              answerOption.classList.add('incorrect-answer'); // Instead of green outline, add .correct-answer
+              // push incorrect answer to QuizAttempts, unles it's already there
+              QuizAttempts.incorrect.push(index);
+            }
+
+            // Disable all other options for this question
+            field.options?.forEach((_, otherOptionIndex) => {
+              if (optionIndex !== otherOptionIndex) {
+                (document.getElementById(
+                  `answer-${index}-${otherOptionIndex}`
+                ) as HTMLInputElement).disabled = true;
+              }
+            });
+          }
+        });
+
+        const label = document.createElement('label');
+        label.className = 'form-check-label';
+        label.htmlFor = input.id;
+        label.textContent = option;
+
+        answerOption.appendChild(input);
+        answerOption.appendChild(label);
+        answerBlock?.appendChild(answerOption);
+      });
+    }
+  });
+
+  // Save quizattempts to localstorage
+  localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
+  let currentQuestionIndex = 0; // To track which question is currently displayed
+
+  // When the next button is clicked
+  document.getElementById('quiz-taker-next')!.addEventListener('click', () => {
+    if (currentQuestionIndex < data.fields.length) {
+      displayQuestion(currentQuestionIndex, data);
+    } else {
+      QuizAttempts.score =
+        QuizAttempts.correct.length / (QuizAttempts.correct.length + QuizAttempts.incorrect.length);
+      // You can redirect or show results here when all questions are done.
+      alert(`Quiz completed! You got ${QuizAttempts.score}% right!`);
+      localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
+      submitQuizAttempts();
+      resetQuiz();
+      document.getElementById('starting_quiz_container')!.style.display = 'none';
+      document.getElementById('roster-tile-container')!.style.display = 'block';
+    }
+    currentQuestionIndex++;
+  });
+
+  displayQuestion(currentQuestionIndex, data); // Display the first question initially
+}
+
+function appendMessage(
+  containerId: string,
+  senderName: string,
+  message: string,
+  senderAttendeeId: string,
+  selfID: string
+) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  // Sanitize message to prevent XSS
+  const sanitizedMessage = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  const messageElement = document.createElement('div');
+  messageElement.innerHTML = `
       <hr>
       <div class="d-flex" data-user-id="${senderAttendeeId}">
           <p class="pe-3 fw-bolder" data-user-id="${senderAttendeeId}">${senderName}</p> 
@@ -6086,183 +6038,169 @@ function populateQuiz(dataString: string) {
           <input type="text" data-user-id="${senderAttendeeId}" placeholder="Respond" />
       </div>
     `;
-  
-    // Append the sanitized and created element to the container
-    container.appendChild(messageElement);
-  
-    // Add event listeners to new input fields for handling responses
-    const inputField = messageElement.querySelector('.customInput input');
-    if (inputField) {
-      
-      document.querySelectorAll('.customInput input').forEach((input: HTMLInputElement) => {  // Specify type here
-        input.addEventListener('keydown', (e: KeyboardEvent) => {
-          if (e.key === 'Enter') {
-            const userId = input.getAttribute('data-user-id');
-            AsyncScheduler.nextTick(() => {
-              const textArea = input;
-              const textToSend = textArea.value.trim();  // Now TypeScript knows `value` exists
 
-              if (!textToSend) {
-                return;
-              }
-      
-              // alert(`sending Forum Question! ${textToSend}`);
-              let senderName = "Teacher";
-              const messageObject = {
-                  message: textToSend,
-                  userId: userId,
-                  time: Date.now(),
-                  selfID: selfID,
-                  senderName: senderName
-                };
-            
-              window.demoMeetingAppInstance.sendForumMessage(messageObject);
-                
-              const newReply = document.createElement('p');
-              newReply.className = "forum-reply d-block w-100";
-              newReply.textContent = `Me: ${textToSend}`;
-              input.parentElement!.parentElement!.appendChild(newReply);
-              // alert('added reply to forum question');
-              input.remove(); 
-              textArea.value = ''; 
+  // Append the sanitized and created element to the container
+  container.appendChild(messageElement);
 
-              });
-          }
-        });
+  // Add event listeners to new input fields for handling responses
+  const inputField = messageElement.querySelector('.customInput input');
+  if (inputField) {
+    document.querySelectorAll('.customInput input').forEach((input: HTMLInputElement) => {
+      // Specify type here
+      input.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+          const userId = input.getAttribute('data-user-id');
+          AsyncScheduler.nextTick(() => {
+            const textArea = input;
+            const textToSend = textArea.value.trim(); // Now TypeScript knows `value` exists
 
+            if (!textToSend) {
+              return;
+            }
+
+            // alert(`sending Forum Question! ${textToSend}`);
+            let senderName = 'Teacher';
+            const messageObject = {
+              message: textToSend,
+              userId: userId,
+              time: Date.now(),
+              selfID: selfID,
+              senderName: senderName,
+            };
+
+            window.demoMeetingAppInstance.sendForumMessage(messageObject);
+
+            const newReply = document.createElement('p');
+            newReply.className = 'forum-reply d-block w-100';
+            newReply.textContent = `Me: ${textToSend}`;
+            input.parentElement!.parentElement!.appendChild(newReply);
+            // alert('added reply to forum question');
+            input.remove();
+            textArea.value = '';
+          });
+        }
       });
-
-
-
-
-
-
-    }
+    });
   }
-  
+}
 
-  // **************************
-  // **************************
-  // FORUM QUESTION HANDLER
-  function showForumQuestion(dataMessage:any, selfID : string, senderName: string) {
-    // make sure that "this." refers to the meeting application:
-      // datamessage:   const messageObject = {
-                //   message: textToSend,
-                //   userId: userId,
-                //   time: Date.now(),
-                //   selfID: selfID,
-                //   senderName: senderName
-                // };
-      const data = JSON.parse(dataMessage);
-      appendMessage('queries-block', senderName, data.message, data.selfID, selfID);
-      if (data.selfID !== selfID){
-          // if the message's "to" is not the person receiving the receiving the message, don't display it
-          return;
-        } else if (data.selfID === selfID){
-          // if the message's "to" is the person receiving the receiving the message, display it
-          // Create a new query element and populate it with data from ForumQuestion
-          // const newQuery = document.createElement('div');
-          const data = JSON.parse(dataMessage);
-          appendMessage('queries-block', senderName, data.message, data.selfID, selfID);
-        
-
+// **************************
+// **************************
+// FORUM QUESTION HANDLER
+function showForumQuestion(dataMessage: any, selfID: string, senderName: string) {
+  // make sure that "this." refers to the meeting application:
+  // datamessage:   const messageObject = {
+  //   message: textToSend,
+  //   userId: userId,
+  //   time: Date.now(),
+  //   selfID: selfID,
+  //   senderName: senderName
+  // };
+  const data = JSON.parse(dataMessage);
+  appendMessage('queries-block', senderName, data.message, data.selfID, selfID);
+  if (data.selfID !== selfID) {
+    // if the message's "to" is not the person receiving the receiving the message, don't display it
+    return;
+  } else if (data.selfID === selfID) {
+    // if the message's "to" is the person receiving the receiving the message, display it
+    // Create a new query element and populate it with data from ForumQuestion
+    // const newQuery = document.createElement('div');
+    const data = JSON.parse(dataMessage);
+    appendMessage('queries-block', senderName, data.message, data.selfID, selfID);
   }
-
-  };
+}
 
 // FORUM AND IN QUIZ CHAT FUNCTIONS
 
 document.addEventListener('DOMContentLoaded', () => {
+  // DREW REGISTRATION
 
-// DREW REGISTRATION
+  var mobileMessage = document.getElementById('mobile-message');
 
-const registerButton = document.getElementById('register-button') as HTMLButtonElement;
-const registerForm = document.getElementById('registerForm') as HTMLFormElement;
-const loginSpinner = document.getElementById('login-spinner') as HTMLElement;
+  if (window.innerWidth <= 768) {
+    // This assumes devices with width <= 768px are mobile devices
+    mobileMessage.style.display = 'block';
+  }
 
-if (registerButton && registerForm && loginSpinner) {
-  registerButton.addEventListener('click', (event) => {
-    event.preventDefault();
-    loginSpinner.style.display = 'block';
+  const registerButton = document.getElementById('register-button') as HTMLButtonElement;
+  const registerForm = document.getElementById('registerForm') as HTMLFormElement;
+  const loginSpinner = document.getElementById('login-spinner') as HTMLElement;
 
-    // Use 'registerForm' directly instead of 'event.target'
-    const username = registerForm.username.value;
-    const password = registerForm.password.value;
-    const email = registerForm.email.value;
-    const firstName = registerForm.first_name.value;
-    const lastName = registerForm.last_name.value;
+  if (registerButton && registerForm && loginSpinner) {
+    registerButton.addEventListener('click', event => {
+      event.preventDefault();
+      loginSpinner.style.display = 'block';
 
+      // Use 'registerForm' directly instead of 'event.target'
+      const username = registerForm.username.value;
+      const password = registerForm.password.value;
+      const email = registerForm.email.value;
+      const firstName = registerForm.first_name.value;
+      const lastName = registerForm.last_name.value;
 
-  fetch("https://api.larq.ai/register", {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        username: username,
-        password: password,
-        email: email,
-        first_name: firstName,  // Include first name in the request body
-        last_name: lastName     // Include last name in the request body
-    })
-})
-.then(response => response.json())
-.then(data => {
-    if (data.status === 'success') {
-    // loginSpinner.style.display = 'none';
-    // alert(data.message);
-  // alert(data.message);
-  console.log('Success:', data);
-  localStorage.setItem('authToken', data.token);
-  localStorage.setItem('firstName', firstName);
-  localStorage.setItem('lastName', lastName);
-  localStorage.setItem('userId', data.user_id);
-  localStorage.setItem('data', JSON.stringify(data));
-  
-  // hide #login-spinner
-  document.getElementById('login-spinner').style.display = 'none';
-  location.reload();
+      fetch('https://api.larq.ai/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+          email: email,
+          first_name: firstName, // Include first name in the request body
+          last_name: lastName, // Include last name in the request body
+        }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            // loginSpinner.style.display = 'none';
+            // alert(data.message);
+            // alert(data.message);
+            console.log('Success:', data);
+            localStorage.setItem('authToken', data.token);
+            localStorage.setItem('firstName', firstName);
+            localStorage.setItem('lastName', lastName);
+            localStorage.setItem('userId', data.user_id);
+            localStorage.setItem('data', JSON.stringify(data));
 
-  // Console log user_id and last_name
-  console.log("User ID:", data.user_id);
-  console.log("Last Name:", data.last_name);
-  // console.log("Dashboard Stats:", data.dashboard_stats);
+            // hide #login-spinner
+            document.getElementById('login-spinner').style.display = 'none';
+            location.reload();
 
+            // Console log user_id and last_name
+            console.log('User ID:', data.user_id);
+            console.log('Last Name:', data.last_name);
+            // console.log("Dashboard Stats:", data.dashboard_stats);
+          } else {
+            document.getElementById('incorrect-pass2')!.innerHTML = data.message;
+            document.getElementById('incorrect-pass2')!.style.display = 'block';
+          }
+          loginSpinner.style.display = 'none';
+        })
+        .catch(error => {
+          loginSpinner.style.display = 'none';
+          // show #incorrect-pass element
+          document.getElementById('incorrect-pass2')!.style.display = 'block';
+          alert(`Error: ${error}`);
+        });
+    });
+  } else {
+    // alert("HELLLLPP");
+    console.error('Form or spinner element not found');
+  }
 
-} else {
-  document.getElementById('incorrect-pass2')!.innerHTML = data.message;
-  document.getElementById('incorrect-pass2')!.style.display = 'block';
+  // END DREW REGISTRATION
 
-}
-loginSpinner.style.display = 'none';
-})
-.catch(error => {
-  loginSpinner.style.display = 'none';
-  // show #incorrect-pass element 
-  document.getElementById('incorrect-pass2')!.style.display = 'block';
-  alert(`Error: ${error}`);
-});
-
-});
-}else {
-// alert("HELLLLPP");
-console.error("Form or spinner element not found");
-}
-
-// END DREW REGISTRATION
-
-
-
-console.log("Bottom part of script loaded");
-// FUNCTION TO ADD LISTENER TO QUIZFORUM QUESTION
-// Get the textarea and messaging container elements
-const textarea = document.getElementById('forumContainer') as HTMLTextAreaElement;
-const messagingContainer = document.getElementById('messagingContainer');
-if (!textarea ) {
-  console.error("Textarea not found.");
-}
-if (!messagingContainer) {
-  console.error("Messaging container not found.");
-}
-
+  console.log('Bottom part of script loaded');
+  // FUNCTION TO ADD LISTENER TO QUIZFORUM QUESTION
+  // Get the textarea and messaging container elements
+  const textarea = document.getElementById('forumContainer') as HTMLTextAreaElement;
+  const messagingContainer = document.getElementById('messagingContainer');
+  if (!textarea) {
+    console.error('Textarea not found.');
+  }
+  if (!messagingContainer) {
+    console.error('Messaging container not found.');
+  }
 });

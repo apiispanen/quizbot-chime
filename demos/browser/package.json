@@ -8,9 +8,9 @@
     "build:fast": "npm run copy-assets && node script/webpack-wrapper.js",
     "build": "npm run deps && npm install && tsc && npm run build:fast",
     "start:fast": "npm run copy-assets && node script/webpack-wrapper.js --serve",
-    "start:hot": "npm run copy-assets && webpack serve --config ./webpack.config.hot.js",
+    "start:hot": "npm run copy-assets && webpack serve --config ./webpack.config.hot.js --mode development --hot",
     "start": "npm run deps && npm install && npm run start:fast",
-    "start:dev": "nodemon --exec \"npm run build && npm run start:hot\"" 
+    "start:dev": "nodemon --exec \"npm run build && npm run start:hot\""
   },
   "devDependencies": {
     "@types/bootstrap": "^5.1.6",
