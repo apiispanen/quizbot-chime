@@ -228,7 +228,7 @@ const BACKGROUND_FILTER_V2_LIST: VideoFilterName[] = [
   'Background Replacement 2.0 - (Default)',
 ];
 
-const VIDEO_FILTERS: VideoFilterName[] = ['Emojify', 'NoOp', 'Resize (9/16)', 'CircularCut'];
+//const VIDEO_FILTERS: VideoFilterName[] = ['Emojify', 'NoOp', 'Resize (9/16)', 'CircularCut'];
 
 type ButtonState = 'on' | 'off' | 'disabled';
 
@@ -4290,6 +4290,7 @@ export class DemoMeetingApp
     callback: (name: string) => void
   ): void {
     const menu = document.getElementById(elementId) as HTMLDivElement;
+    console.log('THE ELEMENT ID IS', elementId);
     while (menu.firstElementChild) {
       menu.removeChild(menu.firstElementChild);
     }
@@ -4299,8 +4300,9 @@ export class DemoMeetingApp
       });
     }
     if (additionalOptions.length) {
-      //this.createDropdownMenuItem(menu, '──────────', () => {}).classList.add('text-center');
+      this.createDropdownMenuItem(menu, '──────────', () => {}).classList.add('text-center');
       for (const additionalOption of additionalOptions) {
+        console.log('the additional option is', additionalOption);
         this.createDropdownMenuItem(
           menu,
           additionalOption,
@@ -4315,6 +4317,7 @@ export class DemoMeetingApp
       //this.createDropdownMenuItem(menu, '──────────', () => {}).classList.add('text-center');
       for (const { name, oncreate, action } of additionalToggles) {
         const id = `toggle-${elementId}-${name.replace(/\s/g, '-')}`;
+        console.log('the toggle id', id);
         const elem = this.createDropdownMenuItem(menu, name, action, id);
         oncreate(elem);
       }
@@ -4384,7 +4387,7 @@ export class DemoMeetingApp
     let filters: VideoFilterName[] = ['None'];
 
     if (this.areVideoFiltersSupported()) {
-      filters = filters.concat(VIDEO_FILTERS);
+      //filters = filters.concat(VIDEO_FILTERS);
       if (platformCanSupportBodyPixWithoutDegradation()) {
         if (!this.loadingBodyPixDependencyPromise) {
           this.loadingBodyPixDependencyPromise = loadBodyPixDependency(
@@ -4392,26 +4395,26 @@ export class DemoMeetingApp
           );
         }
         // do not use `await` to avoid blocking page loading
-        this.loadingBodyPixDependencyPromise
-          .then(() => {
-            filters.push('Segmentation');
-            this.populateFilterList(isPreviewWindow, genericName, filters);
-          })
-          .catch(err => {
-            this.log('Could not load BodyPix dependency', err);
-          });
+        // this.loadingBodyPixDependencyPromise
+        //   .then(() => {
+        //     filters.push('Segmentation');
+        //     this.populateFilterList(isPreviewWindow, genericName, filters);
+        //   })
+        //   .catch(err => {
+        //     this.log('Could not load BodyPix dependency', err);
+        //   });
       }
 
-      if (this.supportsBackgroundBlur) {
-        filters.push('Background Blur 10% CPU');
-        filters.push('Background Blur 20% CPU');
-        filters.push('Background Blur 30% CPU');
-        filters.push('Background Blur 40% CPU');
-      }
+      // if (this.supportsBackgroundBlur) {
+      //   filters.push('Background Blur 10% CPU');
+      //   filters.push('Background Blur 20% CPU');
+      //   filters.push('Background Blur 30% CPU');
+      //   filters.push('Background Blur 40% CPU');
+      // }
 
-      if (this.supportsBackgroundReplacement) {
-        filters.push('Background Replacement');
-      }
+      // if (this.supportsBackgroundReplacement) {
+      //   filters.push('Background Replacement');
+      // }
 
       // Add VideoFx functionality/options if the processor is supported
       if (this.supportsVideoFx) {
@@ -4588,14 +4591,30 @@ export class DemoMeetingApp
   }
 
   async populateVideoInputList(): Promise<void> {
+    let filters: VideoFilterName[] = ['None'];
+
+    if (this.areVideoFiltersSupported()) {
+      if (platformCanSupportBodyPixWithoutDegradation()) {
+        if (!this.loadingBodyPixDependencyPromise) {
+          this.loadingBodyPixDependencyPromise = loadBodyPixDependency(
+            this.loadingBodyPixDependencyTimeoutMs
+          );
+        }
+      }
+      if (this.supportsVideoFx) {
+        BACKGROUND_FILTER_V2_LIST.map(effectName => filters.push(effectName));
+      }
+    }
+
     const genericName = 'Camera';
-    const additionalDevices = [] as string[];
+    const additionalDevices = filters;
     this.populateDeviceList(
       'video-input',
       genericName,
       await this.audioVideo.listVideoInputDevices(),
       additionalDevices
     );
+    await this.populateVideoFilterInputList(true);
     this.populateInMeetingDeviceList(
       'dropdown-menu-camera',
       genericName,
@@ -4606,10 +4625,14 @@ export class DemoMeetingApp
         try {
           // If video is already started sending or the video button is enabled, then reselect a new stream
           // Otherwise, just update the device.
-          if (this.meetingSession.audioVideo.hasStartedLocalVideoTile()) {
-            await this.openVideoInputFromSelection(name, false);
+          if (filters.includes(name as VideoFilterName)) {
+            await this.selectVideoFilterByName(name as VideoFilterName);
           } else {
-            this.selectedVideoInput = name;
+            if (this.meetingSession.audioVideo.hasStartedLocalVideoTile()) {
+              await this.openVideoInputFromSelection(name, false);
+            } else {
+              this.selectedVideoInput = name;
+            }
           }
         } catch (err) {
           fatal(err);
