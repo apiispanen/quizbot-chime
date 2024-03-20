@@ -892,7 +892,7 @@ export class DemoMeetingApp
     });
 
     function verifyToken(token: string) {
-      return fetch(`https://api.larq.ai/verify-token?token=${token}`, {
+      return fetch(`https://staging.larq.ai/verify-token?token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1250,7 +1250,7 @@ export class DemoMeetingApp
           generationError.classList.add('d-none');
         }
 
-        const url = 'https://api.larq.ai/MakeQuiz';
+        const url = 'https://staging.larq.ai/MakeQuiz';
         console.log('TRANSCRIPT DATA:', transcriptData);
         try {
           const response = await fetch(url, {
@@ -1652,7 +1652,7 @@ export class DemoMeetingApp
       // Convert username and password to base64
       const base64Credentials = btoa(username + ':' + password);
 
-      fetch(`https://api.larq.ai/login`, {
+      fetch(`https://staging.larq.ai/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -2009,7 +2009,7 @@ export class DemoMeetingApp
       const noMeetingAlert = document.getElementById('no-meeting-alert');
 
       try {
-        const response = await fetch(`https://api.larq.ai/meetings/${meetingID}`, {
+        const response = await fetch(`https://staging.larq.ai/meetings/${meetingID}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -5766,7 +5766,7 @@ const defaultQuizAttempt = {
 
 // FUNCTION 1 - SUBMIT QUIZ ATTEMPTS
 function submitQuizAttempts() {
-  const url = 'https://api.larq.ai/MakeQuizAttempt';
+  const url = 'https://staging.larq.ai/MakeQuizAttempt';
   const storedData = localStorage.getItem('QuizAttempts');
   // let quizID = localStorage.getItem('quizID');
   const QuizAttempts = storedData ? JSON.parse(storedData) : defaultQuizAttempt;
@@ -6138,7 +6138,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const firstName = registerForm.first_name.value;
       const lastName = registerForm.last_name.value;
 
-      fetch('https://api.larq.ai/register', {
+      fetch('https://staging.larq.ai/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
