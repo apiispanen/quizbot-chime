@@ -109,7 +109,7 @@ module.exports = env => {
       devMiddleware: {
         index: `${app}.html`
       },
-      allowedHosts: ['larq.ai', 'app.larq.ai','127.0.0.1', 'meeting.larq.ai', 'api.larq.ai'],
+      allowedHosts: ['larq.ai', 'app.larq.ai','127.0.0.1', 'meeting.larq.ai', 'api.larq.ai', 'staging.larq.ai'],
   public: 'meeting.larq.ai',
   headers: {
     "Access-Control-Allow-Origin": "*",
