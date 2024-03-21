@@ -987,7 +987,7 @@
           style="flex: 0 0 auto; border-color: transparent !important;">
           <div id="roster-menu-instruction" class="d-flex align-items-center text-white"></div>
           <div class="btn-group">
-            <button class="btn btn-sm dropdown-toggle btn-outline-secondary" type="button" data-bs-toggle="dropdown"
+            <button id="attendee-dropdown-button" class="btn btn-sm dropdown-toggle btn-outline-secondary" type="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               <%= require('../../node_modules/open-iconic/svg/ellipses.svg') %>
             </button>
@@ -1000,12 +1000,11 @@
                 <div class="px-3 text-nowrap text-muted">Select one or more attendees to update.</div>
               </li>
               <li id="roster-menu-one-attendee" class="hidden">
-                <button class="dropdown-item" type="button" data-bs-target="#attendee-capabilities-modal"
-                  data-bs-toggle="modal" data-bs-type="one-attendee">
+                <button id="update-selected-attendee-button" class="dropdown-item" type="button">
                   <div class="me-2 d-inline-block" style="transform: scale(0.75);">
                     <%= require('../../node_modules/open-iconic/svg/person.svg') %>
                   </div>
-                  <span>Update the selected attendee</span>
+                  <span id="update-attendee-text">Mute Attendee</span>
                 </button>
               </li>
               <li id="roster-menu-all-attendees-except" class="hidden">
