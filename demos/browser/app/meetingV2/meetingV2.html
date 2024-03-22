@@ -987,25 +987,32 @@
           style="flex: 0 0 auto; border-color: transparent !important;">
           <div id="roster-menu-instruction" class="d-flex align-items-center text-white"></div>
           <div class="btn-group">
-            <button class="btn btn-sm dropdown-toggle btn-outline-secondary" type="button" data-bs-toggle="dropdown"
+            <button id="attendee-dropdown-button" class="btn btn-sm dropdown-toggle btn-outline-secondary" type="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               <%= require('../../node_modules/open-iconic/svg/ellipses.svg') %>
             </button>
             <ul class="dropdown-menu dropdown-menu-start">
-              <li class="px-3 text-nowrap user-select-none">Attendee capabilities</li>
+              <li class="px-3 user-select-none">Attendee capabilities</li>
               <li>
                 <hr class="dropdown-divider">
               </li>
               <li id="roster-menu-none-seleced">
-                <div class="px-3 text-nowrap text-muted">Select one or more attendees to update.</div>
+                <div class="px-3 text-muted">Select one or more attendees to update.</div>
               </li>
-              <li id="roster-menu-one-attendee" class="hidden">
-                <button class="dropdown-item" type="button" data-bs-target="#attendee-capabilities-modal"
-                  data-bs-toggle="modal" data-bs-type="one-attendee">
+              <li id="roster-menu-mute-attendee" class="hidden">
+                <button id="mute-selected-attendee-button" class="dropdown-item" type="button">
                   <div class="me-2 d-inline-block" style="transform: scale(0.75);">
-                    <%= require('../../node_modules/open-iconic/svg/person.svg') %>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mic-off"><line x1="2" x2="22" y1="2" y2="22"/><path d="M18.89 13.23A7.12 7.12 0 0 0 19 12v-2"/><path d="M5 10v2a7 7 0 0 0 12 5"/><path d="M15 9.34V5a3 3 0 0 0-5.68-1.33"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
                   </div>
-                  <span>Update the selected attendee</span>
+                  <span id="mute-attendee-text">Mute Attendee</span>
+                </button>
+              </li>
+              <li id="roster-menu-kick-attendee" class="hidden">
+                <button id="kick-selected-attendee-button" class="dropdown-item" type="button">
+                  <div class="me-2 d-inline-block" style="transform: scale(0.75);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                  </div>
+                  <span id="kick-attendee-text">Kick Attendee</span>
                 </button>
               </li>
               <li id="roster-menu-all-attendees-except" class="hidden">
@@ -1025,7 +1032,7 @@
         color: white;
     ">Chats</p>
           <div class="message d-flex flex-column pt-1" id="messages"
-            style="flex: 1 1 auto; overflow: hidden; height: 80%;">
+            style="flex: 1 1 auto; overflow: hidden; height: 70%;">
             <div class="list-group receive-message scrollbar-new-design my-2" id="receive-message" style="flex: 1 1 auto; overflow-y: auto;
             border: 1px solid rgba(0, 0, 0, 0.125); background-color: #fff"></div>
             <p class="box-label">Send a message</p>

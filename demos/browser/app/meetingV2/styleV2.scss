@@ -3153,3 +3153,20 @@ div#calendar-dates {
     display: none;
   }
 }
+
+#roster-menu-container > div.btn-group > ul {
+  width:20% !important;
+  position:relative !important;
+  transform: none !important;
+}
+#roster-menu-container > div.btn-group > ul > li, #roster-menu-container > div.btn-group > ul > li span {
+  text-wrap: wrap !important;
+}
+#roster-menu-one-attendee > button {
+  text-wrap: wrap;
+
+}
+#roster-menu-container > div.btn-group > button {
+  max-width: 40px;
+  max-height: 40px;
+}
