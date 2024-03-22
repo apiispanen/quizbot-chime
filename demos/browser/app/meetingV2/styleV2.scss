@@ -3164,4 +3164,9 @@ div#calendar-dates {
 }
 #roster-menu-one-attendee > button {
   text-wrap: wrap;
+
+}
+#roster-menu-container > div.btn-group > button {
+  max-width: 40px;
+  max-height: 60px;
 }
