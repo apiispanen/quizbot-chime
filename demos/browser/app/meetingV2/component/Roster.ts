@@ -271,6 +271,7 @@ export default class Roster {
         muteAttendeeText.textContent =
           firstAttendee.audioStatus === 'Receive' ? 'Unmute Attendee' : 'Mute Attendee';
 
+        kickAttendeeText.textContent = 'Kick Attendee';
         rosterMenuMuteAttendee.classList.remove('hidden');
         rosterMenuKickAttendee.classList.remove('hidden');
         //rosterMenuAllAttendeesExcept.classList.remove('hidden');
@@ -290,6 +291,7 @@ export default class Roster {
       instruction.innerText = '';
       rosterMenuNoneSelected.classList.remove('hidden');
       rosterMenuMuteAttendee.classList.add('hidden');
+      rosterMenuKickAttendee.classList.add('hidden');
       rosterMenuAllAttendeesExcept.classList.add('hidden');
     }
   }
