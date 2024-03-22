@@ -5203,30 +5203,15 @@ export class DemoMeetingApp
     if (this.allowAttendeeCapabilities) {
       rosterMenuContainer.classList.remove('hidden');
       rosterMenuContainer.classList.add('d-flex');
-      const updateSelectedAttendeeButton = document.getElementById(
-        'update-selected-attendee-button'
-      );
+      const muteSelectedAttendeeButton = document.getElementById('mute-selected-attendee-button');
+      const kickSelectedAttendeeButton = document.getElementById('kick-selected-attendee-button');
 
-      // const attendeeDropdownButton = document.getElementById('attendee-dropdown-button');
-
-      // attendeeDropdownButton.addEventListener('click', async () => {
-      //   console.log('HELLO YOU ARE CLICKING ME');
-      //   const selectedAttendeeSet = new Set(this.roster.selectedAttendeeSet);
-      //   if (selectedAttendeeSet.size > 0) {
-      //     const [selectedAttendee] = selectedAttendeeSet;
-      //     const { Attendee } = await this.getAttendee(selectedAttendee.id);
-      //     updateAttendeeText.textContent =
-      //       Attendee.Capabilities.Audio === 'Receive' ? 'Unmute Attendee' : 'Mute Attendee';
-      //   }
-      // });
-
-      updateSelectedAttendeeButton.addEventListener('click', async () => {
+      muteSelectedAttendeeButton.addEventListener('click', async () => {
         const selectedAttendeeSet = new Set(this.roster.selectedAttendeeSet);
         this.roster.unselectAll();
         if (selectedAttendeeSet.size > 0) {
           const [selectedAttendee] = selectedAttendeeSet;
           const { Attendee } = await this.getAttendee(selectedAttendee.id);
-          console.log('THE AUDIO CAPABILITY IS', Attendee.Capabilities.Audio);
           try {
             if (Attendee.Capabilities.Audio === 'Receive') {
               await Promise.all(
@@ -5257,6 +5242,31 @@ export class DemoMeetingApp
             const toast = document.createElement('meeting-toast') as MeetingToast;
             toastContainer.appendChild(toast);
             toast.message = `Failed to update attendee capabilities. Please be aware that you can't set content capabilities to "SendReceive" or "Receive" unless you set video capabilities to "SendReceive" or "Receive". Refer to the Amazon Chime SDK guide and the console for additional information.`;
+            toast.delay = '15000';
+            toast.show();
+            const onHidden = () => {
+              toast.removeEventListener('hidden.bs.toast', onHidden);
+              toastContainer.removeChild(toast);
+            };
+            toast.addEventListener('hidden.bs.toast', onHidden);
+          }
+        }
+      });
+
+      kickSelectedAttendeeButton.addEventListener('click', async () => {
+        const selectedAttendeeSet = new Set(this.roster.selectedAttendeeSet);
+        this.roster.unselectAll();
+        if (selectedAttendeeSet.size > 0) {
+          try {
+            await Promise.all(
+              [...selectedAttendeeSet].map(attendee => this.removeAttendee(attendee.id))
+            );
+          } catch (error) {
+            console.error(error);
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('meeting-toast') as MeetingToast;
+            toastContainer.appendChild(toast);
+            toast.message = `Failed to remove attendee capabilities`;
             toast.delay = '15000';
             toast.show();
             const onHidden = () => {

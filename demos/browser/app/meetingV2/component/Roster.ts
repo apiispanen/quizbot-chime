@@ -243,12 +243,14 @@ export default class Roster {
 
   private updateRosterMenu(): void {
     const instruction = document.getElementById('roster-menu-instruction');
-    const rosterMenuOneAttendee = document.getElementById('roster-menu-one-attendee');
+    const rosterMenuMuteAttendee = document.getElementById('roster-menu-mute-attendee');
+    const rosterMenuKickAttendee = document.getElementById('roster-menu-kick-attendee');
     const rosterMenuNoneSelected = document.getElementById('roster-menu-none-seleced');
     const rosterMenuAllAttendeesExcept = document.getElementById(
       'roster-menu-all-attendees-except'
     );
-    const updateAttendeeText = document.getElementById('update-attendee-text');
+    const muteAttendeeText = document.getElementById('mute-attendee-text');
+    const kickAttendeeText = document.getElementById('kick-attendee-text');
     const rosterMenuAllAttendeesExceptLabel = document.getElementById(
       'roster-menu-all-attendees-except-label'
     );
@@ -257,7 +259,6 @@ export default class Roster {
     const attendeesArray = [...this.selectedAttendeeSet];
     const firstAttendee = attendeesArray[0];
     if (size > 0) {
-      console.log('firstAttendee.audioStatus is', firstAttendee.audioStatus);
       instruction.innerText = `${size} selected`;
       rosterMenuNoneSelected.classList.add('hidden');
 
@@ -267,24 +268,28 @@ export default class Roster {
         // If one attendee is selected, provide two options:
         // - Update one attendee only, using the update-attendee-capabilities API
         // - Update all attendees, except the selected one, using the batch-update-attendee-capabilities-except API
-        updateAttendeeText.textContent =
+        muteAttendeeText.textContent =
           firstAttendee.audioStatus === 'Receive' ? 'Unmute Attendee' : 'Mute Attendee';
 
-        rosterMenuOneAttendee.classList.remove('hidden');
+        rosterMenuMuteAttendee.classList.remove('hidden');
+        rosterMenuKickAttendee.classList.remove('hidden');
         //rosterMenuAllAttendeesExcept.classList.remove('hidden');
       } else if (size > 1) {
         // If multiple attendees are selected, provide the following option:
         // - Update all attendees, except the selected one, using the batch-update-attendee-capabilities-except API
-        updateAttendeeText.textContent =
+        muteAttendeeText.textContent =
           firstAttendee.audioStatus === 'Receive' ? 'Unmute Attendees' : 'Mute Attendees';
 
-        rosterMenuOneAttendee.classList.remove('hidden');
+        kickAttendeeText.textContent = 'Kick Attendees';
+        rosterMenuMuteAttendee.classList.remove('hidden');
+        rosterMenuKickAttendee.classList.remove('hidden');
         rosterMenuAllAttendeesExcept.classList.add('hidden');
       }
     } else {
       // If none are selected, show the instruction.
+      instruction.innerText = '';
       rosterMenuNoneSelected.classList.remove('hidden');
-      rosterMenuOneAttendee.classList.add('hidden');
+      rosterMenuMuteAttendee.classList.add('hidden');
       rosterMenuAllAttendeesExcept.classList.add('hidden');
     }
   }
