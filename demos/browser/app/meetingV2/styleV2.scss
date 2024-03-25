@@ -1334,7 +1334,7 @@ input[type='file']:focus + label {
     border: none;
   }
   p {
-    color: #3f4149;
+    color: #ffffff;
     text-align: center;
 
     font-size: 12px;
@@ -2812,11 +2812,13 @@ input[type='Submit']:hover {
 .buttonfooter {
   position: fixed;
   bottom: 0px;
+  border-top-color: #ababaf;
+  border-top-style: solid;
+  border-top-width: 1px;
   width: 100%;
   max-height: 100px;
-  /* padding-top: 10px; */
   z-index: 100;
-  background: var(--bs-body-bg);
+  background-color: #1e1e1e;
 }
 div#starting_quiz_container label {
   padding-left: 15px;
