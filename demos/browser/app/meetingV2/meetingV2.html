@@ -252,7 +252,7 @@
                 </li>
 
                 <li class="d-flex logout">
-                  <a class="dropdown-item">Sign out</a>
+                  <a class="dropdown-item" style="color: #FFFFFF">Sign out</a>
                 </li>
 
               </ul>
@@ -973,8 +973,8 @@
         </div>
       </div>
       <div id="roster-tile-container" class="d-flex flex-sm-grow-1 overflow-hidden h-100"
-        style="flex: unset;">
-        <div id="roster-message-container" class="flex-column h-100 animate__animated animate__slideInLeft" style="margin-right: 25px ; width: 20%;">
+        style="flex: unset; background-color: #353535;">
+        <div id="roster-message-container" class="flex-column h-100 animate__animated animate__slideInLeft" style="width: 20%; background-color: #1e1e1e;">
           <a href="https://app.larq.ai" id="back-button3"><p class="btn btn-primary px-3" style="margin: 25px 10px 25px 10px;">Return to Dashboard</p></a>
           <p class="box-label" id="participants-title" style="
           font-size: 16px;
@@ -988,10 +988,10 @@
             padding: 8px 6px 8px 6px; background-color: #22242C;"></ul>
           </div>
           <div id="roster-menu-container" class="justify-content-end py-2 gap-3"
-          style="flex: 0 0 auto; border-color: transparent !important;">
+          style="flex: 0 0 auto; border-color: transparent !important; padding: 10px;">
           <div id="roster-menu-instruction" class="d-flex align-items-center text-white"></div>
           <div class="btn-group">
-            <button id="attendee-dropdown-button" class="btn btn-sm dropdown-toggle btn-outline-secondary" type="button" data-bs-toggle="dropdown"
+            <button id="attendee-dropdown-button" style="background-color: #FFFFFF;" class="btn btn-sm dropdown-toggle btn-outline-secondary" type="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               <%= require('../../node_modules/open-iconic/svg/ellipses.svg') %>
             </button>
@@ -1051,7 +1051,7 @@
           </div>
         </div>
         <div id="tile-transcript-container" class="d-flex flex-column  my-4 my-sm-0 h-100"
-          style="overflow-y: scrolll;width: 100%;">
+          style="overflow-y: scrolll;width: 100%; padding: 0px 20px;">
           <div id="tile-area" class="v-grid"></div>
           <div id="transcript-container" class="d-none transcript-container scrollbar-new-design pb-5 animate__animated animate__slideInUp mb-5" style="display:none">
    
@@ -1344,7 +1344,7 @@
       </div>
       <video id="content-share-video" playsinline crossOrigin="anonymous" style="display:none"></video>
 
-      <div class="row" style="margin-bottom: -55px;background: #F8F8F8;
+      <div style="margin-bottom: -55px;background: #F8F8F8;
         box-shadow: 0px -4px 8px 0px rgba(0, 0, 0, 0.11);" style="flex: unset;" style="display: none;">
         <div class="col-12 col-lg-3 order-1 order-lg-1 text-center text-lg-left" style="display: none;">
           <div id="meeting-id" class="navbar-brand text-muted m-0 m-lg-2"></div>

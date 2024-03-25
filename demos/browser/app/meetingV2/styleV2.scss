@@ -529,6 +529,7 @@ a:hover {
     background-color: #1e1e1e;
     color: #ffffff;
     padding-top: 10px;
+    border-width: 1px 0px 0px 0px;
     border-top-color: #ababaf;
   }
 }
@@ -1016,13 +1017,16 @@ a.markdown:active {
   position: absolute;
   bottom: 10px;
   left: 10px;
-  color: #fff;
-  text-shadow: 0px 0px 5px black;
+  color: #ffffff;
+  text-shadow: 0px 0px 5px #000;
   letter-spacing: 0.1em;
-  background: #1e1e1e;
+  background-color: #7a64eca8;
   border-radius: 5px;
-  padding: 3px;
-  opacity: 0.8;
+  min-width: 80px;
+  padding: 10px;
+  opacity: 1;
+  font-weight: 700;
+  text-align: center;
 }
 
 .button-video-tile-config {
