@@ -78,7 +78,7 @@ document.querySelector('#button-meeting-leave').addEventListener('click', functi
     // Convert the data object to a string
     data = JSON.stringify(data);
     // Send the data to the API endpoint
-    fetch('https://staging.larq.ai/SaveTranscript', {
+    fetch('https://api.larq.ai/SaveTranscript', {
         method: 'POST',
         body: data
     })
@@ -113,7 +113,7 @@ if (window.location.search.split('signup=')[1] == 'true' && document.getElementB
 const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
 if (userId) {
 
-    fetch(`https://staging.larq.ai/getQuizzes?user_id=${userId}`)
+    fetch(`https://api.larq.ai/getQuizzes?user_id=${userId}`)
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
@@ -159,7 +159,7 @@ function uploadPDF(pdfFile, userId) {
     choosePDFBtn.disabled = true;
     uploadBtn.disabled = true;
 
-    fetch('https://staging.larq.ai/Vectorize', {
+    fetch('https://api.larq.ai/Vectorize', {
         method: 'POST',
         body: formData,
         headers: {
@@ -378,7 +378,7 @@ document.querySelector('#button-meeting-end').addEventListener('click', function
     // Convert the data object to a string
     data = JSON.stringify(data);
     // Send the data to the API endpoint
-    fetch('https://staging.larq.ai/SaveTranscript', {
+    fetch('https://api.larq.ai/SaveTranscript', {
         method: 'POST',
         body: data
     })
@@ -415,7 +415,7 @@ document.querySelector('#scheduleMeetingSubmit')?.addEventListener('click', () =
     const meetingName = (document.getElementById('meetingName') ).value;
     // let authToken = localStorage.getItem('authToken');
   
-    fetch("https://staging.larq.ai/scheduleMeeting", {
+    fetch("https://api.larq.ai/scheduleMeeting", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json' 
@@ -611,7 +611,7 @@ function generateGoogleCalendarLink(meetingTime, meetingName, meetingId) {
 //         const userId = localStorage.getItem('userId');
 //         // Add other form data as needed
     
-//         fetch('https://staging.larq.ai/scheduleMeeting', {
+//         fetch('https://api.larq.ai/scheduleMeeting', {
 //             method: 'POST',
 //             headers: {
 //                 'Content-Type': 'application/json',
