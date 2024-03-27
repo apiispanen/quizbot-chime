@@ -2392,7 +2392,7 @@ input[type='radio'] {
 
 form .txt_field {
   position: relative;
-  margin: 30px 0;
+  margin: 40px 0;
 }
 
 .txt_field input {
@@ -2407,10 +2407,10 @@ form .txt_field {
 
 .txt_field label {
   position: absolute;
-  top: 50%;
-  left: 5px;
+  top: 60%;
+  left: 4px;
   color: #adadad;
-  transform: translateY(-50%);
+  transform: translateY(-80%);
   font-size: 16px;
   pointer-events: none;
 }
@@ -2427,13 +2427,15 @@ form .txt_field {
 }
 
 .txt_field input:focus ~ label,
-.txt_field input:valid ~ label {
+.txt_field input:valid ~ label,
+.txt_field input:not(:placeholder-shown) ~ label {
   top: -5px;
   color: #7a64ec;
 }
 
 .txt_field input:focus ~ span::before,
-.txt_field input:valid ~ span::before {
+.txt_field input:valid ~ span::before,
+.txt_field input:not(:placeholder-shown) ~ span::before {
   width: 95%;
   translate: 10px -2px;
 }
@@ -2498,18 +2500,18 @@ input[type='Submit']:hover {
     padding: 0 20px; /* Reduced padding for form */
   }
 
-  form .txt_field {
-    margin: 15px 0; /* Reduced margin */
-  }
+  // form .txt_field {
+  //   margin: 15px 0; /* Reduced margin */
+  // }
 
-  .txt_field input {
-    height: 35px; /* Adjusted input height */
-    font-size: 14px; /* Adjusted font size */
-  }
+  // .txt_field input {
+  //   height: 35px; /* Adjusted input height */
+  //   font-size: 14px; /* Adjusted font size */
+  // }
 
-  .txt_field label {
-    font-size: 14px; /* Adjusted label font size */
-  }
+  // .txt_field label {
+  //   font-size: 14px; /* Adjusted label font size */
+  // }
 
   .pass {
     margin: -3px 0 10px 3px; /* Adjusted margin */

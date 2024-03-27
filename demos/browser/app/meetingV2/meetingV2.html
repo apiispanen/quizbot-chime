@@ -25,79 +25,82 @@
 
   <!-- END TEST -->
     <div class="center">
-        <form id="loginForm" class="animate__animated animate__fadeIn" style="display: block;
+      <form id="loginForm" class="animate__animated animate__fadeIn" style="display: block;
         background-color: #22242C;
         padding: 40px;
         border-radius: 10px;">
-          <h1 style="color: #ffffff; border: none; font-size: xx-large;">Log in to LARQ</h1>
-          <div class="txt_field p-1">
-            <input name="username" required="" style="background-color: transparent; color: #FFFFFF; border: 1px #FFFFFF solid;border-radius: 4px;" placeholder="Username">
-            <span class="text-white"></span>
-          </div>
-          <div class="txt_field p-1">
-            <input type="password" name="password" required="" style="background-color: transparent; color: #FFFFFF; border: 1px #FFFFFF solid;border-radius: 4px;" placeholder="Password">
-            <span></span>
-            <div class="pass" style="margin-top: 5px; position: absolute; right: 4px;">
-              <a href="mailto:info@teachserv.com" style="text-decoration: underline; color: #ABABAF;">Forgot Password?</a>
-            </div>
-          </div>
-          <div class="pass" id="incorrect-pass" style="display:none">
-            <label>User or Password is incorrect. Try again.</label>
-          </div>
-          
-          <button name="submit" class="btn btn-success w-100" type="Submit" value="Login" style="background-color: #7A64EC; border: none;">Login</button>
-          <div class="signup_link" id="go-to-register">
-            <p id="button-signup" style="margin-bottom: 2px; color: #a595f8; text-decoration: underline;">Create a new account</p>Or <a href="https://teachserv.com/wp-login.php">Sign in with Teachserv</a>
-            <a href="#" id="join-view-only" class="form-check-input" style="background: none; padding: 5px; font-weight: 800; border: none; display:none;">
-              <label for="join-view-only" class="form-check-label">Join Meeting As Guest</label>
-            </a>
-          </div>
-        </form>
-
-          <!-- Registration Page -->
-<div class="register container animate__animated animate__fadeIn" id="register-container" style="display:none">
-    <h2 class="p-3 text-white">Register</h2>
-      <form id="registerForm">
-        <div class="txt_field p-1">
-            <input class="text-white" type="text" name="username" required>
-            <span></span>
-            <label class="text-white">Username</label>
+        <h1 style="color: #ffffff; border: none; font-size: xx-large;">Log in to LARQ</h1>
+        <div class="txt_field p-1" style="margin: 30px 0px">
+          <input name="username" required="" style="background-color: transparent; color: #FFFFFF; border: 1px #FFFFFF solid;border-radius: 4px;" placeholder="Username">
+          <span class="text-white"></span>
         </div>
-        <div class="txt_field p-1">
-            <input type="password" name="password" class="text-white" required>
-            <span></span>
-            <label class="text-white">Password</label>
-        </div>
-        <div class="txt_field p-1">
-            <input type="email" name="email" class="text-white" required>
-            <span></span>
-            <label class="text-white">Email</label>
-        </div>
-        <div class="txt_field p-1">
-          <input type="text" name="first_name" class="text-white">
+        <div class="txt_field p-1" style="margin: 30px 0px">
+          <input type="password" name="password" required="" style="background-color: transparent; color: #FFFFFF; border: 1px #FFFFFF solid;border-radius: 4px;" placeholder="Password">
           <span></span>
-          <label class="text-white">First Name (Optional)</label>
-      </div>
-      <div class="txt_field p-1">
-          <input type="text" name="last_name" class="text-white">
-          <span></span> 
-          <label class="text-white">Last Name (Optional)</label>
-      </div>
-
-      <button id="register-button" class="btn btn-success w-100" value="Register" style="background-color: #7A64EC; border: none;">Register</button>
-        <div class="login_link text-white" id="login" style="padding-top: 10px;">
-            Already a Member? <a href="#" class="text-white">Login</a>
+          <div class="pass" style="margin-top: 5px; position: absolute; right: 4px;">
+            <a href="mailto:info@teachserv.com" style="text-decoration: underline; color: #ABABAF;">Forgot Password?</a>
+          </div>
+        </div>
+        <div class="pass" id="incorrect-pass" style="display:none">
+          <label>User or Password is incorrect. Try again.</label>
+        </div>
+        
+        <button name="submit" class="btn btn-success w-100" type="Submit" value="Login" style="background-color: #7A64EC; border: none;">Login</button>
+        <div class="signup_link" id="go-to-register">
+          <p id="button-signup" style="margin-bottom: 2px; color: #a595f8; text-decoration: underline;">Create a new account</p>Or <a href="https://teachserv.com/wp-login.php">Sign in with Teachserv</a>
+          <a href="#" id="join-view-only" class="form-check-input" style="background: none; padding: 5px; font-weight: 800; border: none; display:none;">
+            <label for="join-view-only" class="form-check-label">Join Meeting As Guest</label>
+          </a>
         </div>
       </form>
-      <div class="pass text-white" id="incorrect-pass2" style="display:none"><label>User or Password is incorrect. Try again.</label></div>
 
-</div>
-
-                <div class="spinner-border text-success p-4 position-absolute top-50 end-50" role="status" id="login-spinner" style="display:none">
-            <span class="visually-hidden">Loading...</span>
+        <!-- Registration Page -->
+    <div class="register container animate__animated animate__fadeIn" id="register-container" style="display:none; margin-top: -40px;">
+        <h2 class="p-3 text-white">Register</h2>
+          <form id="registerForm" style="display: block;
+          background-color: #22242C;
+          padding: 40px;
+          border-radius: 10px;">
+            <div class="txt_field p-1" style="background-color: transparent; color: #FFFFFF; border: 1px #FFFFFF solid;border-radius: 4px;">
+                <input class="text-white" type="text" name="username" required placeholder="">
+                <span></span>
+                <label class="text-white">Username</label>
+            </div>
+            <div class="txt_field p-1" style="background-color: transparent; color: #FFFFFF; border: 1px #FFFFFF solid;border-radius: 4px;" >
+                <input type="password" name="password" class="text-white" required placeholder="">
+                <span></span>
+                <label class="text-white">Password</label>
+            </div>
+            <div class="txt_field p-1" style="background-color: transparent; color: #FFFFFF; border: 1px #FFFFFF solid;border-radius: 4px;">
+                <input type="email" name="email" class="text-white" required placeholder="">
+                <span></span>
+                <label class="text-white">Email</label>
+            </div>
+            <div class="txt_field p-1" style="background-color: transparent; color: #FFFFFF; border: 1px #FFFFFF solid;border-radius: 4px;">
+              <input type="text" name="first_name" class="text-white">
+              <span></span>
+              <label class="text-white">First Name (Optional)</label>
+          </div>
+          <div class="txt_field p-1" style="background-color: transparent; color: #FFFFFF; border: 1px #FFFFFF solid;border-radius: 4px;">
+              <input type="text" name="last_name" class="text-white">
+              <span></span> 
+              <label class="text-white">Last Name (Optional)</label>
           </div>
 
+          <button id="register-button" class="btn btn-success w-100" value="Register" style="background-color: #7A64EC; border: none; padding-top: 2px;">Register</button>
+            <div class="login_link text-white" id="login" style="padding-top: 10px;">
+                Already a Member? <a href="#" class="text-white">Login</a>
+            </div>
+          </form>
+          <div class="pass text-white" id="incorrect-pass2" style="display:none"><label>User or Password is incorrect. Try again.</label></div>
+
     </div>
+
+    <div class="spinner-border text-success p-4 position-absolute top-50 end-50" role="status" id="login-spinner" style="display:none">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+
+  </div>
 </div>
   
 
