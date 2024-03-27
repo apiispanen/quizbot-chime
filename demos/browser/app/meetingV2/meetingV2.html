@@ -18,54 +18,36 @@
 <body class="h-100 scrollbar-new-design">
 
   <!-- Login Page -->
-<div class="login container animate__animated animate__fadeInDown" id="login-container" style="display:none">
+<div class="login center container animate__animated animate__fadeInDown" id="login-container" style="display:none">
+  <h1 class="text-white" style="width: 100%; border:none">
+    <img src="https://storage.googleapis.com/ringledingle/tests/Original%20on%20Transparent.png" style="width: 20%">
+  </h1>
 
   <!-- END TEST -->
     <div class="center">
-        <h1 class="text-white">Welcome to         
-    <!-- <svg viewbox="0 0 100 20" id="larqFlow">
-      <defs>
-        <linearGradient id="gradient">
-          <stop color="#000"/>
-        </linearGradient>
-        <pattern id="wave" x="0" y="-.2" width="100%" height="100%" patternUnits="userSpaceOnUse">
-          <path id="wavePath" d="M-40 9 Q-30 7 -20 9 T0 9 T20 9 T40 9 T60 9 T80 9 T100 9 T120 9 V20 H-40z" mask="url(#mask)" fill="url(#gradient)"> 
-            <animateTransform
-                attributeName="transform"
-                begin="0s"
-                dur="1.5s"
-                type="translate"
-                from="0,0"
-                to="40,0"
-                repeatCount="indefinite" />
-          </path>
-        </pattern>
-      </defs>
-      <text text-anchor="middle" x="50" y="15" font-size="17" fill="url(#wave)"  fill-opacity="1">LARQ</text>
-      <text text-anchor="middle" x="50" y="15" font-size="17" fill="#7126d9" fill-opacity="0.6">LARQ</text>
-
-    </svg> -->
-
-    <img src="https://storage.googleapis.com/ringledingle/tests/Original%20on%20Transparent.png" class="w-100">
-        </h1>
-        <form id="loginForm" class="animate__animated animate__fadeIn">
-          <div class="txt_field p-1 color-white">
-            <input name="username" required="" style="color: black;background-color: white;" placeholder="Username">
+        <form id="loginForm" class="animate__animated animate__fadeIn" style="display: block;
+        background-color: #22242C;
+        padding: 40px;
+        border-radius: 10px;">
+          <h1 style="color: #ffffff; border: none; font-size: xx-large;">Log in to LARQ</h1>
+          <div class="txt_field p-1">
+            <input name="username" required="" style="background-color: transparent; color: #FFFFFF; border: 1px #FFFFFF solid;border-radius: 4px;" placeholder="Username">
             <span class="text-white"></span>
           </div>
-          <div class="txt_field p-1 text-white">
-            <input type="password" name="password" required="" style="color: black;background-color: white;" class="text-black" placeholder="Password">
+          <div class="txt_field p-1">
+            <input type="password" name="password" required="" style="background-color: transparent; color: #FFFFFF; border: 1px #FFFFFF solid;border-radius: 4px;" placeholder="Password">
             <span></span>
+            <div class="pass" style="margin-top: 5px; position: absolute; right: 4px;">
+              <a href="mailto:info@teachserv.com" style="text-decoration: underline; color: #ABABAF;">Forgot Password?</a>
+            </div>
           </div>
           <div class="pass" id="incorrect-pass" style="display:none">
             <label>User or Password is incorrect. Try again.</label>
           </div>
-          <div class="pass">
-            <a href="mailto:info@teachserv.com" style="text-decoration: none;">Forgot Password?</a>
-          </div>
-          <input name="submit" type="Submit" value="Login" style="font-weight: 600; font-size: 19px;">
+          
+          <button name="submit" class="btn btn-success w-100" type="Submit" value="Login" style="background-color: #7A64EC; border: none;">Login</button>
           <div class="signup_link" id="go-to-register">
-            Not a Member ? <b id="button-signup">Signup</b><br>Or <a href="https://teachserv.com/wp-login.php">Sign in with Teachserv</a>
+            <p id="button-signup" style="margin-bottom: 2px; color: #a595f8; text-decoration: underline;">Create a new account</p>Or <a href="https://teachserv.com/wp-login.php">Sign in with Teachserv</a>
             <a href="#" id="join-view-only" class="form-check-input" style="background: none; padding: 5px; font-weight: 800; border: none; display:none;">
               <label for="join-view-only" class="form-check-label">Join Meeting As Guest</label>
             </a>
@@ -102,8 +84,8 @@
           <label class="text-white">Last Name (Optional)</label>
       </div>
 
-      <button id="register-button" class="btn btn-success w-100" value="Register">Register</button>
-        <div class="login_link text-white" id="login">
+      <button id="register-button" class="btn btn-success w-100" value="Register" style="background-color: #7A64EC; border: none;">Register</button>
+        <div class="login_link text-white" id="login" style="padding-top: 10px;">
             Already a Member? <a href="#" class="text-white">Login</a>
         </div>
       </form>

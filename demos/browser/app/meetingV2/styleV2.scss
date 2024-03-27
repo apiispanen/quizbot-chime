@@ -2392,7 +2392,6 @@ input[type='radio'] {
 
 form .txt_field {
   position: relative;
-  border-bottom: 2px solid #adadad;
   margin: 30px 0;
 }
 
@@ -2423,19 +2422,20 @@ form .txt_field {
   left: 0;
   width: 0px;
   height: 2px;
-  background: #7126d9;
+  background: #7a64ec;
   transition: 0.5s;
 }
 
 .txt_field input:focus ~ label,
 .txt_field input:valid ~ label {
   top: -5px;
-  color: #7126d9;
+  color: #7a64ec;
 }
 
 .txt_field input:focus ~ span::before,
 .txt_field input:valid ~ span::before {
-  width: 100%;
+  width: 95%;
+  translate: 10px -2px;
 }
 
 .pass {
@@ -2459,7 +2459,7 @@ input[type='Submit'] {
 }
 
 input[type='Submit']:hover {
-  background: #7126d9;
+  background: #a595f8;
   color: #e9f4fb;
   transition: 0.5s;
 }
@@ -2468,11 +2468,11 @@ input[type='Submit']:hover {
   margin: 30px 0;
   text-align: center;
   font-size: 16px;
-  color: #666666;
+  color: #ffffff;
 }
 
 .signup_link a {
-  color: #7126d9;
+  color: #a595f8;
   text-decoration: none;
 }
 
@@ -2544,9 +2544,7 @@ input[type='Submit']:hover {
   max-width: 600px;
   margin-top: 2%;
   /* add shadow to the login box */
-  box-shadow: 0px 0px 10px 0px rgba(54, 53, 53, 0.75);
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(54, 53, 53, 0.75);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(54, 53, 53, 0.75);
+
   // border: 5px solid #8e509c;
   border-radius: 10px;
   padding: 20px;
@@ -2716,6 +2714,13 @@ input[type='Submit']:hover {
   background-color: #353535;
   background-size: 40%;
   background-position: center center;
+}
+
+#button-signup {
+  cursor: pointer;
+}
+#button-signup:hover {
+  text-decoration: underline;
 }
 
 #button-content-share-drop,
