@@ -848,9 +848,6 @@ export class DemoMeetingApp
     if (tokenParam) {
       localStorage.setItem('authToken', tokenParam);
       // remove the token from the url
-      verifyToken(tokenParam);
-      // change href for #back-button to be app.larq.ai?token=tokenParam
-
       // Create a URL object from the current location
       const url = new URL(window.location.href);
       url.searchParams.delete('token');
