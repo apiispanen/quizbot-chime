@@ -848,8 +848,8 @@ export class DemoMeetingApp
     if (tokenParam) {
       localStorage.setItem('authToken', tokenParam);
       // remove the token from the url
-
-      // change href for #back-button to be staging-larq.vercel.app?token=tokenParam
+      verifyToken(tokenParam);
+      // change href for #back-button to be app.larq.ai?token=tokenParam
 
       // Create a URL object from the current location
       const url = new URL(window.location.href);
@@ -878,12 +878,13 @@ export class DemoMeetingApp
         const backButton = document.getElementById('back-button') as HTMLAnchorElement;
         const backButton2 = document.getElementById('back-button2') as HTMLAnchorElement;
         const backButton3 = document.getElementById('back-button3') as HTMLAnchorElement;
-        backButton.href = `https://staging-larq.vercel.app?token=${token}`;
-        backButton2.href = `https://staging-larq.vercel.app?token=${token}`;
-        backButton3.href = `https://staging-larq.vercel.app?token=${token}`;
+        backButton.href = `https://app.larq.ai?token=${token}`;
+        backButton2.href = `https://app.larq.ai?token=${token}`;
+        backButton3.href = `https://app.larq.ai?token=${token}`;
 
         // Else if meeting is specified and user is not logged in:
       } else {
+        alert('Token invalid. Please log in to join the meeting');
         localStorage.clear();
         document.getElementById('login-container').style.display = 'block';
         document.getElementById('loginForm').style.display = 'block';
@@ -986,9 +987,9 @@ export class DemoMeetingApp
 
       // Fetch the stored quiz data
       const storedQuiz: QuizJSON = JSON.parse(localStorage.getItem('quizJson') || '{}');
-      // set #view-larq-stats to go to https://staging-larq.vercel.app/quiz_id/results when clicked:
+      // set #view-larq-stats to go to https://app.larq.ai/quiz_id/results when clicked:
       const viewLarqStats = document.getElementById('view-larq-stats') as HTMLAnchorElement;
-      viewLarqStats.href = `https://staging-larq.vercel.app/quiz/${storedQuiz.quiz_id}/results`;
+      viewLarqStats.href = `https://app.larq.ai/quiz/${storedQuiz.quiz_id}/results`;
 
       // DREW ADDITIONS
 
@@ -2042,9 +2043,9 @@ export class DemoMeetingApp
         } else {
           console.error(data.message);
           // alert(data.message);
-          // redirect them to staging-larq.vercel.app:
+          // redirect them to app.larq.ai:
           // const token = localStorage.getItem('authToken');
-          // window.location.href = `https://staging-larq.vercel.app?token=${token}`;
+          // window.location.href = `https://app.larq.ai?token=${token}`;
           // make #no-meeting-alert visible
           noMeetingAlert?.classList.remove('d-none');
           // stop the script from running:
