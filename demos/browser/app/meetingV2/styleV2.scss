@@ -1351,7 +1351,7 @@ input[type='file']:focus + label {
   width: 100%;
   padding: 6px 0px;
   border-radius: 8px;
-  background: #8e509c;
+  background: #7a64ec;
   border: none;
   cursor: pointer;
   display: flex;
@@ -1371,13 +1371,13 @@ input[type='file']:focus + label {
   padding: 0 17px;
   border-radius: 8px;
   background: transparent;
-  border: 1px solid #8e509c;
+  border: 1px solid #7a64ec;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  color: #8e509c;
+  color: #7a64ec;
 
   font-size: 16px;
   font-style: normal;
@@ -1385,14 +1385,16 @@ input[type='file']:focus + label {
   line-height: 100%;
 }
 .quizBlock {
-  border-radius: 22px 0px 0px 22px;
-  border: 1px solid #d9d9d9;
-  background: #f7f7fc;
+  border-width: 0px 1px 0px 1px;
+  border-color: #ffffff;
+  border-style: solid;
+  background: #22242c;
+  color: #ffffff;
   padding: 20px 20px 20px 20px;
 }
 
 .quiz-heading {
-  color: #3f4149;
+  color: #ffffff;
 
   font-size: 24px;
   font-style: normal;
@@ -1400,7 +1402,7 @@ input[type='file']:focus + label {
   line-height: 130%;
 }
 .quiz-title {
-  color: #3f4149;
+  color: #ffffff;
 
   font-size: 18px;
   font-style: normal;
@@ -1418,6 +1420,7 @@ input[type='file']:focus + label {
   border: 1px solid #e6e6e6;
   background: #fff;
   color: #3f4149;
+  cursor: pointer;
 
   font-size: 16px;
   font-style: normal;
@@ -1425,12 +1428,12 @@ input[type='file']:focus + label {
   line-height: 100%;
   &:hover {
     color: #fff;
-    background: #8e509c;
+    background: #7a64ec;
   }
 }
 .numbers-block.active-numbers-block {
   color: #fff;
-  background: #8e509c;
+  background: #7a64ec;
 }
 .calendar-event {
   width: 8px;

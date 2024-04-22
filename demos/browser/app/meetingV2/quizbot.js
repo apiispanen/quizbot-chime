@@ -5,64 +5,63 @@ import * as bootstrap from 'bootstrap';
 // DOM CONTENT LOADED
 // **********************************************************************
 // **********************************************************************
-document.addEventListener('DOMContentLoaded', function() {
-// BEGIN DOMCONTENTLOADED
+document.addEventListener('DOMContentLoaded', function () {
+  // BEGIN DOMCONTENTLOADED
 
-// // check the following inputs by ID: join-muted, simulcast, allow-attendee-capabilities
-// for (let element of ['join-muted', 'simulcast', 'allow-attendee-capabilities']) {
-//     let input = document.getElementById(element);
-//     if (input) {
-//             let value = this.checked;
-//             window.demoMeetingAppInstance.updateMeetingSettings({ [element]: value });
-//     }
-// }
+  // // check the following inputs by ID: join-muted, simulcast, allow-attendee-capabilities
+  // for (let element of ['join-muted', 'simulcast', 'allow-attendee-capabilities']) {
+  //     let input = document.getElementById(element);
+  //     if (input) {
+  //             let value = this.checked;
+  //             window.demoMeetingAppInstance.updateMeetingSettings({ [element]: value });
+  //     }
+  // }
 
+  console.log('quizbot.js loaded');
 
-console.log("quizbot.js loaded");
-
-// **********************************************************************
-// Function to download content inside a div as a text file.
-function downloadDivContentAndLocalStorageDataAsTextFile(divId, localStorageKey, filename) {
+  // **********************************************************************
+  // Function to download content inside a div as a text file.
+  function downloadDivContentAndLocalStorageDataAsTextFile(divId, localStorageKey, filename) {
     // Get the div content.
     var divContent = document.getElementById(divId).innerText;
-    
+
     // Get the stored data from localStorage directly as a string.
     var storedData = localStorage.getItem(localStorageKey);
     if (storedData) {
-        storedData = JSON.stringify(JSON.parse(storedData), null, '\n');
+      storedData = JSON.stringify(JSON.parse(storedData), null, '\n');
     }
-        
+
     // Combine both the div content and the stored data.
-    var combinedContent = 'Detailed Summary:\n\n' + divContent + '\n\nLocal Storage Data:\n\n' + storedData;
-    
+    var combinedContent =
+      'Detailed Summary:\n\n' + divContent + '\n\nLocal Storage Data:\n\n' + storedData;
+
     // Convert the combined content to a Blob.
     var blob = new Blob([combinedContent], { type: 'text/plain' });
-    
+
     // Create an anchor element to trigger the download.
     var downloadLink = document.createElement('a');
     downloadLink.download = filename;
     downloadLink.href = window.URL.createObjectURL(blob);
-    
+
     // Append the anchor to the document and trigger the download, then remove the anchor.
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
   }
-  
-// Add an event listener to the element that will trigger the download.
-  document.querySelector('.link').addEventListener('click', function() {
+
+  // Add an event listener to the element that will trigger the download.
+  document.querySelector('.link').addEventListener('click', function () {
     downloadDivContentAndLocalStorageDataAsTextFile('full-dash', 'data', 'detailed_summary.txt');
   });
-//   do the same for clicking #quiz-summaries:
-document.querySelector('#quiz-summaries').addEventListener('click', function() {
-        downloadDivContentAndLocalStorageDataAsTextFile('full-dash', 'data', 'detailed_summary.txt');
-      });
-// **********************************************************************
+  //   do the same for clicking #quiz-summaries:
+  document.querySelector('#quiz-summaries').addEventListener('click', function () {
+    downloadDivContentAndLocalStorageDataAsTextFile('full-dash', 'data', 'detailed_summary.txt');
+  });
+  // **********************************************************************
 
-
-// **********************************************************************
-//   clicking #button-meeting-leave will send all text in the #transcript-container (as 'transcript') along with localStorage's userId (as 'user_id') and the ?m= parameter (as 'meeting_id') in the URL to https://app.larq.ai/api/SaveTranscript:
-document.querySelector('#button-meeting-leave').addEventListener('click', function() {
+  // **********************************************************************
+  //   clicking #button-meeting-leave will send all text in the #transcript-container (as 'transcript') along with localStorage's userId (as 'user_id') and the ?m= parameter (as 'meeting_id') in the URL to https://app.larq.ai/api/SaveTranscript:
+  document.querySelector('#button-meeting-leave').addEventListener('click', function () {
     // Get the div content.
     var transcript = document.getElementById('transcript-container').innerText;
     // Get the stored data from localStorage directly as a string.
@@ -71,82 +70,79 @@ document.querySelector('#button-meeting-leave').addEventListener('click', functi
     var meeting_id = window.location.search.split('m=')[1];
     // Combine all the data:
     var data = {
-        transcript: transcript,
-        user_id: user_id,
-        meeting_id: meeting_id
+      transcript: transcript,
+      user_id: user_id,
+      meeting_id: meeting_id,
     };
     // Convert the data object to a string
     data = JSON.stringify(data);
     // Send the data to the API endpoint
     fetch('https://api.larq.ai/SaveTranscript', {
-        method: 'POST',
-        body: data
+      method: 'POST',
+      body: data,
     })
-    .then(response => response.json())
-    .then(data => {
+      .then(response => response.json())
+      .then(data => {
         console.log('Transcript Saved Success:', data);
         // redirect to the dashboard
         // window.location.href = "https://app.larq.ai/api/SaveTranscript";
-    })
-    .catch((error) => {
+      })
+      .catch(error => {
         console.error('Error:', error);
-    });
-    });
-// **********************************************************************
+      });
+  });
+  // **********************************************************************
 
+  // **********************************************************************
 
-
-// **********************************************************************
-
-// if the parameter is ?signup=true and the #login-container is visible, then click the #button-signup:
-if (window.location.search.split('signup=')[1] == 'true' && document.getElementById('login-container').style.display == 'block') {
+  // if the parameter is ?signup=true and the #login-container is visible, then click the #button-signup:
+  if (
+    window.location.search.split('signup=')[1] == 'true' &&
+    document.getElementById('login-container').style.display == 'block'
+  ) {
     document.querySelector('#button-signup').click();
-}
+  }
 
-// **********************************************************************
+  // **********************************************************************
 
+  // **********************************************************************
 
-
-// **********************************************************************
-
-// GET QUIZZES
-const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
-if (userId) {
-
+  // GET QUIZZES
+  const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
+  if (userId) {
     fetch(`https://api.larq.ai/getQuizzes?user_id=${userId}`)
-    .then(response => response.json())
-    .then(data => {
+      .then(response => response.json())
+      .then(data => {
         if (data.status === 'success') {
-            updateQuizzes(data.message);
+          updateQuizzes(data.message);
         } else {
-            console.error('Failed to fetch quizzes');
+          console.error('Failed to fetch quizzes');
         }
-    })
-    .catch(error => console.error('Error:', error));
+      })
+      .catch(error => console.error('Error:', error));
 
-function updateQuizzes(quizzes) {
-const quizzesDiv = document.getElementById('previous-quizzes');
-if (quizzes.length === 0) {
-    quizzesDiv.innerHTML = 'No previous quizzes yet.';
-    return;
-}
+    function updateQuizzes(quizzes) {
+      const quizzesDiv = document.getElementById('previous-quizzes');
+      if (quizzes.length === 0) {
+        quizzesDiv.innerHTML = 'No previous quizzes yet.';
+        return;
+      }
 
-quizzesDiv.innerHTML = ''; // Clear existing content
-quizzes.forEach(quiz => {
-    const quizElement = document.createElement('div');
-    quizElement.className = 'quiz';
-    quizElement.textContent = quiz.quiz_title; // Assuming each quiz has a 'title' property
-    quizzesDiv.appendChild(quizElement);
-});
-};
-}
+      quizzesDiv.innerHTML = ''; // Clear existing content
+      quizzes.forEach(quiz => {
+        const quizElement = document.createElement('div');
+        quizElement.className = 'quiz';
+        quizElement.textContent = quiz.quiz_title; // Assuming each quiz has a 'title' property
+        quizzesDiv.appendChild(quizElement);
+      });
+    }
+  }
 
-// **********************************************************************
+  // **********************************************************************
 
-
-// **********************************************************************
-// VECTOR UPLOAD FUNCTION
-function uploadPDF(pdfFile, userId) {
+  // **********************************************************************
+  // VECTOR UPLOAD FUNCTION
+  function uploadPDF(pdfFile, userId) {
     const formData = new FormData();
     formData.append('pdf', pdfFile);
 
@@ -160,75 +156,75 @@ function uploadPDF(pdfFile, userId) {
     uploadBtn.disabled = true;
 
     fetch('https://api.larq.ai/Vectorize', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'user_id': userId
-        }
+      method: 'POST',
+      body: formData,
+      headers: {
+        user_id: userId,
+      },
     })
-    .then(response => response.json())
-    .then(result => {
+      .then(response => response.json())
+      .then(result => {
         pdfspinner.classList.add('d-none');
         choosePDFBtn.disabled = false;
         uploadBtn.disabled = false;
 
-        if (result.status === "success") {
-            storeName.innerText = result.store_name;
-            storeName.classList.remove('d-none');
-            uploadBtn.textContent = "Uploaded";
-            uploadBtn.disabled = true;
-            uploadBtn.classList.remove('btn-outline-danger');
-            uploadBtn.classList.add('btn-outline-success');
-            uploadBtn.classList.remove('d-none');
+        if (result.status === 'success') {
+          storeName.innerText = result.store_name;
+          storeName.classList.remove('d-none');
+          uploadBtn.textContent = 'Uploaded';
+          uploadBtn.disabled = true;
+          uploadBtn.classList.remove('btn-outline-danger');
+          uploadBtn.classList.add('btn-outline-success');
+          uploadBtn.classList.remove('d-none');
 
-            // make cancelBtn visible by removing the 'd-none' class:
-            document.getElementById('cancelBtn').classList.remove('d-none');
-            uploadBtn.classList.add('btn-outline-success');
-            localStorage.setItem('storeName', result.store_name);
-            localStorage.setItem('vector_id', result.vector_id);
+          document.getElementById('pdf-name').style.display = 'none';
 
+          // make cancelBtn visible by removing the 'd-none' class:
+          document.getElementById('cancelBtn').classList.remove('d-none');
+          uploadBtn.classList.add('btn-outline-success');
+          localStorage.setItem('storeName', result.store_name);
+          localStorage.setItem('vector_id', result.vector_id);
         } else {
-            storeName.innerText = result.message;
-            storeName.classList.remove('d-none');
-            storeName.classList.remove('alert-success');
-            storeName.classList.add('alert-warning');
-            uploadBtn.textContent = "Upload";
-            uploadBtn.classList.add('btn-outline-warning');
+          storeName.innerText = result.message;
+          storeName.classList.remove('d-none');
+          storeName.classList.remove('alert-success');
+          storeName.classList.add('alert-warning');
+          uploadBtn.textContent = 'Upload';
+          uploadBtn.classList.add('btn-outline-warning');
         }
-    })
-    .catch(error => {
-        console.error("Error uploading PDF:", error);
+      })
+      .catch(error => {
+        console.error('Error uploading PDF:', error);
         pdfspinner.classList.add('d-none');
         choosePDFBtn.disabled = false;
         uploadBtn.disabled = false;
-        storeName.innerText = "Error uploading file" + error;
+        storeName.innerText = 'Error uploading file' + error;
         storeName.classList.remove('alert-success');
         storeName.classList.add('alert-danger');
         storeName.classList.remove('d-none');
         uploadBtn.classList.add('btn-outline-danger');
-    });
-}
+      });
+  }
 
-document.getElementById('pdfInput').addEventListener('change', function() {
+  document.getElementById('pdfInput').addEventListener('change', function () {
     const uploadBtn = document.getElementById('uploadBtn');
     uploadBtn.classList.remove('d-none');
     if (this.files && this.files[0]) {
-        uploadBtn.disabled = false;
-        uploadBtn.classList.remove('btn-outline-success');
-        uploadBtn.classList.add('btn-outline-primary');
-        // put the name of the pdf in <p class="text-sm d-none" id="pdf-name"></p>
-        document.getElementById('pdf-name').innerText = this.files[0].name;
-        document.getElementById('pdf-name').classList.remove('d-none');
-
+      uploadBtn.disabled = false;
+      uploadBtn.classList.remove('btn-outline-success');
+      uploadBtn.classList.add('btn-outline-primary');
+      // put the name of the pdf in <p class="text-sm d-none" id="pdf-name"></p>
+      document.getElementById('pdf-name').innerText = this.files[0].name;
+      document.getElementById('pdf-name').style.display = 'block';
+      document.getElementById('pdf-name').classList.remove('d-none');
     } else {
-        uploadBtn.disabled = true;
-        uploadBtn.classList.add('btn-outline-warning');
-        uploadBtn.classList.remove('btn-outline-primary');
-
+      uploadBtn.disabled = true;
+      uploadBtn.classList.add('btn-outline-warning');
+      uploadBtn.classList.remove('btn-outline-primary');
     }
-});
+  });
 
-document.getElementById('cancelBtn').addEventListener('click', function() {
+  document.getElementById('cancelBtn').addEventListener('click', function () {
     const storeName = document.getElementById('store-name');
     const uploadBtn = document.getElementById('uploadBtn');
     const pdfName = document.getElementById('pdf-name');
@@ -243,124 +239,116 @@ document.getElementById('cancelBtn').addEventListener('click', function() {
     // Remove the vectorID from localStorage
     localStorage.removeItem('vector_id');
     localStorage.removeItem('storeName');
+    document.getElementById('pdfInput').value = '';
+  });
 
-
-});
-
-
-document.getElementById('uploadBtn').addEventListener('click', function() {
+  document.getElementById('uploadBtn').addEventListener('click', function () {
     const pdfFile = document.getElementById('pdfInput').files[0];
     const userId = localStorage.getItem('userId');
     const pdfalert = document.getElementById('pdf-alert');
 
     if (pdfFile && userId) {
-        uploadPDF(pdfFile, userId)
-            .then(response => {
-                console.log(response);
-                this.classList.add('btn-success');
-            })
-            .catch(error => {
-                console.error(error);
-                this.classList.add('btn-danger');
-                pdfalert.classList.remove('d-none');
-            });
+      uploadPDF(pdfFile, userId)
+        .then(response => {
+          console.log(response);
+          this.classList.add('btn-success');
+        })
+        .catch(error => {
+          console.error(error);
+          this.classList.add('btn-danger');
+          pdfalert.classList.remove('d-none');
+        });
     } else {
-        console.warn("Please select a PDF file first. userId:", userId);
-        this.classList.add('btn-danger');
-        pdfalert.classList.remove('d-none');
+      console.warn('Please select a PDF file first. userId:', userId);
+      this.classList.add('btn-danger');
+      pdfalert.classList.remove('d-none');
     }
-});
+  });
 
+  // **********************************************************************
+  // **********************************************************************
+  // HOST ID
+  // document.getElementById('quick-join').addEventListener('click', function(e) {
+  //     // e.preventDefault(); // Prevent default if it's a link or has other default behavior
+  // });
 
-// **********************************************************************
-// **********************************************************************
-// HOST ID
-// document.getElementById('quick-join').addEventListener('click', function(e) {
-//     // e.preventDefault(); // Prevent default if it's a link or has other default behavior
-// });
+  // document.getElementById('joinButton').addEventListener('click', function(e) {
+  //     // e.preventDefault(); // Same as above
+  //     e.stopPropagation(); // Same as above
+  //     handleJoinAction();
+  // });
+  // **********************************************************************
 
-// document.getElementById('joinButton').addEventListener('click', function(e) {
-//     // e.preventDefault(); // Same as above
-//     e.stopPropagation(); // Same as above
-//     handleJoinAction();
-// });
-// **********************************************************************
+  // **********************************************************************
+  // Function for clicking #quiz-button to toggle #myDIV
+  const x = document.getElementById('myDIV');
+  const quizButton = document.getElementById('quiz-button');
 
-// **********************************************************************
-// Function for clicking #quiz-button to toggle #myDIV
-const x = document.getElementById('myDIV');
-const quizButton = document.getElementById('quiz-button');
-
-quizButton.addEventListener('click', function() {
-    console.log("quiz-button clicked");
+  quizButton.addEventListener('click', function () {
+    console.log('quiz-button clicked');
     if (window.demoMeetingAppInstance.isHost()) {
-        console.log("You're the host, you can create Quiz!");
-        if (x){
-            // toggle the myDIV
-            if (x.style.display === 'none') {
-                x.classList.remove('animate__slideOutRight');
-                x.classList.add('animate__slideInRight');
-                x.style.display = 'block';
-
-            } else {
-                x.classList.remove('animate__slideInRight');
-                x.classList.add('animate__slideOutRight');
-                x.style.display = 'none';
-
-            }
-
+      console.log("You're the host, you can create Quiz!");
+      if (x) {
+        // toggle the myDIV
+        if (x.style.display === 'none') {
+          x.classList.remove('animate__slideOutRight');
+          x.classList.add('animate__slideInRight');
+          x.style.display = 'block';
+        } else {
+          x.classList.remove('animate__slideInRight');
+          x.classList.add('animate__slideOutRight');
+          x.style.display = 'none';
         }
+      }
     } else {
-        console.log("You're not the host, you can't create quizzes!");
-        alert("You're not the host, you can't create quizzes!");
+      console.log("You're not the host, you can't create quizzes!");
+      alert("You're not the host, you can't create quizzes!");
 
-        // Show #create-quiz-not-host
-        const createQuizNotHost = document.getElementById('create-quiz-not-host');
-        createQuizNotHost.classList.add('animate__slideInRight');
-        createQuizNotHost.classList.remove('d-none');
+      // Show #create-quiz-not-host
+      const createQuizNotHost = document.getElementById('create-quiz-not-host');
+      createQuizNotHost.classList.add('animate__slideInRight');
+      createQuizNotHost.classList.remove('d-none');
 
-        return;
+      return;
     }
 
     if (x) {
-        const createQuiz = document.getElementById('create-quiz');
-        const quizQuestion = document.getElementById('quiz_question');
-        const quizInProgress = document.getElementById('quiz_in_progress');
-        const transcriptContainer = document.getElementById('tile-transcript-container');
+      const createQuiz = document.getElementById('create-quiz');
+      const quizQuestion = document.getElementById('quiz_question');
+      const quizInProgress = document.getElementById('quiz_in_progress');
+      const transcriptContainer = document.getElementById('tile-transcript-container');
 
-        if (x.classList.contains('animate__slideInRight')) {
-
-            if (createQuiz) {
-                createQuiz.classList.add('animate__slideInRight');
-                createQuiz.style.display = 'block';
-            }
-            if (quizQuestion) {
-                quizQuestion.classList.remove('animate__slideInRight');
-            }
-            if (quizInProgress) {
-                quizInProgress.classList.remove('animate__slideInRight');
-            }
-            if (transcriptContainer) {
-                transcriptContainer.style.width = '100%';
-            }
-        } else {
-            x.classList.remove('animate__slideOutRight');
-            x.classList.add('animate__slideInRight');
-
-            if (transcriptContainer) {
-                transcriptContainer.style.width = 'calc(100% - 300px)'; // Adjust width as needed
-            }
+      if (x.classList.contains('animate__slideInRight')) {
+        if (createQuiz) {
+          createQuiz.classList.add('animate__slideInRight');
+          createQuiz.style.display = 'block';
         }
+        if (quizQuestion) {
+          quizQuestion.classList.remove('animate__slideInRight');
+        }
+        if (quizInProgress) {
+          quizInProgress.classList.remove('animate__slideInRight');
+        }
+        if (transcriptContainer) {
+          transcriptContainer.style.width = '100%';
+        }
+      } else {
+        x.classList.remove('animate__slideOutRight');
+        x.classList.add('animate__slideInRight');
+
+        if (transcriptContainer) {
+          transcriptContainer.style.width = 'calc(100% - 300px)'; // Adjust width as needed
+        }
+      }
     }
-});
-// **********************************************************************
+  });
+  // **********************************************************************
 
-
-// If the user is host and clicks #button-meeting-leave, then save all text in #transcript-container and send it to app.larq.ai/api/SaveTranscript along with the userId and meetingId:
-document.querySelector('#button-meeting-end').addEventListener('click', function() {
+  // If the user is host and clicks #button-meeting-leave, then save all text in #transcript-container and send it to app.larq.ai/api/SaveTranscript along with the userId and meetingId:
+  document.querySelector('#button-meeting-end').addEventListener('click', function () {
     // if not host, then return:
     if (!window.demoMeetingAppInstance.isHost()) {
-        return;
+      return;
     }
 
     // Get the div content.
@@ -371,139 +359,128 @@ document.querySelector('#button-meeting-end').addEventListener('click', function
     var meeting_id = window.location.search.split('m=')[1];
     // Combine all the data:
     var data = {
-        transcript: transcript,
-        user_id: user_id,
-        meeting_id: meeting_id
+      transcript: transcript,
+      user_id: user_id,
+      meeting_id: meeting_id,
     };
     // Convert the data object to a string
     data = JSON.stringify(data);
     // Send the data to the API endpoint
     fetch('https://api.larq.ai/SaveTranscript', {
-        method: 'POST',
-        body: data
+      method: 'POST',
+      body: data,
     })
-    .then(response => response.json())
-    .then(data => {
+      .then(response => response.json())
+      .then(data => {
         console.log('Transcript Saved Success:', data);
         // redirect to the dashboard
         // window.location.href = "https://app.larq.ai/api/SaveTranscript";
-    })
-    .catch((error) => {
+      })
+      .catch(error => {
         console.error('Error:', error);
-    }
-    );
-    });
+      });
+  });
 
-// **********************************************************************
+  // **********************************************************************
 
+  document.querySelector('#scheduleMeetingSubmit')?.addEventListener('click', () => {
+    const meetingScheduleTime = document.getElementById('meetingScheduleTime').value;
 
-
-document.querySelector('#scheduleMeetingSubmit')?.addEventListener('click', () => {
-    const meetingScheduleTime = (document.getElementById('meetingScheduleTime') ).value;
-  
     if (!meetingScheduleTime) {
-        alert('Please ensure both date and time are selected.');
-        return;
+      alert('Please ensure both date and time are selected.');
+      return;
     }
-  
+
     const userId = localStorage.getItem('userId');
     if (!userId) {
-        alert('User ID is missing. Did you sign in?');
-        return;
+      alert('User ID is missing. Did you sign in?');
+      return;
     }
-  
-    const meetingName = (document.getElementById('meetingName') ).value;
+
+    const meetingName = document.getElementById('meetingName').value;
     // let authToken = localStorage.getItem('authToken');
-  
-    fetch("https://api.larq.ai/scheduleMeeting", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json' 
-            // Add Authorization header if needed
-            // 'Authorization': `Bearer ${authToken}`
-        },
-        body: JSON.stringify({
-            timestamp: meetingScheduleTime,
-            host_id: userId,
-            meeting_name: meetingName,
-            duration: 60
-        })
+
+    fetch('https://api.larq.ai/scheduleMeeting', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add Authorization header if needed
+        // 'Authorization': `Bearer ${authToken}`
+      },
+      body: JSON.stringify({
+        timestamp: meetingScheduleTime,
+        host_id: userId,
+        meeting_name: meetingName,
+        duration: 60,
+      }),
     })
-    .then(response => response.json())
-    .then(data => {
+      .then(response => response.json())
+      .then(data => {
         if (data.status === 'success') {
-            
           let dataString = localStorage.getItem('data');
           if (!dataString) {
-              console.error('No data found in localStorage');
-              return;
+            console.error('No data found in localStorage');
+            return;
           }
-          
+
           // Parse the data string into an object
           let data = JSON.parse(dataString);
-          
+
           // Check if 'this_month_meetings' exists in the data
           if (!data.dashboard_stats || !data.dashboard_stats.this_month_meetings) {
-              console.error('Invalid data structure in localStorage');
-              return;
+            console.error('Invalid data structure in localStorage');
+            return;
           }
-          
+
           // Create a new meeting object
           const newMeeting = {
             _id: data.meeting_id,
             host_id: userId,
             meeting_name: meetingName,
             timestamp: meetingScheduleTime,
-            duration: 60
+            duration: 60,
             // Add other necessary fields here
-        };
+          };
 
-        // // Generate and display "Add to Calendar" links
-        // const googleCalendarLink = generateGoogleCalendarLink(meetingScheduleTime, meetingName);
-        // const outlookCalendarLink = generateOutlookCalendarLink(meetingScheduleTime, meetingName); // You need to implement this
+          // // Generate and display "Add to Calendar" links
+          // const googleCalendarLink = generateGoogleCalendarLink(meetingScheduleTime, meetingName);
+          // const outlookCalendarLink = generateOutlookCalendarLink(meetingScheduleTime, meetingName); // You need to implement this
 
-        // // Display or log the links (modify as needed)
-        // console.log('Add to Google Calendar:', googleCalendarLink);
-        // console.log('Download ICS for Outlook:', outlookCalendarLink);
+          // // Display or log the links (modify as needed)
+          // console.log('Add to Google Calendar:', googleCalendarLink);
+          // console.log('Download ICS for Outlook:', outlookCalendarLink);
 
-      
           // Add the new meeting to the 'this_month_meetings' array
           data.dashboard_stats.this_month_meetings.push(newMeeting);
-      
+
           // Convert the updated data object back to a string
           dataString = JSON.stringify(data);
-      
+
           // Store the updated string back in localStorage
           localStorage.setItem('data', dataString);
-          showEventModal(meetingName, meetingScheduleTime, data.meeting_id, 60);    
-            //   location.reload();
-            // Hide modal if needed
-            // document.getElementById('scheduleMeetingModal')!.style.display = 'none';
-        } 
-        else if( data.status === 'exists'){
-          alert(data.message);    
-          showEventModal(meetingName, meetingScheduleTime, data.meeting_id, 60);    
-  
+          showEventModal(meetingName, meetingScheduleTime, data.meeting_id, 60);
+          //   location.reload();
+          // Hide modal if needed
+          // document.getElementById('scheduleMeetingModal')!.style.display = 'none';
+        } else if (data.status === 'exists') {
+          alert(data.message);
+          showEventModal(meetingName, meetingScheduleTime, data.meeting_id, 60);
+        } else {
+          alert(data.message);
         }
-        else {
-            alert(data.message);
-        }
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         alert('Error occurred: ' + error.message);
         console.error('Error:', error);
-    });
+      });
   });
-  
-// **********************************************************************
-// **********************************************************************
-// END DOMCONTENTLOADED
-// **********************************************************************
-// **********************************************************************
 
+  // **********************************************************************
+  // **********************************************************************
+  // END DOMCONTENTLOADED
+  // **********************************************************************
+  // **********************************************************************
 });
-
-
 
 // **********************************************************************
 // **********************************************************************
@@ -512,31 +489,40 @@ document.querySelector('#scheduleMeetingSubmit')?.addEventListener('click', () =
 // **********************************************************************
 
 function showEventModal(content, timestamp, id, duration) {
-    const modalElement = document.getElementById('eventModal');
-    const modalContentElement = document.getElementById('eventModalContent');
-  
-    if (!modalElement || !modalContentElement) {
-      console.error("Modal elements not found");
-      return;
+  const modalElement = document.getElementById('eventModal');
+  const modalContentElement = document.getElementById('eventModalContent');
+
+  if (!modalElement || !modalContentElement) {
+    console.error('Modal elements not found');
+    return;
+  }
+
+  const modal = new bootstrap.Modal(modalElement);
+  let formattedTimestamp = 'Invalid Date';
+
+  if (timestamp) {
+    const date = new Date(timestamp);
+    if (!isNaN(date.getTime())) {
+      // Check if date is valid
+      const formattedDate = date.toLocaleString('default', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      });
+      const formattedTime = date.toLocaleString('default', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+      });
+      formattedTimestamp = `${formattedDate}<br>At ${formattedTime}`;
     }
-    
-    const modal = new bootstrap.Modal(modalElement);
-    let formattedTimestamp = "Invalid Date";
-  
-    if (timestamp) {
-      const date = new Date(timestamp);
-      if (!isNaN(date.getTime())) {  // Check if date is valid
-        const formattedDate = date.toLocaleString('default', { month: 'long', day: 'numeric', year: 'numeric' });
-        const formattedTime = date.toLocaleString('default', { hour: 'numeric', minute: 'numeric', hour12: true });
-        formattedTimestamp = `${formattedDate}<br>At ${formattedTime}`;
-      }
-    }
-  
-    // Generate calendar links
-    const googleCalendarLink = generateGoogleCalendarLink(timestamp, content, id);
-    const outlookCalendarLink = generateOutlookCalendarLink(timestamp, content, id);
-  
-    modalContentElement.innerHTML = `<div class="text-center">
+  }
+
+  // Generate calendar links
+  const googleCalendarLink = generateGoogleCalendarLink(timestamp, content, id);
+  const outlookCalendarLink = generateOutlookCalendarLink(timestamp, content, id);
+
+  modalContentElement.innerHTML = `<div class="text-center">
       <h3>${content}</h3>
       <br><br>
       <small>Event on ${formattedTimestamp}</small>
@@ -550,67 +536,69 @@ function showEventModal(content, timestamp, id, duration) {
       <button class="btn btn-success d-inline col-5 p-2 m-2" onclick="window.open('https://meeting.larq.ai?m=${id}', '_blank')">Go to Meeting</button>
       <button class="btn btn-primary d-inline col-5 p-2 m-2" onclick="copyToClipboard('https://meeting.larq.ai?m=${id}', this)">Copy Meeting Link</button>
     </div>`;
-  
-    modal.show();
-  }
 
+  modal.show();
+}
 
 function generateGoogleCalendarLink(meetingTime, meetingName, meetingId) {
-    const baseUrl = 'https://www.google.com/calendar/render?action=TEMPLATE';
-    const formatTime = (date) => date.toISOString().replace(/-|:|\.\d\d\d/g, '');
-    const startTime = new Date(meetingTime);
-    const endTime = new Date(startTime.getTime() + 60 * 60000); // Assuming 60 minutes duration
-    const location = `https://meeting.larq.ai?m=${meetingId}`;
-  
-    return `${baseUrl}&text=${encodeURIComponent(meetingName)}&dates=${formatTime(startTime)}/${formatTime(endTime)}&location=${encodeURIComponent(location)}`;
-  }
-  
+  const baseUrl = 'https://www.google.com/calendar/render?action=TEMPLATE';
+  const formatTime = date => date.toISOString().replace(/-|:|\.\d\d\d/g, '');
+  const startTime = new Date(meetingTime);
+  const endTime = new Date(startTime.getTime() + 60 * 60000); // Assuming 60 minutes duration
+  const location = `https://meeting.larq.ai?m=${meetingId}`;
 
-  function generateOutlookCalendarLink(meetingTime, meetingName, meetingId) {
-    const formatICSDate = (date) => {
-      return date.toISOString().replace(/-|:|\.\d\d\d/g, '').slice(0, 15) + 'Z';
-    };
-  
-    const startTime = new Date(meetingTime);
-    const endTime = new Date(startTime.getTime() + 60 * 60000); // Assuming 60 minutes duration
-    const location = `https://meeting.larq.ai?m=${meetingId}`;
-  
-    const icsContent = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'BEGIN:VEVENT',
-      `URL:${location}`,
-      `DTSTART:${formatICSDate(startTime)}`,
-      `DTEND:${formatICSDate(endTime)}`,
-      `SUMMARY:${meetingName}`,
-      `DESCRIPTION:${meetingName}`,
-      `LOCATION:${location}`,
-      'END:VEVENT',
-      'END:VCALENDAR'
-    ].join('\n');
-  
-    const blob = new Blob([icsContent], { type: 'text/calendar' });
-    const url = URL.createObjectURL(blob);
-  
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${meetingName.replace(/\s+/g, '_')}.ics`;
-    document.body.appendChild(link);
-    // link.click();
-    // document.body.removeChild(link);
-  
-    return url; // This is a blob URL, it won't be useful after the download is triggered
-  }
-    
-  
-  
+  return `${baseUrl}&text=${encodeURIComponent(meetingName)}&dates=${formatTime(
+    startTime
+  )}/${formatTime(endTime)}&location=${encodeURIComponent(location)}`;
+}
+
+function generateOutlookCalendarLink(meetingTime, meetingName, meetingId) {
+  const formatICSDate = date => {
+    return (
+      date
+        .toISOString()
+        .replace(/-|:|\.\d\d\d/g, '')
+        .slice(0, 15) + 'Z'
+    );
+  };
+
+  const startTime = new Date(meetingTime);
+  const endTime = new Date(startTime.getTime() + 60 * 60000); // Assuming 60 minutes duration
+  const location = `https://meeting.larq.ai?m=${meetingId}`;
+
+  const icsContent = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'BEGIN:VEVENT',
+    `URL:${location}`,
+    `DTSTART:${formatICSDate(startTime)}`,
+    `DTEND:${formatICSDate(endTime)}`,
+    `SUMMARY:${meetingName}`,
+    `DESCRIPTION:${meetingName}`,
+    `LOCATION:${location}`,
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\n');
+
+  const blob = new Blob([icsContent], { type: 'text/calendar' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `${meetingName.replace(/\s+/g, '_')}.ics`;
+  document.body.appendChild(link);
+  // link.click();
+  // document.body.removeChild(link);
+
+  return url; // This is a blob URL, it won't be useful after the download is triggered
+}
 
 // function handleJoinAction() {
 //         const meetingName = document.getElementById('inputMeeting').value;
 //         // get userId from localstorage
 //         const userId = localStorage.getItem('userId');
 //         // Add other form data as needed
-    
+
 //         fetch('https://api.larq.ai/scheduleMeeting', {
 //             method: 'POST',
 //             headers: {
@@ -648,4 +636,3 @@ function generateGoogleCalendarLink(meetingTime, meetingName, meetingId) {
 //             console.error('Error:', error);
 //         });
 //     };
-

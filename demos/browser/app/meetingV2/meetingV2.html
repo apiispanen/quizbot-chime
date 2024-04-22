@@ -280,7 +280,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="61" height="61" viewBox="0 0 61 61" fill="none">
               <path
                 d="M13.8882 50.3105L3.61523 11.9712L41.7334 17.167L41.0145 17.3596C39.6167 17.7341 38.3416 18.247 37.1892 18.8982C36.0368 19.5494 34.9564 20.3098 33.948 21.1792L10.3338 17.8757L12.5811 26.2624L27.9214 26.0044L14.5072 33.451L16.7545 41.8378L28.2172 32.8594C28.1439 33.8635 28.1476 34.8359 28.2284 35.7765C28.3092 36.717 28.4782 37.6674 28.7355 38.6275L28.7676 38.7473L13.8882 50.3105ZM48.7193 46.1141C45.4045 47.0023 42.2655 46.5909 39.3021 44.88C36.3388 43.1691 34.4141 40.6569 33.5279 37.3433C32.6397 34.0286 33.0511 30.8895 34.7619 27.9262C36.4728 24.9629 38.9851 23.0381 42.2986 22.152C45.6134 21.2638 48.7524 21.6751 51.7158 23.386C54.6791 25.0969 56.6038 27.6091 57.49 30.9227C58.3782 34.2375 57.9668 37.3765 56.256 40.3398C54.5451 43.3032 52.0328 45.2279 48.7193 46.1141ZM50.9715 38.7047L52.1994 36.5779L46.5786 33.3328L44.7809 26.6234L42.3847 27.2654L44.4393 34.9333L50.9715 38.7047Z"
-                fill="#8E509C" />
+                fill="#7A64EC" />
             </svg>
             <p>Schedule</p>
           </div>
@@ -1077,7 +1077,7 @@
           </div>
         </div>
           <!-- DREW FORM TESTS : REMOVE DISPLAY BLOCKS -->
-        <div id="myDIV" class=" my-4 my-sm-0 quizBlock animate__animated scrollbar-y-design" style="display:none">
+        <div id="myDIV" class=" my-4 my-sm-0 quizBlock animate__animated scrollbar-y-design" style="display:none ; max-width:400px;">
           <div id="create-quiz-not-host" class="h-100 d-none"><div class="d-flex flex-column h-100 scrollbar-new-design" style="overflow-y: overlay;"><div><div class="d-flex justify-content-end mb-3"><button type="button" class="btn-close cancel-button" id="close-quiz"></button></div><div class="quiz-heading">Create an Automated Quiz</div><h3 class="p-4 my-3">Host a Larq meeting to make Quizzes for your sessions!</h3>
           <div class="btn btn-success w-100 py-2 my-3">Request Host Access</div></div></div></div>
           <div id="create-quiz" style="display: block;" class="h-100">
@@ -1109,10 +1109,11 @@
                   </div>
                 </div>
                 <div class="questions-block pb-3">
-                  <div class="quiz-title">Type of Quiz</div>
+
+                  <!-- <div class="quiz-title">Type of Quiz</div>
                   <div class="radio-container m-2" id="radio-container">
                     <div class="radioBlock"><input type="radio" name="radioOption" value="Multiple Choice" checked=true disabled><label class="radio-label" contenteditable="false">Multiple Choice</label></div><div class="radioBlock"><input type="radio" name="radioOption" value="Other" disabled><label class="radio-label">Other</label></div>
-                    </div>
+                  </div> -->
                   <!-- <div class="radioButton col-md-12 col-lg-12 col-12 mb-3">
 
                     <div class="form-check form-check-inline radioBox">
@@ -1151,30 +1152,29 @@
                 <!-- VECTOR SAMPLE -->
         
                 <div class="container pt-5" id="upload-pdf">
-                  <div class="spinner-border text-success p-4 position-absolute top-50 end-50 d-none" role="status" id="pdfspinner" >
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
+                 
                   <div class="row">
                           <!-- Upload Button --> <p>(Optional) Upload a PDF of your textbook.</p>
                           <div class="input-group mb-3">
                            
                               <div class=" m-2">
                                 <input type="file" class="custom-file-input" id="pdfInput" accept=".pdf">
-                                <label class="btn btn-outline-primary" for="pdfInput">Choose PDF</label>
+                                <label class="btn btn-outline-primary" for="pdfInput" style="color: #ffffff;">Choose PDF</label>
                               </div>
                               <div class="input-group-append m-2">
-                                  <button class="btn btn-outline-secondary d-none" type="button" id="uploadBtn">Upload</button>
-                                  <button id="cancelBtn" class="btn btn-outline-warning d-none p-2">Cancel</button>    
-
+                                  <button class="btn btn-outline-secondary d-none" type="button" id="uploadBtn" style="color: #ffffff;">Upload</button>
+                                  <button id="cancelBtn" class="btn btn-outline-warning d-none">Cancel</button>    
                               </div>
                               <div class="d-none alert alert-warning p-2 text-center col-12" role="alert" id="pdf-alert">
                                 Please select a PDF first.
                                 </div>                                  
                                 <p class="text-sm d-none w-100" id="pdf-name"></p>                              
 
-                                <div class="d-none alert alert-success p-2 text-center col-12" role="alert" id="store-name">
+                                <div class="d-none alert alert-success p-2 text-center col-12" role="alert" id="store-name" style="background: none; border-bottom: 5px solid #7A64EC; border-radius: 0px;">
                                   </div>
-
+                          </div>
+                          <div class="spinner-border text-success p-4 position-absolute top-50 end-50 d-none" role="status" id="pdfspinner" >
+                            <span class="visually-hidden">Loading...</span>
                           </div>
                   </div>
               </div>
@@ -1184,7 +1184,7 @@
                 </div>                                  
 
               </div>
-              <button type="button" class="customButton" id="submit-quiz">
+              <button type="button" class="customButton" id="submit-quiz" >
                 Generate Quiz
               </button>
             </div>
@@ -1236,13 +1236,13 @@
                   <button id="publish-quiz" type="button" class="customButton" data-bs-toggle="modal"
                     data-bs-target="#publish-quiz-modal">Publish the Quiz</button>
                   <button class="btn" style="border-radius: 8px;
-                    border: 3px solid #8E509C;" data-bs-toggle="modal"
+                    border: 3px solid #7A64EC;" data-bs-toggle="modal"
                     data-bs-target="#schedule-quiz-modal">
 
                     <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 0 32 32" fill="none">
                       <path
                         d="M7.02111 26.6065L1.49963 6.00012L21.9872 8.79271L21.6008 8.89624C20.8495 9.09754 20.1642 9.3732 19.5448 9.72322C18.9254 10.0732 18.3447 10.4819 17.8027 10.9492L5.11071 9.17364L6.31853 13.6813L14.5636 13.5426L7.35381 17.545L8.56163 22.0527L14.7226 17.227C14.6832 17.7667 14.6852 18.2893 14.7286 18.7949C14.772 19.3004 14.8629 19.8112 15.0011 20.3272L15.0184 20.3916L7.02111 26.6065ZM25.7419 24.3511C23.9603 24.8284 22.2732 24.6073 20.6804 23.6878C19.0877 22.7682 18.0532 21.418 17.5769 19.637C17.0996 17.8554 17.3207 16.1683 18.2402 14.5755C19.1598 12.9828 20.51 11.9483 22.291 11.472C24.0726 10.9947 25.7597 11.2158 27.3524 12.1353C28.9452 13.0549 29.9797 14.4051 30.456 16.1861C30.9333 17.9677 30.7122 19.6548 29.7927 21.2476C28.8731 22.8403 27.5229 23.8748 25.7419 24.3511ZM26.9524 20.3687L27.6124 19.2256L24.5914 17.4814L23.6251 13.8753L22.3372 14.2204L23.4415 18.3417L26.9524 20.3687Z"
-                        fill="#8E509C" />
+                        fill="#7A64EC" />
                     </svg>
                   </button>
 
