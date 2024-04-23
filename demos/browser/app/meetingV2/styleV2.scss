@@ -10,8 +10,8 @@ $gray-800: #343a40;
 $gray-900: #212529;
 $black: #000;
 $blue: #2c3e50;
-$indigo: #8e509c;
-$purple: #8e509c;
+$indigo: #7a64ec;
+$purple: #7a64ec;
 $pink: #e83e8c;
 $red: #e74c3c;
 $orange: #fd7e14;
@@ -1571,7 +1571,7 @@ input[type='radio'] {
   display: flex;
   flex-direction: column;
   h4 {
-    color: #8e509c;
+    color: #7a64ec;
     text-align: center;
 
     font-size: 24px;
@@ -1611,15 +1611,15 @@ input[type='radio'] {
     cursor: pointer;
 
     &:hover {
-      border-bottom: 3px solid #8e509c;
+      border-bottom: 3px solid #7a64ec;
       border-radius: 3px;
-      color: #8e509c;
+      color: #7a64ec;
     }
   }
   p.activeTabs {
-    border-bottom: 3px solid #8e509c;
+    border-bottom: 3px solid #7a64ec;
     border-radius: 3px;
-    color: #8e509c;
+    color: #7a64ec;
   }
 }
 .customInput {
@@ -1720,7 +1720,7 @@ input[type='radio'] {
   }
   .hostMeeting {
     border: 2px solid #fff;
-    background-color: #8e509c;
+    background-color: #7a64ec;
   }
   .createMeeting {
     border: 1px solid #fff;
@@ -1859,7 +1859,7 @@ input[type='radio'] {
         line-height: 100%;
       }
       a {
-        color: #8e509c;
+        color: #7a64ec;
 
         font-size: 16px;
         font-style: normal;
@@ -1876,9 +1876,9 @@ input[type='radio'] {
     width: 200px;
     height: 172px;
     border-radius: 22px;
-    border: 4px solid #8e509c;
+    border: 4px solid #7a64ec;
     p {
-      color: #8e509c;
+      color: #7a64ec;
 
       font-size: 18px;
       font-style: normal;
@@ -1938,7 +1938,7 @@ input[type='radio'] {
           }
         }
         a {
-          color: #8e509c;
+          color: #7a64ec;
 
           font-size: 16px;
           font-style: normal;
@@ -1948,7 +1948,7 @@ input[type='radio'] {
       }
     }
     .heading {
-      color: #8e509c;
+      color: #7a64ec;
 
       font-size: 18px;
       font-style: normal;
@@ -2065,7 +2065,7 @@ input[type='radio'] {
       line-height: 100%;
     }
     a {
-      color: #8e509c;
+      color: #7a64ec;
 
       font-size: 16px;
       font-style: normal;
@@ -2133,7 +2133,7 @@ input[type='radio'] {
   }
 }
 .timing-details {
-  color: #8e509c;
+  color: #7a64ec;
   font-family: Inter;
   font-size: 12px;
   font-style: normal;
@@ -2152,7 +2152,7 @@ input[type='radio'] {
   }
 }
 .quizContainer {
-  height: calc(100vh - 117px) !important;
+  height: 100%;
   padding: 30px 40px 40px 40px;
   align-items: center;
   border-radius: 22px;
@@ -2160,13 +2160,13 @@ input[type='radio'] {
   background-color: #22242c;
 }
 .messagingContainer {
-  height: calc(100vh - 117px) !important;
+  height: 100%;
   padding: 40px 12px 263.931px 12px;
 
   border-radius: 22px 0px 0px 22px;
-  background: #f7f7fc;
+  background: #22242c;
   .heading {
-    color: #3f4149;
+    color: #ffffff;
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
@@ -2187,11 +2187,11 @@ input[type='radio'] {
     outline: none;
     border-radius: 4px;
     &:hover {
-      border-color: #8e509c;
+      border-color: #7a64ec;
     }
   }
   textarea:focus {
-    border-color: #8e509c;
+    border-color: #7a64ec;
     -webkit-box-shadow: 0px 0px 0px 3px rgba(0, 168, 132, 0.1);
     -moz-box-shadow: 0px 0px 0px 3px rgba(0, 168, 132, 0.1);
     box-shadow: 0px 0px 0px 3px rgba(0, 168, 132, 0.1);
@@ -2361,7 +2361,7 @@ input[type='radio'] {
   margin-right: 10px;
 }
 .radio-label.editing {
-  border: 1px solid #8e509c;
+  border: 1px solid #7a64ec;
   border-radius: 4px;
   padding: 2px;
   min-width: 120px;
@@ -2553,7 +2553,7 @@ input[type='Submit']:hover {
   margin-top: 2%;
   /* add shadow to the login box */
 
-  // border: 5px solid #8e509c;
+  // border: 5px solid #7a64ec;
   border-radius: 10px;
   padding: 20px;
   z-index: 1;
@@ -2742,7 +2742,7 @@ input[type='Submit']:hover {
   // @link https://moderncss.dev/pure-css-custom-styled-radio-buttons/
 
   :root {
-    --form-control-color: #8e509c;
+    --form-control-color: #7a64ec;
   }
 
   body {
@@ -2872,10 +2872,10 @@ div#calendar-dates {
   font-size: 18px !important;
   font-weight: 700 !important;
   /* text-decoration: underline; */
-  color: #8e509c !important;
+  color: #7a64ec !important;
   border: none !important;
   outline: none !important;
-  border-bottom: 1px solid #8e509c !important;
+  border-bottom: 1px solid #7a64ec !important;
   padding-bottom: 2px;
   display: inline-block;
   padding: 0 0 2px 0px !important;
@@ -2951,7 +2951,7 @@ div#calendar-dates {
   padding-top: 25px;
 }
 .modal-footer .btn {
-  background: #8e509c;
+  background: #7a64ec;
   font-size: 16px;
   font-weight: 400;
   border-radius: 6px;
@@ -2997,7 +2997,7 @@ div#calendar-dates {
   flex-wrap: wrap;
 }
 .quiz_top_head h4 {
-  color: #8e509c;
+  color: #7a64ec;
   font-size: 18px;
   font-weight: 700;
 }
@@ -3071,10 +3071,10 @@ div#calendar-dates {
   font-weight: 400;
 }
 .inner_quiz_score a {
-  color: #8e509c;
+  color: #7a64ec;
   font-size: 16px;
   font-weight: 300;
-  border-bottom: 1px solid #8e509ca8;
+  border-bottom: 1px solid #7a64eca8;
   display: inline-block;
 }
 .inner_quiz3 ul li {

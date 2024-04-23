@@ -5930,6 +5930,7 @@ function displayQuestion(index: number, data: FormData) {
       input.type = 'radio';
       input.id = `answer_${index}_${optionIndex}`;
       input.name = `question_${index}`;
+      input.style.color = '#ffffff';
       let optionSelected = false;
 
       input.addEventListener('change', () => {
@@ -5976,7 +5977,7 @@ function displayQuestion(index: number, data: FormData) {
       label.className = 'form-check-label';
       label.setAttribute('for', input.id);
       label.textContent = option;
-
+      label.style.color = '#ffffff';
       radioDiv.appendChild(input);
       radioDiv.appendChild(label);
       answersContainer.appendChild(radioDiv);
