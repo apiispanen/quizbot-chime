@@ -217,6 +217,18 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('pdf-name').innerText = this.files[0].name;
       document.getElementById('pdf-name').style.display = 'block';
       document.getElementById('pdf-name').classList.remove('d-none');
+      const pdfFile = document.getElementById('pdfInput').files[0];
+      const userId = localStorage.getItem('userId');
+      uploadPDF(pdfFile, userId)
+        .then(response => {
+          console.log(response);
+          this.classList.add('btn-success');
+        })
+        .catch(error => {
+          console.error(error);
+          this.classList.add('btn-danger');
+          pdfalert.classList.remove('d-none');
+        });
     } else {
       uploadBtn.disabled = true;
       uploadBtn.classList.add('btn-outline-warning');
