@@ -889,8 +889,8 @@
 
     <audio id="meeting-audio" style="display:none"></audio>
     <div id="meeting-container" class="h-100 mb-5" style="display:flex; flex-flow:column;">
-      <div id="mobile-message" style="display: none;">
-        You are viewing a meeting on your mobile device. Some app functionality may be reduced.
+      <div id="mobile-message" style="display: none; text-align: center; color: white;">
+        You are viewing a meeting on a mobile size. Some app functionality may be reduced.
       </div>
       <div id="starting_quiz_container" style="gap: 20px;display: none;">
         <div class="quizContainer h-90 shadow scrollbar-y-design" style="width:70%">
@@ -1078,14 +1078,14 @@
         </div>
           <!-- DREW FORM TESTS : REMOVE DISPLAY BLOCKS -->
         <div id="myDIV" class=" my-4 my-sm-0 quizBlock animate__animated scrollbar-y-design" style="display:none ; max-width:400px; width: 400px;">
-          <div id="create-quiz-not-host" class="h-100 d-none"><div class="d-flex flex-column h-100 scrollbar-new-design" style="overflow-y: overlay;"><div><div class="d-flex justify-content-end mb-3"><button type="button" class="btn-close cancel-button" id="close-quiz"></button></div><div class="quiz-heading">Create an Automated Quiz</div><h3 class="p-4 my-3">Host a Larq meeting to make Quizzes for your sessions!</h3>
+          <div id="create-quiz-not-host" class="h-100 d-none"><div class="d-flex flex-column h-100 scrollbar-new-design" style="overflow-y: overlay;"><div><div class="d-flex justify-content-end mb-3"><button type="button" class="btn-close cancel-button" id="close-quiz" style="background-color: aliceblue;"></button></div><div class="quiz-heading">Create an Automated Quiz</div><h3 class="p-4 my-3">Host a Larq meeting to make Quizzes for your sessions!</h3>
           <div class="btn btn-success w-100 py-2 my-3">Request Host Access</div></div></div></div>
           <div id="create-quiz" style="display: block;" class="h-100">
             <div class="d-flex flex-column h-100 scrollbar-new-design"
               style="overflow-y: overlay;">
               <div>
                 <div class="d-flex justify-content-end mb-3">
-                  <button type="button" class="btn-close cancel-button"  id="close-quiz" ></button>
+                  <button type="button" class="btn-close cancel-button"  id="close-quiz"  style="background-color: aliceblue;"></button>
                 </div>
                 <div class="quiz-heading">Create an Automated Quiz</div>
                 <div class="questions-num">
@@ -1216,7 +1216,7 @@
                     fill="#FFAC33" />
                 </svg>
 
-                <h4>
+                <h4 style="color: #7A64EC;">
                   Generating your quiz. Please wait..
                 </h4>
               </div>
@@ -1228,11 +1228,11 @@
 
             </div>
           </div>
-          <div id="quiz_question" class="h-100" style="display: none;">
-            <div class="d-flex flex-column h-100">
+          <div id="quiz_question" style="display: none;">
+            <div class="d-flex flex-column ">
               <div>
                 <div class="d-flex justify-content-end mb-3">
-                  <button type="button" class="btn-close cancel-button"></button>
+                  <button type="button" class="btn-close cancel-button" ></button>
                 </div>
                 <div class="d-flex" style="gap:10px">
 
@@ -1252,7 +1252,8 @@
                 </div>
                 <div class="quiz-heading mt-3">Quiz (Draft)</div>
                 <div class="questions-num mt-2">
-                  <h2 class="quiz-title form-control" id="quiz-title">Chapter 1-Photosynthesis</h2>
+                  <p style="margin: 4px;">Quiz Title:</p>
+                  <h2 class="quiz-title form-control" id="quiz-title"  style="color: black;">Chapter 1-Photosynthesis</h2>
                   <p>Click a number to view the question</p>
                   <div class="d-flex scrollbar-new-design scrollbar-x-design" style="gap: 20px;" id="quiz-numbers">
                     <!-- <div class="numbers-block">
@@ -1273,7 +1274,14 @@
 
                 </div>
               </div>
-              <button class="deleteButton" type="button">
+              <button class="deleteButton" type="button" style="margin-top: 0px; margin-bottom: 10px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#F55A5D" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
+                  <path d="M3 6h18"></path>
+                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                  <line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line>
+                </svg>
+                
                 Delete Quiz
               </button>
             </div>
@@ -1283,7 +1291,7 @@
             <div class="d-flex flex-column justify-content-between h-100">
               <div>
                 <div class="d-flex justify-content-end mb-3">
-                  <button type="button" class="btn-close cancel-button"></button>
+                  <button type="button" class="btn-close cancel-button" style="background-color: aliceblue;"></button>
                 </div>
                 <div class="d-flex align-items-center justify-content-between" style="gap:10px">
 
@@ -2004,12 +2012,12 @@
   <div class="modal fade" id="publish-quiz-modal" tabindex="-1" aria-labelledby="publish-quiz-modal-label"
     aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="color: #FFFFFF; background-color: #22242C;">
         <div class="modal-header">
-          <h5 class="modal-title" id="publish-quiz-modal-label">Publish Quiz</h5>
+          <h5 class="modal-title" id="publish-quiz-modal-label" style="color: #FFFFFF;">Publish Quiz</h5>
           <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="color: #FFFFFF;">
           You are about to publish the Quiz to your classroom. Do you confirm?
         </div>
         <div class="d-flex justify-content-between"> <button type="button" class="cancelButton" data-bs-dismiss="modal"
