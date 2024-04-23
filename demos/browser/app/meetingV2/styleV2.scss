@@ -507,7 +507,7 @@ a:hover {
   z-index: -1;
 }
 .modal-body {
-  color: #000;
+  color: #ffffff;
 
   font-size: 24px;
   font-style: normal;
@@ -1244,7 +1244,8 @@ a.markdown:active {
 }
 
 .modal-content {
-  background-color: #fff;
+  color: #ffffff !important;
+  background-color: #22242c !important;
   margin: auto;
   padding-left: 20px;
   padding-right: 20px;
@@ -1264,6 +1265,7 @@ a.markdown:active {
 }
 
 .modal-title {
+  color: #ffffff !important;
   font-size: 24px;
 }
 
@@ -2139,7 +2141,7 @@ input[type='radio'] {
   line-height: 150%;
 }
 .modal-details {
-  color: #3f4149;
+  color: #ffffff;
   font-family: Inter;
   font-size: 24px;
   font-style: normal;
@@ -2155,7 +2157,7 @@ input[type='radio'] {
   align-items: center;
   border-radius: 22px;
   border: 1px solid #e6e6e6;
-  background: #f7f7fc;
+  background-color: #22242c;
 }
 .messagingContainer {
   height: calc(100vh - 117px) !important;
@@ -2926,7 +2928,7 @@ div#calendar-dates {
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: #22242c !important;
   margin: auto;
   border-radius: 20px !important;
   max-width: 480px;

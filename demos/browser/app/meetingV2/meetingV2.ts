@@ -1384,8 +1384,11 @@ export class DemoMeetingApp
                   //   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12L9 16L19 6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
                   let answerLabel = document.createElement('textarea');
-                  answerLabel.className = 'form-control answer-text w-75';
+                  answerLabel.className = 'form-control answer-text ';
                   answerLabel.style.borderRadius = '5px';
+                  answerLabel.style.width = '100%';
+                  answerLabel.style.maxHeight = '70px';
+                  answerLabel.style.resize = 'none';
                   // answerLabel.htmlFor = optionInput.id;
                   answerLabel.value = answer;
 
