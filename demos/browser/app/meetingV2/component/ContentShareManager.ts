@@ -53,6 +53,15 @@ export default class ContentShareManager implements ContentShareObserver {
     this.initContentShareUI();
   }
 
+  // Method to determine if the current user is the host
+  isHost(): boolean {
+    if (localStorage.getItem('userId') === localStorage.getItem('host_id')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   async start(): Promise<void> {
     let activeSourceSelection: Element | undefined = undefined;
     document.querySelectorAll('.content-share-source-option').forEach(element => {
@@ -154,10 +163,14 @@ export default class ContentShareManager implements ContentShareObserver {
   private initContentShareUI(): void {
     const buttonContentShare = document.getElementById('button-content-share');
     buttonContentShare.addEventListener('click', _e => {
-      if (!this.started) {
-        this.start();
+      if (this.isHost()) {
+        if (!this.started) {
+          this.start();
+        } else {
+          this.stop();
+        }
       } else {
-        this.stop();
+        alert('Only host can share');
       }
     });
 
