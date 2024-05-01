@@ -19,16 +19,11 @@ import {
 import MediaStreamProvider from '../util/mediastreamprovider/MediaStreamProvider';
 import CircularCut from '../video/filters/CircularCut';
 
-window.onload = () => {
-  const button = document.getElementById('show-toast-button') as HTMLButtonElement;
-  button.addEventListener('click', showToast);
-};
-
-function showToast() {
+function showToast(message: string) {
   const toast = document.getElementById('toast') as HTMLElement;
-  console.log('YOOOOOOOOOOOOOO TOASTTTT');
+  toast.textContent = message; // Set the text content to the custom message
   toast.className = 'toast show';
-  setTimeout(function () {
+  setTimeout(() => {
     toast.className = toast.className.replace('show', '');
   }, 3000);
 }
@@ -184,7 +179,7 @@ export default class ContentShareManager implements ContentShareObserver {
           this.stop();
         }
       } else {
-        showToast();
+        showToast('Share Screen is only available to the Host.');
       }
     });
 

@@ -118,6 +118,15 @@ let SHOULD_DIE_ON_FATALS = (() => {
   return fatalYes || (isLocal && !fatalNo);
 })();
 
+function showToast(message: string) {
+  const toast = document.getElementById('toast') as HTMLElement;
+  toast.textContent = message; // Set the text content to the custom message
+  toast.className = 'toast show';
+  setTimeout(() => {
+    toast.className = toast.className.replace('show', '');
+  }, 3000);
+}
+
 export let fatal: (e: Error) => void;
 
 // This shim is needed to avoid warnings when supporting Safari.
@@ -1205,7 +1214,7 @@ export class DemoMeetingApp
           console.log("You're are host, you can create Quiz!");
         } else {
           console.log("You're not the host, you can't create quizzes!");
-          alert("You're not the host, you can't create quizzes!");
+          showToast("You're not the host, you can't create quizzes!");
           return;
         }
         // STEP 1: CONFIGURATION FORM

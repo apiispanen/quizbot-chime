@@ -19,6 +19,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   console.log('quizbot.js loaded');
 
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message; // Set the text content to the custom message
+    toast.className = 'toast show';
+    setTimeout(() => {
+      toast.className = toast.className.replace('show', '');
+    }, 3000);
+  }
+
   // **********************************************************************
   // Function to download content inside a div as a text file.
   function downloadDivContentAndLocalStorageDataAsTextFile(divId, localStorageKey, filename) {
@@ -314,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     } else {
       console.log("You're not the host, you can't create quizzes!");
-      alert("You're not the host, you can't create quizzes!");
+      showToast("You're not the host, you can't create quizzes!");
 
       // Show #create-quiz-not-host
       const createQuizNotHost = document.getElementById('create-quiz-not-host');

@@ -80,16 +80,16 @@ $overlay-z-index: 10;
   visibility: hidden; /* Hidden by default */
   min-width: 250px; /* Set a minimum width */
   margin-left: -125px; /* Negative half of width to center it */
-  background-color: #333; /* Dark background */
+  background-color: #7a64ec; /* Dark background */
   color: #fff; /* White text color */
   text-align: center; /* Center text */
-  border-radius: 2px; /* Rounded corners */
+  border-radius: 10px; /* Rounded corners */
   padding: 16px; /* Padding */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 50%; /* Center horizontally */
   top: 30px; /* 30px from the top */
-  font-size: 17px; /* Text size */
+  font-size: 20px; /* Text size */
 }
 
 /* Add animations for showing and hiding the toast */
