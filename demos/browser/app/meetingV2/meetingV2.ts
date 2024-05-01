@@ -1356,13 +1356,17 @@ export class DemoMeetingApp
                 allAnswers.forEach((answer, ansIndex) => {
                   let optionLabel = document.createElement('label');
                   optionLabel.className = 'form-check form-check-inline';
+                  optionLabel.style.display = 'flex';
+                  optionLabel.style.gap = '10px';
+                  optionLabel.style.alignItems = 'center';
 
                   let optionInput = document.createElement('input');
                   optionInput.type = 'radio';
                   optionInput.id = `option-${index}-${ansIndex}`;
                   optionInput.name = 'option';
                   optionInput.value = `${ansIndex}`;
-                  optionInput.className = 'btn-check form-check-input';
+                  optionInput.style.margin = '0px';
+
                   // DRAFT ANSWERS (FOR REFERENCE)
                   if (answer === correctAnswer) {
                     // Check the correct answer
@@ -1373,19 +1377,23 @@ export class DemoMeetingApp
                   // Update local storage
                   localStorage.setItem('quizJson', JSON.stringify(quizJson));
 
-                  let answerselectorLabel = document.createElement('label');
-                  answerselectorLabel.className = 'btn btn-outline';
-                  answerselectorLabel.htmlFor = optionInput.id;
-                  answerselectorLabel.innerHTML =
-                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12L9 16L19 6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                  // let answerselectorLabel = document.createElement('label');
+                  // answerselectorLabel.className = 'btn btn-outline';
+                  // answerselectorLabel.htmlFor = optionInput.id;
+                  // answerselectorLabel.innerHTML =
+                  //   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12L9 16L19 6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-                  let answerLabel = document.createElement('input');
-                  answerLabel.className = 'form-control answer-text w-75';
+                  let answerLabel = document.createElement('textarea');
+                  answerLabel.className = 'form-control answer-text ';
+                  answerLabel.style.borderRadius = '5px';
+                  answerLabel.style.width = '100%';
+                  answerLabel.style.maxHeight = '70px';
+                  answerLabel.style.resize = 'none';
                   // answerLabel.htmlFor = optionInput.id;
                   answerLabel.value = answer;
 
                   optionLabel.appendChild(optionInput);
-                  optionLabel.appendChild(answerselectorLabel);
+                  // optionLabel.appendChild(answerselectorLabel);
                   optionLabel.appendChild(answerLabel);
                   quizOptions.appendChild(optionLabel);
 
@@ -1512,7 +1520,8 @@ export class DemoMeetingApp
           generationError.classList.remove('d-none');
           document.getElementById('quiz_question').style.display = 'none';
           // now print the error message the error message from the server
-          generationError.innerText = 'There was an error generating the quiz. Error: ' + error + '. Please try again.';
+          generationError.innerText =
+            'There was an error generating the quiz. Error: ' + error + '. Please try again.';
 
           create_quiz.style.display = 'block';
         } finally {
@@ -5921,6 +5930,7 @@ function displayQuestion(index: number, data: FormData) {
       input.type = 'radio';
       input.id = `answer_${index}_${optionIndex}`;
       input.name = `question_${index}`;
+      input.style.color = '#ffffff';
       let optionSelected = false;
 
       input.addEventListener('change', () => {
@@ -5967,7 +5977,7 @@ function displayQuestion(index: number, data: FormData) {
       label.className = 'form-check-label';
       label.setAttribute('for', input.id);
       label.textContent = option;
-
+      label.style.color = '#ffffff';
       radioDiv.appendChild(input);
       radioDiv.appendChild(label);
       answersContainer.appendChild(radioDiv);
