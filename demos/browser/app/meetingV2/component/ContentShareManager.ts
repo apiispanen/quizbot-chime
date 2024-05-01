@@ -19,6 +19,20 @@ import {
 import MediaStreamProvider from '../util/mediastreamprovider/MediaStreamProvider';
 import CircularCut from '../video/filters/CircularCut';
 
+window.onload = () => {
+  const button = document.getElementById('show-toast-button') as HTMLButtonElement;
+  button.addEventListener('click', showToast);
+};
+
+function showToast() {
+  const toast = document.getElementById('toast') as HTMLElement;
+  console.log('YOOOOOOOOOOOOOO TOASTTTT');
+  toast.className = 'toast show';
+  setTimeout(function () {
+    toast.className = toast.className.replace('show', '');
+  }, 3000);
+}
+
 /**
  * Class to allow handling the UI interactions and display associated with content share.
  */
@@ -170,7 +184,7 @@ export default class ContentShareManager implements ContentShareObserver {
           this.stop();
         }
       } else {
-        alert('Only host can share');
+        showToast();
       }
     });
 
