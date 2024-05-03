@@ -19,6 +19,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   console.log('quizbot.js loaded');
 
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message; // Set the text content to the custom message
+    toast.className = 'toast show';
+    setTimeout(() => {
+      toast.className = toast.className.replace('show', '');
+    }, 3000);
+  }
+
   // **********************************************************************
   // Function to download content inside a div as a text file.
   function downloadDivContentAndLocalStorageDataAsTextFile(divId, localStorageKey, filename) {
@@ -314,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     } else {
       console.log("You're not the host, you can't create quizzes!");
-      alert("You're not the host, you can't create quizzes!");
+      showToast("You're not the host, you can't create quizzes!");
 
       // Show #create-quiz-not-host
       const createQuizNotHost = document.getElementById('create-quiz-not-host');
@@ -399,13 +408,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const meetingScheduleTime = document.getElementById('meetingScheduleTime').value;
 
     if (!meetingScheduleTime) {
-      alert('Please ensure both date and time are selected.');
+      showToast('Please ensure both date and time are selected.');
       return;
     }
 
     const userId = localStorage.getItem('userId');
     if (!userId) {
-      alert('User ID is missing. Did you sign in?');
+      showToast('User ID is missing. Sign in to get started');
       return;
     }
 
@@ -475,14 +484,14 @@ document.addEventListener('DOMContentLoaded', function () {
           // Hide modal if needed
           // document.getElementById('scheduleMeetingModal')!.style.display = 'none';
         } else if (data.status === 'exists') {
-          alert(data.message);
+          showToast(data.message);
           showEventModal(meetingName, meetingScheduleTime, data.meeting_id, 60);
         } else {
-          alert(data.message);
+          showToast(data.message);
         }
       })
       .catch(error => {
-        alert('Error occurred: ' + error.message);
+        showToast('Error occurred: ' + error.message);
         console.error('Error:', error);
       });
   });

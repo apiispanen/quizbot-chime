@@ -118,6 +118,15 @@ let SHOULD_DIE_ON_FATALS = (() => {
   return fatalYes || (isLocal && !fatalNo);
 })();
 
+function showToast(message: string) {
+  const toast = document.getElementById('toast') as HTMLElement;
+  toast.textContent = message; // Set the text content to the custom message
+  toast.className = 'toast show';
+  setTimeout(() => {
+    toast.className = toast.className.replace('show', '');
+  }, 3000);
+}
+
 export let fatal: (e: Error) => void;
 
 // This shim is needed to avoid warnings when supporting Safari.
@@ -881,7 +890,7 @@ export class DemoMeetingApp
 
         // Else if meeting is specified and user is not logged in:
       } else {
-        alert('Token invalid. Please log in to join the meeting');
+        showToast('Session Invalid, Please log in to join the meeting');
         localStorage.clear();
         document.getElementById('login-container').style.display = 'block';
         document.getElementById('loginForm').style.display = 'block';
@@ -1205,7 +1214,7 @@ export class DemoMeetingApp
           console.log("You're are host, you can create Quiz!");
         } else {
           console.log("You're not the host, you can't create quizzes!");
-          alert("You're not the host, you can't create quizzes!");
+          showToast("You're not the host, you can't create quizzes!");
           return;
         }
         // STEP 1: CONFIGURATION FORM
@@ -1891,7 +1900,8 @@ export class DemoMeetingApp
 
     // if #join-view-only is clicked add "viewonly" to authToken, show #main-page and hide #login-container:
     document.querySelector('#join-view-only')?.addEventListener('click', () => {
-      alert('clicked view only');
+      showToast('clicked view only');
+
       localStorage.setItem('authToken', 'viewonly');
       this.isViewOnly = true;
       document.getElementById('login-container')!.style.display = 'none';
@@ -6082,7 +6092,7 @@ function populateQuiz(dataString: string) {
       QuizAttempts.score =
         QuizAttempts.correct.length / (QuizAttempts.correct.length + QuizAttempts.incorrect.length);
       // You can redirect or show results here when all questions are done.
-      alert(`Quiz completed! You got ${QuizAttempts.score}% right!`);
+      showToast(`Quiz completed! You got ${QuizAttempts.score * 100}% right!`);
       localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
       submitQuizAttempts();
       resetQuiz();
@@ -6264,7 +6274,7 @@ document.addEventListener('DOMContentLoaded', () => {
           loginSpinner.style.display = 'none';
           // show #incorrect-pass element
           document.getElementById('incorrect-pass2')!.style.display = 'block';
-          alert(`Error: ${error}`);
+          showToast(`Error: ${error}`);
         });
     });
   } else {

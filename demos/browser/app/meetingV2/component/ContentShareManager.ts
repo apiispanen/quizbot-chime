@@ -19,6 +19,15 @@ import {
 import MediaStreamProvider from '../util/mediastreamprovider/MediaStreamProvider';
 import CircularCut from '../video/filters/CircularCut';
 
+function showToast(message: string) {
+  const toast = document.getElementById('toast') as HTMLElement;
+  toast.textContent = message; // Set the text content to the custom message
+  toast.className = 'toast show';
+  setTimeout(() => {
+    toast.className = toast.className.replace('show', '');
+  }, 3000);
+}
+
 /**
  * Class to allow handling the UI interactions and display associated with content share.
  */
@@ -51,6 +60,15 @@ export default class ContentShareManager implements ContentShareObserver {
   ) {
     this.audioVideo.addContentShareObserver(this);
     this.initContentShareUI();
+  }
+
+  // Method to determine if the current user is the host
+  isHost(): boolean {
+    if (localStorage.getItem('userId') === localStorage.getItem('host_id')) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   async start(): Promise<void> {
@@ -154,10 +172,14 @@ export default class ContentShareManager implements ContentShareObserver {
   private initContentShareUI(): void {
     const buttonContentShare = document.getElementById('button-content-share');
     buttonContentShare.addEventListener('click', _e => {
-      if (!this.started) {
-        this.start();
+      if (this.isHost()) {
+        if (!this.started) {
+          this.start();
+        } else {
+          this.stop();
+        }
       } else {
-        this.stop();
+        showToast('Share Screen is only available to the Host.');
       }
     });
 

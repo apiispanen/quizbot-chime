@@ -74,7 +74,74 @@ $overlay-z-index: 10;
 // Flatly 4.3.1
 // Bootswatch
 
-// Variables ===================================================================
+//  ===================================================================
+/* Toast Styling */
+.toast {
+  visibility: hidden; /* Hidden by default */
+  min-width: 250px; /* Set a minimum width */
+  margin-left: -125px; /* Negative half of width to center it */
+  background-color: #7a64ec; /* Dark background */
+  color: #fff; /* White text color */
+  text-align: center; /* Center text */
+  border-radius: 10px; /* Rounded corners */
+  padding: 16px; /* Padding */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 50%; /* Center horizontally */
+  top: 30px; /* 30px from the top */
+  font-size: 20px; /* Text size */
+}
+
+/* Add animations for showing and hiding the toast */
+.toast.show {
+  visibility: visible; /* Show the toast */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {
+    top: 0;
+    opacity: 0;
+  }
+  to {
+    top: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    top: 0;
+    opacity: 0;
+  }
+  to {
+    top: 30px;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    top: 30px;
+    opacity: 1;
+  }
+  to {
+    top: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    top: 30px;
+    opacity: 1;
+  }
+  to {
+    top: 0;
+    opacity: 0;
+  }
+}
 
 // Navbar =======================================================================
 
