@@ -6086,6 +6086,10 @@ function populateQuiz(dataString: string) {
 
   // When the next button is clicked
   document.getElementById('quiz-taker-next')!.addEventListener('click', () => {
+    console.log("DATA:", data)
+    console.log('QUIZ Index before:', currentQuestionIndex);
+    currentQuestionIndex++;
+    console.log('QUIZ Index after:', currentQuestionIndex);
     if (currentQuestionIndex < data.fields.length) {
       displayQuestion(currentQuestionIndex, data);
     } else {
@@ -6096,10 +6100,10 @@ function populateQuiz(dataString: string) {
       localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
       submitQuizAttempts();
       resetQuiz();
+      currentQuestionIndex = 0;
       document.getElementById('starting_quiz_container')!.style.display = 'none';
       document.getElementById('roster-tile-container')!.style.display = 'block';
     }
-    currentQuestionIndex++;
   });
 
   displayQuestion(currentQuestionIndex, data); // Display the first question initially
