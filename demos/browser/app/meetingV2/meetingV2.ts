@@ -1025,8 +1025,6 @@ export class DemoMeetingApp
       const formData = generateFormData(storedQuiz);
       console.log('Checkpoint 2 Form Data', formData);
 
-      console.log(formData);
-
       // END DREW ADDITIONS
 
       const formDataString = JSON.stringify(formData);
@@ -1234,6 +1232,9 @@ export class DemoMeetingApp
           // "transcript" : "This is a test transcript, I want to see if this works. There are 5 questions in this quiz. This quiz was made on October 11th 2023. We will be quizzing on this content."
         };
 
+        // if (transcript && transcript !== '') {
+        //   transcriptData.transcript = transcript;
+        // }
         let selectedNumber = localStorage.getItem('selectedNumber');
         if (selectedNumber) {
           transcriptData.num_questions = selectedNumber;
@@ -3823,7 +3824,7 @@ export class DemoMeetingApp
     }
 
     if (transcriptEvent instanceof TranscriptionStatus) {
-      this.appendStatusDiv(transcriptEvent);
+      // this.appendStatusDiv(transcriptEvent);
       if (transcriptEvent.type === TranscriptionStatusType.STARTED) {
         // Determine word separator based on language code
         let languageCode = null;
@@ -4034,21 +4035,21 @@ export class DemoMeetingApp
     speakerToTranscriptSpanMap.set(segment.attendee.attendeeId, segment.contentSpan);
   };
 
-  appendStatusDiv = (status: TranscriptionStatus) => {
-    const statusDiv = document.createElement('div') as HTMLDivElement;
-    statusDiv.innerText =
-      '(Live Transcription ' +
-      status.type +
-      ' at ' +
-      new Date(status.eventTimeMs).toLocaleTimeString() +
-      ' in ' +
-      status.transcriptionRegion +
-      ' with configuration: ' +
-      status.transcriptionConfiguration +
-      (status.message ? ' due to "' + status.message + '".' : '') +
-      ')';
-    this.transcriptContainerDiv.appendChild(statusDiv);
-  };
+  // appendStatusDiv = (status: TranscriptionStatus) => {
+  //   const statusDiv = document.createElement('div') as HTMLDivElement;
+  //   statusDiv.innerText =
+  //     '(Live Transcription ' +
+  //     status.type +
+  //     ' at ' +
+  //     new Date(status.eventTimeMs).toLocaleTimeString() +
+  //     ' in ' +
+  //     status.transcriptionRegion +
+  //     ' with configuration: ' +
+  //     status.transcriptionConfiguration +
+  //     (status.message ? ' due to "' + status.message + '".' : '') +
+  //     ')';
+  //   this.transcriptContainerDiv.appendChild(statusDiv);
+  // };
 
   setupLiveTranscription = () => {
     this.audioVideo.transcriptionController?.subscribeToTranscriptEvent(
@@ -5842,6 +5843,10 @@ window.addEventListener('click', event => {
     liveTranscriptionModal.style.display = 'none';
   }
 });
+
+let optionText = '';
+let currentQuestionIndex = 1;
+
 const defaultQuizAttempt = {
   _id: '', // You will fill this in when saving the attempt.
   quiz_id: '', // You will update this from your quiz data.
@@ -5855,13 +5860,28 @@ const defaultQuizAttempt = {
 // *****************
 // DREW FUNCTIONS
 
+// DREW FUNCTION VARIABLES
+let userId = localStorage.getItem('userId') || '';
+
+//const existingAttempts = localStorage.getItem('QuizAttempts');
+let quiz_id = localStorage.getItem('quiz_id');
+
+let QuizAttempts: QuizAttempt = {
+  quiz_id: quiz_id,
+  timestamp: new Date().toISOString(),
+  user_id: userId,
+  score: 0,
+  correct: [],
+  incorrect: [],
+};
+
 // FUNCTION 1 - SUBMIT QUIZ ATTEMPTS
 function submitQuizAttempts() {
   const url = 'https://api.larq.ai/MakeQuizAttempt';
   const storedData = localStorage.getItem('QuizAttempts');
   // let quizID = localStorage.getItem('quizID');
   const QuizAttempts = storedData ? JSON.parse(storedData) : defaultQuizAttempt;
-  console.log('QuizAttempts to sent to larq API:', QuizAttempts);
+
   let quiz_id = localStorage.getItem('quiz_id');
   QuizAttempts['user_id'] = localStorage.getItem('userId') || '';
   QuizAttempts['quiz_id'] = quiz_id || '';
@@ -5890,23 +5910,6 @@ function submitQuizAttempts() {
   });
 }
 
-// DREW FUNCTION VARIABLES
-let userId = localStorage.getItem('userId') || '';
-
-const existingAttempts = localStorage.getItem('QuizAttempts');
-const quiz_id = localStorage.getItem('quiz_id');
-
-const QuizAttempts: QuizAttempt = existingAttempts
-  ? JSON.parse(existingAttempts)
-  : {
-      quiz_id: quiz_id,
-      timestamp: new Date().toISOString(),
-      user_id: userId,
-      score: 0,
-      correct: [],
-      incorrect: [],
-    };
-
 // FUNCTION 1 - CLEAR PREVIOUS QUESTIONS
 function clearPreviousQuestions() {
   const questionBlock = document.getElementById('quiz-taker-question');
@@ -5921,65 +5924,62 @@ function clearPreviousQuestions() {
 // FUNCTION 2 - DISPLAY QUESTIONS IN QUIZ HANDLER (TAKING QUIZ)
 function displayQuestion(index: number, data: FormData) {
   clearPreviousQuestions(); // Clear previous question and answers
-
+  console.log('THE QUIZ ATTEMPTS CURRENTLY after', index - 1, 'questions', QuizAttempts);
   const question = data.fields[index];
+  const correctAnswer = question.correct_answer;
+
   if (question.type === 'dropdown') {
     document.getElementById('quiz-taker-question')!.textContent = question.label;
 
     const answersContainer = document.getElementById('quiz-taker-answers')!;
+    const allOptions = answersContainer.querySelectorAll(`input[name='question_${index}']`);
     // Shuffle the options
     const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
     // Find the correct answer index in the shuffled options
     const correctAnswerIndex = shuffledOptions.indexOf(question.correct_answer);
+
+    const nextButton = document.getElementById('quiz-taker-next')!;
+    const confirmButton = document.getElementById('quiz-taker-confirm')!;
+
+    // Clone and replace the confirm button to remove existing event listeners
+    const newConfirmButton = confirmButton.cloneNode(true) as HTMLElement;
+    confirmButton.parentNode?.replaceChild(newConfirmButton, confirmButton);
 
     shuffledOptions.forEach((option, optionIndex) => {
       const radioDiv = document.createElement('div');
       radioDiv.className = 'form-check form-check-inline radioBox';
 
       const input = document.createElement('input');
+
       input.type = 'radio';
       input.id = `answer_${index}_${optionIndex}`;
       input.name = `question_${index}`;
       input.style.color = '#ffffff';
-      let optionSelected = false;
 
       input.addEventListener('change', () => {
-        if (!optionSelected) {
-          optionSelected = true;
-          // Disable all options
-          const allOptions = answersContainer.querySelectorAll(`input[name='question_${index}']`);
+        optionText = option;
+        nextButton.style.display = 'none';
+        newConfirmButton.style.display = 'block';
+      });
+
+      newConfirmButton.addEventListener('click', () => {
+        if (optionText === option) {
           allOptions.forEach(opt => ((opt as HTMLInputElement).disabled = true));
-
-          const correctAnswer = question.correct_answer;
-          // set a boolean variable to true if attempt has been made:
-          let attempted = false;
-
-          if (!attempted) {
-            if (option === correctAnswer) {
-              QuizAttempts.correct.push(index);
-              attempted = true;
-              radioDiv.className += ' correct-answer'; // Highlight correct answer with green outline
-            } else {
-              radioDiv.className += ' incorrect-answer'; // Highlight incorrect answer
-
-              // same as the other but false
-              QuizAttempts.incorrect.push(index);
-              attempted = true;
-
-              // find the option with the correct answer and highlight it
-              // const correctAnswerIndex = question.options.indexOf(correctAnswer);
-              // const correctAnswerInput = document.getElementById(`answer_${index}_${correctAnswerIndex}`) as HTMLInputElement;
-
-              const correctAnswerInput = document.getElementById(
-                `answer_${index}_${correctAnswerIndex}`
-              ) as HTMLInputElement;
-              correctAnswerInput.parentElement!.className += ' correct-answer';
-            }
-
-            // correctAnswerInput.parentElement!.className = "form-check form-check-inline radioBox correct-answer";
-            // now set the quizattempts to localstorage
-            localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
+          if (option === correctAnswer) {
+            console.log('correct answer!!!!!!!!');
+            QuizAttempts.correct.push(index);
+            radioDiv.className += ' correct-answer'; // Highlight correct answer with green outline
+          } else {
+            console.log('incorrect answer!!!!!!!!!!!!');
+            radioDiv.className += ' incorrect-answer'; // Highlight incorrect answer
+            QuizAttempts.incorrect.push(index);
+            const correctAnswerInput = document.getElementById(
+              `answer_${index}_${correctAnswerIndex}`
+            ) as HTMLInputElement;
+            correctAnswerInput.parentElement!.className += ' correct-answer';
           }
+          nextButton.style.display = 'block';
+          newConfirmButton.style.display = 'none';
         }
       });
 
@@ -6005,6 +6005,18 @@ function resetQuiz() {
 // FUNCTION 3 - POPULATE THE QUIZ HANDLER
 function populateQuiz(dataString: string) {
   const data: FormData = JSON.parse(dataString);
+  quiz_id = localStorage.getItem('quiz_id');
+  userId = localStorage.getItem('userId') || '';
+  QuizAttempts = {
+    quiz_id: quiz_id,
+    timestamp: new Date().toISOString(),
+    user_id: userId,
+    score: 0,
+    correct: [],
+    incorrect: [],
+  };
+  console.log('THIS IS THE QUIZ DATA', data);
+
   // alert with all the data json dumped
   // alert(JSON.stringify(data));
   // save quiz_id to localstorage
@@ -6022,90 +6034,38 @@ function populateQuiz(dataString: string) {
     answerBlock.innerHTML = '';
   }
 
-  data.fields.forEach((field, index) => {
-    if (field.type === 'dropdown') {
-      const question = document.createElement('div');
-      question.className = 'quiz-title';
-      question.style.fontSize = '24px';
-      question.textContent = field.label;
-      questionBlock?.appendChild(question);
-
-      let answerSelected = false; // New variable to track if an answer has been selected for this question
-
-      field.options?.forEach((option, optionIndex) => {
-        const answerOption = document.createElement('div');
-        answerOption.className = 'form-check form-check-inline radioBox btn-outline-primary'; // Added btn-outline-primary here
-
-        const input = document.createElement('input');
-        input.type = 'checkbox';
-        input.id = `answer-${index}-${optionIndex}`;
-        input.name = `question-${index}`;
-        input.value = option;
-        console.log('populating field ', option);
-        input.className = 'btn btn-outline-primary';
-        input.addEventListener('click', () => {
-          if (!answerSelected) {
-            answerSelected = true; // Mark that an answer has been selected
-            const correctAnswer = field.correct_answer;
-            if (option === correctAnswer) {
-              // add index to QuizAttempts.correct
-              QuizAttempts.correct.push(index);
-              answerOption.classList.add('correct-answer'); // Instead of green outline, add .correct-answer
-            } else {
-              answerOption.classList.add('incorrect-answer'); // Instead of green outline, add .correct-answer
-              // push incorrect answer to QuizAttempts, unles it's already there
-              QuizAttempts.incorrect.push(index);
-            }
-
-            // Disable all other options for this question
-            field.options?.forEach((_, otherOptionIndex) => {
-              if (optionIndex !== otherOptionIndex) {
-                (document.getElementById(
-                  `answer-${index}-${otherOptionIndex}`
-                ) as HTMLInputElement).disabled = true;
-              }
-            });
-          }
-        });
-
-        const label = document.createElement('label');
-        label.className = 'form-check-label';
-        label.htmlFor = input.id;
-        label.textContent = option;
-
-        answerOption.appendChild(input);
-        answerOption.appendChild(label);
-        answerBlock?.appendChild(answerOption);
-      });
-    }
-  });
-
   // Save quizattempts to localstorage
-  localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
-  let currentQuestionIndex = 0; // To track which question is currently displayed
+  currentQuestionIndex = 1; // To track which question is currently displayed
 
-  // When the next button is clicked
-  document.getElementById('quiz-taker-next')!.addEventListener('click', () => {
-    console.log("DATA:", data)
-    console.log('QUIZ Index before:', currentQuestionIndex);
-    currentQuestionIndex++;
-    console.log('QUIZ Index after:', currentQuestionIndex);
-    if (currentQuestionIndex < data.fields.length) {
-      displayQuestion(currentQuestionIndex, data);
-    } else {
-      QuizAttempts.score =
-        QuizAttempts.correct.length / (QuizAttempts.correct.length + QuizAttempts.incorrect.length);
-      // You can redirect or show results here when all questions are done.
-      showToast(`Quiz completed! You got ${QuizAttempts.score * 100}% right!`);
-      localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
-      submitQuizAttempts();
-      resetQuiz();
-      currentQuestionIndex = 0;
-      document.getElementById('starting_quiz_container')!.style.display = 'none';
-      document.getElementById('roster-tile-container')!.style.display = 'block';
-    }
-  });
-
+  // Remove any existing event listeners
+  const nextButton = document.getElementById('quiz-taker-next');
+  if (nextButton) {
+    const newNextButton = nextButton.cloneNode(true);
+    nextButton.parentNode?.replaceChild(newNextButton, nextButton);
+    newNextButton.addEventListener('click', () => {
+      currentQuestionIndex++;
+      optionText = '';
+      console.log('currrentQuestion', currentQuestionIndex, ' DATA FIELDS', data.fields.length);
+      if (currentQuestionIndex < data.fields.length) {
+        displayQuestion(currentQuestionIndex, data);
+      } else {
+        if (QuizAttempts.correct.length + QuizAttempts.incorrect.length === 0) {
+          QuizAttempts.score = 0;
+        } else {
+          QuizAttempts.score =
+            QuizAttempts.correct.length /
+            (QuizAttempts.correct.length + QuizAttempts.incorrect.length);
+        }
+        showToast(`Quiz completed! You got ${QuizAttempts.score * 100}% right!`);
+        localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
+        submitQuizAttempts();
+        resetQuiz();
+        currentQuestionIndex = 0;
+        document.getElementById('starting_quiz_container')!.style.display = 'none';
+        document.getElementById('roster-tile-container')!.style.display = 'block';
+      }
+    });
+  }
   displayQuestion(currentQuestionIndex, data); // Display the first question initially
 }
 
