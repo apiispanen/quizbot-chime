@@ -2879,11 +2879,18 @@ input[type='Submit']:hover {
 
   input[type='radio']:checked::before {
     transform: scale(1);
+    background-color: #7a64ec;
+  }
+
+  input[type='radio']:hover::before {
+    cursor: pointer;
+    background-color: #7a64ec;
   }
 
   input[type='radio']:focus {
     outline: max(2px, 0.15em) solid currentColor;
     outline-offset: max(2px, 0.15em);
+    background-color: #7a64ec;
   }
 }
 
