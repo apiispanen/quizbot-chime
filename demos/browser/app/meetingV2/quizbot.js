@@ -408,13 +408,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const meetingScheduleTime = document.getElementById('meetingScheduleTime').value;
 
     if (!meetingScheduleTime) {
-      showToast('Please ensure both date and time are selected.');
+      alert('Please ensure both date and time are selected.');
       return;
     }
 
     const userId = localStorage.getItem('userId');
     if (!userId) {
-      showToast('User ID is missing. Sign in to get started');
+      alert('User ID is missing. Did you sign in?');
       return;
     }
 
@@ -484,14 +484,14 @@ document.addEventListener('DOMContentLoaded', function () {
           // Hide modal if needed
           // document.getElementById('scheduleMeetingModal')!.style.display = 'none';
         } else if (data.status === 'exists') {
-          showToast(data.message);
+          alert(data.message);
           showEventModal(meetingName, meetingScheduleTime, data.meeting_id, 60);
         } else {
-          showToast(data.message);
+          alert(data.message);
         }
       })
       .catch(error => {
-        showToast('Error occurred: ' + error.message);
+        alert('Error occurred: ' + error.message);
         console.error('Error:', error);
       });
   });
