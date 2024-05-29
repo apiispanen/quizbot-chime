@@ -1631,6 +1631,28 @@ input[type='radio'] {
   line-height: 100%;
   margin-top: 30px;
 }
+
+#deleteQuestionBtn {
+  min-height: 45px;
+  width: 100%;
+  padding: 0 17px;
+  background: transparent;
+  border: 1px solid #f55a5d;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 8px;
+  color: #f55a5d;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  margin-top: 30px;
+}
+
 .loading-block {
   height: 100%;
   align-items: center;

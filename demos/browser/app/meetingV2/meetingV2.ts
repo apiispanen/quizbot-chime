@@ -1346,8 +1346,12 @@ export class DemoMeetingApp
               // Attach a click event to each questionBlock
               questionBlock.addEventListener('click', function () {
                 // Display the selected question and its options
-
+                questionNumber = question.question_number;
                 console.log('questionNumber', questionNumber);
+                console.log('QuizJSon when clicking:');
+                quizJson.questions.forEach((question: any, index: number) => {
+                  console.log(`Question ${question.question_number}: ${question.question}`);
+                });
                 const currentActive = document.querySelector('.numbers-block.active-numbers-block');
                 if (currentActive) {
                   currentActive.classList.remove('active-numbers-block');
@@ -1523,6 +1527,92 @@ export class DemoMeetingApp
               // End of questions.forEach
             }
           );
+
+          const deleteQuestionBtn = document.getElementById('deleteQuestionBtn');
+
+          if (quizJson.questions.length > 0) {
+            deleteQuestionBtn.removeAttribute('disabled');
+          } else {
+            deleteQuestionBtn.setAttribute('disabled', 'true');
+          }
+
+          // Remove any existing event listener
+          if (deleteQuestionBtn) {
+            const newButton = deleteQuestionBtn.cloneNode(true) as HTMLElement;
+            deleteQuestionBtn.parentNode?.replaceChild(newButton, deleteQuestionBtn);
+
+            // Add the event listener to the new button
+            newButton.addEventListener('click', function () {
+              const currentActive = document.querySelector('.numbers-block.active-numbers-block');
+
+              if (currentActive) {
+                const questionNumber = Number(currentActive.textContent);
+
+                // Remove the question from the array
+                console.log('QuizJSon before slice:');
+                quizJson.questions.forEach((question: any, index: number) => {
+                  console.log(`Question ${question.question_number}: ${question.question}`);
+                });
+
+                quizJson.questions.splice(questionNumber - 1, 1);
+                console.log('QuizJSon after slice:');
+                quizJson.questions.forEach((question: any, index: number) => {
+                  console.log(`Question ${question.question_number}: ${question.question}`);
+                });
+
+                // Update the question numbers after deletion
+                for (let i = questionNumber - 1; i < quizJson.questions.length; i++) {
+                  quizJson.questions[i].question_number--;
+                }
+                console.log('QuizJSon after renumbering:');
+                quizJson.questions.forEach((question: any, index: number) => {
+                  console.log(`Question ${question.question_number}: ${question.question}`);
+                });
+
+                // Update local storage
+                localStorage.setItem('quizJson', JSON.stringify(quizJson));
+
+                // Remove the question block element from DOM
+                currentActive.remove();
+
+                // Clear the quiz display
+                quizQuestionElement.innerText = '';
+                quizOptions.innerHTML = '';
+
+                // Re-render the question blocks
+                const quizNumbersElement = document.getElementById('quiz-numbers');
+                const allQuestionBlocks = quizNumbersElement?.children;
+
+                console.log('all QS Block', allQuestionBlocks);
+                console.log('question Number', questionNumber);
+                Array.from(allQuestionBlocks).forEach((block, index) => {
+                  console.log('curr index', index);
+                  console.log('blocky', block);
+                  if (index >= questionNumber - 1) {
+                    block.textContent = (index + 1).toString();
+                  }
+                });
+
+                // Automatically select the first question block if it exists
+                const firstQuestionBlock = quizNumbersElement?.firstElementChild as HTMLElement;
+                console.log(firstQuestionBlock);
+                if (firstQuestionBlock) {
+                  firstQuestionBlock.click();
+                } else {
+                  // If no questions are left, disable the delete button
+                  newButton.setAttribute('disabled', 'true');
+                }
+              }
+            });
+          }
+
+          // Enable the delete button if there are questions in the quiz
+
+          if (quizJson.questions.length > 0) {
+            deleteQuestionBtn.removeAttribute('disabled');
+          } else {
+            deleteQuestionBtn.setAttribute('disabled', 'true');
+          }
 
           // Promise and quizbot
         } catch (error) {
