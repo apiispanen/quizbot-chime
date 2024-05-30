@@ -6146,7 +6146,7 @@ function populateQuiz(dataString: string) {
             QuizAttempts.correct.length /
             (QuizAttempts.correct.length + QuizAttempts.incorrect.length);
         }
-        showToast(`Quiz completed! You got ${QuizAttempts.score * 100}% right!`);
+        showToast(`Quiz completed! You got ${(QuizAttempts.score * 100).toFixed(0)}% right!`);
         localStorage.setItem('QuizAttempts', JSON.stringify(QuizAttempts));
         submitQuizAttempts();
         resetQuiz();
