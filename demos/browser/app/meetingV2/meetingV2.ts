@@ -915,6 +915,7 @@ export class DemoMeetingApp
         .then(data => {
           if (data.status === 'success') {
             console.log('Token Authorized:', data);
+            localStorage.setItem("userId", data.user_id);
             document.getElementById('login-container').style.display = 'none';
             document.getElementById('loginForm').style.display = 'none';
             joining_page.style.display = 'flex';
