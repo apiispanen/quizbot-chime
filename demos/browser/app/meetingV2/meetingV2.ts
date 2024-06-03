@@ -859,6 +859,7 @@ export class DemoMeetingApp
       // remove the token from the url
       // Create a URL object from the current location
       const url = new URL(window.location.href);
+
       url.searchParams.delete('token');
 
       // Construct the new URL string, preserving other parameters
@@ -890,6 +891,24 @@ export class DemoMeetingApp
 
         // Else if meeting is specified and user is not logged in:
       } else {
+
+        const tokenParam = new URL(window.location.href).searchParams.get('token');
+        // If token is present, verify it - else use the localstorage token
+        if (tokenParam) {
+          localStorage.setItem('authToken', tokenParam);
+          // remove the token from the url
+          // Create a URL object from the current location
+          const url = new URL(window.location.href);
+          
+          url.searchParams.delete('token');
+    
+          // Construct the new URL string, preserving other parameters
+          const newUrl = url.origin + url.pathname + url.search;
+    
+          // Update the URL without reloading the page
+          window.history.replaceState({}, document.title, newUrl);
+        }
+
         showToast('Session Invalid, Please log in to join the meeting');
         localStorage.clear();
         document.getElementById('login-container').style.display = 'block';
@@ -1247,7 +1266,7 @@ export class DemoMeetingApp
           console.log('vector_id:', vector_id);
         }
 
-        let userID = JSON.parse(localStorage.getItem('data')).user_id;
+        let userID = localStorage.getItem('userId');
         if (userID) {
           transcriptData.user_id = userID;
           console.log('user_id:', userID);
