@@ -1112,6 +1112,17 @@
                     </div> -->
                   </div>
                 </div>
+                <div class="iconButton">
+                  <button id="button-start-transcription" type="button" class="btn btn-success mx-1 mx-xl-2" title="Start Transcription"
+                  data-bs-toggle="button" aria-pressed="true" autocomplete="off" style="display: none;">
+                  <%= require('../../node_modules/open-iconic/svg/caret-right.svg') %>
+                  </button>
+
+                  <button id="button-show-transcript" type="button" class="btn btn-success" style="margin: 10px 0px; background-color: #7A64EC;">Show Transcript</button>
+                </div>
+                <div id="transcript-displayed" class="w-100" style="color: #7A64EC; display: none; height: 200px; overflow: auto; overflow-wrap: break-word; padding: 10px; background-color: honeydew; border-radius: 10px;">
+                  No Transcript Yet
+                </div>
                 <div class="questions-block pb-3">
 
                   <!-- <div class="quiz-title">Type of Quiz</div>
@@ -1564,12 +1575,7 @@
         <!-- TOGGLE ICONS -->
         <div id="toggle-icons" class="text-center bg-primary bottom-0 position-fixed animate__animated animate__fadeInUp" style="display: none;z-index: 100;">
           <div class="btn-group mx-1 mx-xl-2 " style="margin:10px 0px;" role="group" aria-label="Transcription">
-            <div class="iconButton">
-              <button id="button-start-transcription" type="button" class="btn btn-success mx-1 mx-xl-2" title="Start Transcription"
-              data-bs-toggle="button" aria-pressed="true" autocomplete="off">
-              <%= require('../../node_modules/open-iconic/svg/caret-right.svg') %>
-            </button>
-            </div>
+            
             <button style="height: 32px; border:none" id="button-video-filter-drop" type="button"
               class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false" title="Select filter"></button>

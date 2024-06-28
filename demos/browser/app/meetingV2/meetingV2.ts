@@ -891,7 +891,6 @@ export class DemoMeetingApp
 
         // Else if meeting is specified and user is not logged in:
       } else {
-
         const tokenParam = new URL(window.location.href).searchParams.get('token');
         // If token is present, verify it - else use the localstorage token
         if (tokenParam) {
@@ -899,12 +898,12 @@ export class DemoMeetingApp
           // remove the token from the url
           // Create a URL object from the current location
           const url = new URL(window.location.href);
-          
+
           url.searchParams.delete('token');
-    
+
           // Construct the new URL string, preserving other parameters
           const newUrl = url.origin + url.pathname + url.search;
-    
+
           // Update the URL without reloading the page
           window.history.replaceState({}, document.title, newUrl);
         }
@@ -934,7 +933,7 @@ export class DemoMeetingApp
         .then(data => {
           if (data.status === 'success') {
             console.log('Token Authorized:', data);
-            localStorage.setItem("userId", data.user_id);
+            localStorage.setItem('userId', data.user_id);
             document.getElementById('login-container').style.display = 'none';
             document.getElementById('loginForm').style.display = 'none';
             joining_page.style.display = 'flex';
@@ -1244,12 +1243,10 @@ export class DemoMeetingApp
           generating_quiz.style.display = 'block';
         }
 
-        console.log('submit quiz');
         const transcript = document.getElementById('transcript-container').innerText;
 
         const transcriptData: any = {
           transcript: transcript,
-          // "transcript" : "This is a test transcript, I want to see if this works. There are 5 questions in this quiz. This quiz was made on October 11th 2023. We will be quizzing on this content."
         };
 
         // if (transcript && transcript !== '') {
@@ -1733,6 +1730,18 @@ export class DemoMeetingApp
         if (tc) {
           tc.style.display = 'none';
         }
+      }
+    });
+
+    const showTranscriptButton = document.getElementById('button-show-transcript');
+    const transcription = document.getElementById('transcript-displayed');
+    showTranscriptButton?.addEventListener('click', function () {
+      if (showTranscriptButton.innerText === 'Show Transcript') {
+        transcription.style.display = 'block';
+        showTranscriptButton.innerText = 'Hide Transcript';
+      } else {
+        transcription.style.display = 'none';
+        showTranscriptButton.innerText = 'Show Transcript';
       }
     });
 
@@ -2773,6 +2782,7 @@ export class DemoMeetingApp
         throw new Error('Unknown transcription engine');
       }
       await startLiveTranscription(engine, languageCode, region, transcriptionStreamParams);
+      showToast('Transcription Started');
     });
 
     function isChecked(id: string): boolean {
@@ -4068,6 +4078,9 @@ export class DemoMeetingApp
       const itemContentSpan = document.createElement('span') as HTMLSpanElement;
       itemContentSpan.innerText = item.content;
       itemContentSpan.classList.add('transcript-content');
+      let curr_text = document.getElementById('transcript-container').innerText;
+      console.log('CURR TEXT IS', curr_text);
+      document.getElementById('transcript-displayed').innerText = curr_text;
       // underline the word with red to show confidence level of predicted word being less than 0.3
       // for redaction, words are represented as '[Name]' and has a confidence of 0. Redacted words are only shown with highlighting.
       if (
