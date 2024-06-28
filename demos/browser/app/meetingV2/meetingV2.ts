@@ -1722,6 +1722,7 @@ export class DemoMeetingApp
     // when you click #joinButton, also click #button-start-transcription:
     const joinButton = document.getElementById('joinButton');
     joinButton?.addEventListener('click', function () {
+      setupStartTranscriptionButton();
       var startTranscription = document.getElementById('button-start-transcription');
       if (startTranscription) {
         (startTranscription as HTMLElement).click();
@@ -1732,6 +1733,30 @@ export class DemoMeetingApp
         }
       }
     });
+    
+    var isMicClicked = localStorage.getItem('isMicClicked');
+      // when you click #joinButton, also click #button-start-transcription:
+      const buttonMic = document.getElementById('button-microphone');
+      buttonMic?.addEventListener('click', function () {
+
+        if (isMicClicked !== 'true'){
+          isMicClicked = 'true';
+          localStorage.setItem('isMicClicked', isMicClicked);
+          setupStartTranscriptionButton();
+          var startTranscription = document.getElementById('button-start-transcription');
+          if (startTranscription) {
+            (startTranscription as HTMLElement).click();
+            // hide the #transcript-container then too
+            var tc = document.getElementById('transcript-container');
+            if (tc) {
+              tc.style.display = 'none';
+            }
+          }
+
+        }
+
+      });
+
 
     const showTranscriptButton = document.getElementById('button-show-transcript');
     const transcription = document.getElementById('transcript-displayed');
@@ -2690,100 +2715,112 @@ export class DemoMeetingApp
 
     const buttonStartTranscription = document.getElementById('button-start-transcription');
     buttonStartTranscription.addEventListener('click', async () => {
-      let engine = '';
-      let languageCode = '';
-      let region = '';
-      const transcriptionStreamParams: TranscriptionStreamParams = {};
-      if ((document.getElementById('engine-transcribe') as HTMLInputElement).checked) {
-        engine = 'transcribe';
-        region = (document.getElementById('transcribe-region') as HTMLInputElement).value;
+      setupStartTranscriptionButton();
+    }
+  );
 
-        if (!isChecked('identify-language-checkbox')) {
-          languageCode = (document.getElementById('transcribe-language') as HTMLInputElement).value;
 
-          if (isChecked('content-identification-checkbox')) {
-            transcriptionStreamParams.contentIdentificationType = 'PII';
-          }
 
-          if (isChecked('content-redaction-checkbox')) {
-            transcriptionStreamParams.contentRedactionType = 'PII';
-          }
+    function setupStartTranscriptionButton(): void {
+      const buttonStartTranscription = document.getElementById('button-start-transcription');
+      buttonStartTranscription.addEventListener('click', async () => {
+        let engine = '';
+        let languageCode = '';
+        let region = '';
+        const transcriptionStreamParams: TranscriptionStreamParams = {};
+        if ((document.getElementById('engine-transcribe') as HTMLInputElement).checked) {
+          engine = 'transcribe';
+          region = (document.getElementById('transcribe-region') as HTMLInputElement).value;
 
-          if (
-            isChecked('content-identification-checkbox') ||
-            isChecked('content-redaction-checkbox')
-          ) {
-            let piiEntityTypes = getSelectedValues('#transcribe-entity');
-            if (piiEntityTypes !== '') {
-              transcriptionStreamParams.piiEntityTypes = piiEntityTypes;
+          if (!isChecked('identify-language-checkbox')) {
+            languageCode = (document.getElementById('transcribe-language') as HTMLInputElement).value;
+
+            if (isChecked('content-identification-checkbox')) {
+              transcriptionStreamParams.contentIdentificationType = 'PII';
+            }
+
+            if (isChecked('content-redaction-checkbox')) {
+              transcriptionStreamParams.contentRedactionType = 'PII';
+            }
+
+            if (
+              isChecked('content-identification-checkbox') ||
+              isChecked('content-redaction-checkbox')
+            ) {
+              let piiEntityTypes = getSelectedValues('#transcribe-entity');
+              if (piiEntityTypes !== '') {
+                transcriptionStreamParams.piiEntityTypes = piiEntityTypes;
+              }
+            }
+
+            if (isChecked('custom-language-model-checkbox')) {
+              let languageModelName = (document.getElementById(
+                'language-model-input-text'
+              ) as HTMLInputElement).value;
+              if (languageModelName) {
+                transcriptionStreamParams.languageModelName = languageModelName;
+              }
             }
           }
 
-          if (isChecked('custom-language-model-checkbox')) {
-            let languageModelName = (document.getElementById(
-              'language-model-input-text'
+          if (isChecked('identify-language-checkbox')) {
+            transcriptionStreamParams.identifyLanguage = true;
+            const languageOptionsSelected = getSelectedValues('#language-options');
+            if (languageOptionsSelected !== '') {
+              transcriptionStreamParams.languageOptions = languageOptionsSelected;
+            }
+
+            const preferredLanguageSelected = (document.getElementById(
+              'preferred-language-selection'
             ) as HTMLInputElement).value;
-            if (languageModelName) {
-              transcriptionStreamParams.languageModelName = languageModelName;
+            if (preferredLanguageSelected) {
+              transcriptionStreamParams.preferredLanguage = preferredLanguageSelected;
+            }
+
+            const vocabularyNames = (document.getElementById(
+              'vocabulary-names-input-text'
+            ) as HTMLInputElement).value;
+            if (vocabularyNames) {
+              transcriptionStreamParams.vocabularyNames = vocabularyNames;
+            }
+
+            const vocabularyFilterNames = (document.getElementById(
+              'vocabulary-filter-names-input-text'
+            ) as HTMLInputElement).value;
+            if (vocabularyFilterNames) {
+              transcriptionStreamParams.vocabularyFilterNames = vocabularyFilterNames;
             }
           }
-        }
 
-        if (isChecked('identify-language-checkbox')) {
-          transcriptionStreamParams.identifyLanguage = true;
-          const languageOptionsSelected = getSelectedValues('#language-options');
-          if (languageOptionsSelected !== '') {
-            transcriptionStreamParams.languageOptions = languageOptionsSelected;
+          if (isChecked('partial-stabilization-checkbox')) {
+            transcriptionStreamParams.enablePartialResultsStability = true;
           }
 
-          const preferredLanguageSelected = (document.getElementById(
-            'preferred-language-selection'
+          let partialResultsStability = (document.getElementById(
+            'partial-stability'
           ) as HTMLInputElement).value;
-          if (preferredLanguageSelected) {
-            transcriptionStreamParams.preferredLanguage = preferredLanguageSelected;
+          if (partialResultsStability) {
+            transcriptionStreamParams.partialResultsStability = partialResultsStability;
           }
-
-          const vocabularyNames = (document.getElementById(
-            'vocabulary-names-input-text'
-          ) as HTMLInputElement).value;
-          if (vocabularyNames) {
-            transcriptionStreamParams.vocabularyNames = vocabularyNames;
+        } else if (
+          (document.getElementById('engine-transcribe-medical') as HTMLInputElement).checked
+        ) {
+          engine = 'transcribe_medical';
+          languageCode = (document.getElementById('transcribe-medical-language') as HTMLInputElement)
+            .value;
+          region = (document.getElementById('transcribe-medical-region') as HTMLInputElement).value;
+          if (isChecked('medical-content-identification-checkbox')) {
+            transcriptionStreamParams.contentIdentificationType = 'PHI';
           }
+        } else {
+          throw new Error('Unknown transcription engine');
+        }
+        await startLiveTranscription(engine, languageCode, region, transcriptionStreamParams);
+        showToast('Transcription Started');
+      });
+    }
 
-          const vocabularyFilterNames = (document.getElementById(
-            'vocabulary-filter-names-input-text'
-          ) as HTMLInputElement).value;
-          if (vocabularyFilterNames) {
-            transcriptionStreamParams.vocabularyFilterNames = vocabularyFilterNames;
-          }
-        }
-
-        if (isChecked('partial-stabilization-checkbox')) {
-          transcriptionStreamParams.enablePartialResultsStability = true;
-        }
-
-        let partialResultsStability = (document.getElementById(
-          'partial-stability'
-        ) as HTMLInputElement).value;
-        if (partialResultsStability) {
-          transcriptionStreamParams.partialResultsStability = partialResultsStability;
-        }
-      } else if (
-        (document.getElementById('engine-transcribe-medical') as HTMLInputElement).checked
-      ) {
-        engine = 'transcribe_medical';
-        languageCode = (document.getElementById('transcribe-medical-language') as HTMLInputElement)
-          .value;
-        region = (document.getElementById('transcribe-medical-region') as HTMLInputElement).value;
-        if (isChecked('medical-content-identification-checkbox')) {
-          transcriptionStreamParams.contentIdentificationType = 'PHI';
-        }
-      } else {
-        throw new Error('Unknown transcription engine');
-      }
-      await startLiveTranscription(engine, languageCode, region, transcriptionStreamParams);
-      showToast('Transcription Started');
-    });
+    setupStartTranscriptionButton();
 
     function isChecked(id: string): boolean {
       return (document.getElementById(id) as HTMLInputElement).checked;
